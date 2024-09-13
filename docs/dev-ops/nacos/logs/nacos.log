@@ -21702,3 +21702,23 @@
 
 2024-09-14 01:47:53,477 INFO Connection check task end
 
+2024-09-14 01:47:55,946 INFO ConnectionMetrics, totalCount = 0, detail = {long_connection=0, long_polling=0}
+
+2024-09-14 01:47:56,478 INFO Connection check task start
+
+2024-09-14 01:47:56,478 INFO Long connection metrics detail ,Total count =0, sdkCount=0,clusterCount=0
+
+2024-09-14 01:47:56,479 INFO Out dated connection ,size=0
+
+2024-09-14 01:47:56,480 INFO Connection check task end
+
+2024-09-14 01:47:58,947 INFO ConnectionMetrics, totalCount = 0, detail = {long_connection=0, long_polling=0}
+
+2024-09-14 01:47:59,480 INFO Connection check task start
+
+2024-09-14 01:47:59,481 INFO Long connection metrics detail ,Total count =0, sdkCount=0,clusterCount=0
+
+2024-09-14 01:47:59,481 INFO Out dated connection ,size=0
+
+2024-09-14 01:47:59,481 INFO Connection check task end
+

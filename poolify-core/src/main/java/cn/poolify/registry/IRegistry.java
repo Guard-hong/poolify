@@ -1,5 +1,10 @@
 package cn.poolify.registry;
 
+import cn.poolify.model.ThreadPoolConfigEntity;
+import cn.poolify.model.dto.UpdateThreadPoolConfigDTO;
+
+import java.util.List;
+
 /**
  * @Author: HCJ
  * @DateTime: 2024/9/14
@@ -12,7 +17,7 @@ public interface IRegistry {
      * 上报全部线程池配置信息
      * @param threadPoolConfigEntityList 线程池列表
      */
-    void reportThreadPool();
+    void reportThreadPool(List<ThreadPoolConfigEntity> threadPoolConfigEntityList);
 
     /**
      * 上报更新线程池配置参数
