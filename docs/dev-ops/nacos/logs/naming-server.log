@@ -1,0 +1,138 @@
+2024-09-14 00:42:11,183 INFO Client connection 1726245731174_172.18.0.1_59918 connect
+
+2024-09-14 00:42:11,352 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=0}, 1726245731174_172.18.0.1_59918
+
+2024-09-14 00:52:27,663 WARN [DISTRO-FILTER] Server failed: 
+
+com.alibaba.nacos.api.exception.runtime.NacosRuntimeException: ErrCode:400, ErrMsg:metadata format incorrect:"fasjldfas"
+	at com.alibaba.nacos.core.paramcheck.ParamCheckerFilter.doFilter(ParamCheckerFilter.java:91)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at com.alibaba.nacos.naming.web.DistroFilter.doFilter(DistroFilter.java:98)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at com.alibaba.nacos.core.control.http.NacosHttpTpsFilter.doFilter(NacosHttpTpsFilter.java:109)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at com.alibaba.nacos.core.auth.AuthFilter.doFilter(AuthFilter.java:69)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at com.alibaba.nacos.naming.web.ServiceNameFilter.doFilter(ServiceNameFilter.java:77)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at com.alibaba.nacos.naming.web.TrafficReviseFilter.doFilter(TrafficReviseFilter.java:75)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:214)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:90)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:96)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:168)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:928)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1794)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: com.alibaba.nacos.api.exception.api.NacosApiException: metadata format incorrect:"fasjldfas"
+	at com.alibaba.nacos.naming.misc.UtilsAndCommons.parseMetadata(UtilsAndCommons.java:175)
+	at com.alibaba.nacos.naming.paramcheck.NamingDefaultHttpParamExtractor.extractParam(NamingDefaultHttpParamExtractor.java:54)
+	at com.alibaba.nacos.core.paramcheck.ParamCheckerFilter.doFilter(ParamCheckerFilter.java:79)
+	... 55 common frames omitted
+2024-09-14 00:58:41,538 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=1}, 1726245731174_172.18.0.1_59918
+
+2024-09-14 00:58:41,881 INFO Client connection 1726245731174_172.18.0.1_59918 disconnect, remove instances and subscribers
+
+2024-09-14 00:58:42,230 INFO Client connection 1726245728647_172.18.0.1_54362 disconnect, remove instances and subscribers
+
+2024-09-14 00:59:03,882 INFO Client connection 1726246743873_172.18.0.1_41234 connect
+
+2024-09-14 00:59:04,039 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=2}, 1726246743873_172.18.0.1_41234
+
+2024-09-14 01:07:13,370 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=3}, 1726246743873_172.18.0.1_41234
+
+2024-09-14 01:07:13,710 INFO Client connection 1726246743873_172.18.0.1_41234 disconnect, remove instances and subscribers
+
+2024-09-14 01:07:14,063 INFO Client connection 1726246734532_172.18.0.1_49008 disconnect, remove instances and subscribers
+
+2024-09-14 01:07:27,568 INFO Client connection 1726247247560_172.18.0.1_60138 connect
+
+2024-09-14 01:07:27,730 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=4}, 1726247247560_172.18.0.1_60138
+
+2024-09-14 01:13:13,348 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=5}, 1726247247560_172.18.0.1_60138
+
+2024-09-14 01:13:13,694 INFO Client connection 1726247247560_172.18.0.1_60138 disconnect, remove instances and subscribers
+
+2024-09-14 01:13:14,043 INFO Client connection 1726247242465_172.18.0.1_60136 disconnect, remove instances and subscribers
+
+2024-09-14 01:13:23,882 INFO Client connection 1726247603874_172.18.0.1_33482 connect
+
+2024-09-14 01:13:24,044 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=6}, 1726247603874_172.18.0.1_33482
+
+2024-09-14 01:15:27,952 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=7}, 1726247603874_172.18.0.1_33482
+
+2024-09-14 01:15:28,283 INFO Client connection 1726247603874_172.18.0.1_33482 disconnect, remove instances and subscribers
+
+2024-09-14 01:15:28,633 INFO Client connection 1726247601292_172.18.0.1_33470 disconnect, remove instances and subscribers
+
+2024-09-14 01:15:41,633 INFO Client connection 1726247741624_172.18.0.1_40866 connect
+
+2024-09-14 01:15:41,788 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=8}, 1726247741624_172.18.0.1_40866
+
+2024-09-14 01:16:28,172 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=9}, 1726247741624_172.18.0.1_40866
+
+2024-09-14 01:16:28,511 INFO Client connection 1726247741624_172.18.0.1_40866 disconnect, remove instances and subscribers
+
+2024-09-14 01:16:28,859 INFO Client connection 1726247739144_172.18.0.1_58870 disconnect, remove instances and subscribers
+
+2024-09-14 01:16:39,447 INFO Client connection 1726247799438_172.18.0.1_50064 connect
+
+2024-09-14 01:16:39,614 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=10}, 1726247799438_172.18.0.1_50064
+
+2024-09-14 01:17:13,490 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=11}, 1726247799438_172.18.0.1_50064
+
+2024-09-14 01:17:13,824 INFO Client connection 1726247799438_172.18.0.1_50064 disconnect, remove instances and subscribers
+
+2024-09-14 01:17:14,173 INFO Client connection 1726247796461_172.18.0.1_50054 disconnect, remove instances and subscribers
+
+2024-09-14 01:17:24,628 INFO Client connection 1726247844620_172.18.0.1_34616 connect
+
+2024-09-14 01:17:24,780 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=12}, 1726247844620_172.18.0.1_34616
+
+2024-09-14 01:17:31,152 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=13}, 1726247844620_172.18.0.1_34616
+
+2024-09-14 01:17:31,818 INFO Client connection 1726247844620_172.18.0.1_34616 disconnect, remove instances and subscribers
+
+2024-09-14 01:17:32,159 INFO Client connection 1726247845242_172.18.0.1_34630 disconnect, remove instances and subscribers
+
+2024-09-14 01:17:32,161 INFO Client connection 1726247841598_172.18.0.1_34600 disconnect, remove instances and subscribers
+
+2024-09-14 01:18:49,158 WARN namespace : public, [DEFAULT_GROUP@@poolify-test] services are automatically cleaned
+

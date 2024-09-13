@@ -1,0 +1,42 @@
+server:
+  port: 8091
+
+# 线程池配置
+thread:
+  pool:
+    executor:
+      config:
+        core-pool-size: 20
+        max-pool-size: 50
+        keep-alive-time: 5000
+        block-queue-size: 5000
+        policy: CallerRunsPolicy
+
+# 动态线程池配置
+dynamic-thread-pool:
+  registry:
+    redis:
+      host: localhost
+      port: 6379
+#      password: bancheng666..
+    report-cron: "0/10 * * * * ?"
+  alarm:
+    enabled: true
+    access-token:
+      ding-ding: xx
+    use-platform:
+      - "DingDing"
+  web:
+    context-path: /api
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/poolify?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+    username: root
+    password: hcj
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        import-check:
+          enabled: false
