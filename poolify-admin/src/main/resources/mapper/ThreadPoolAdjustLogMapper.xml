@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.poolify.admin.persistent.mapper.ThreadPoolAdjustLogMapper">
+
+    <resultMap id="BaseResultMap" type="cn.poolify.admin.persistent.po.ThreadPoolAdjustLog">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="poolName" column="pool_name" jdbcType="VARCHAR"/>
+            <result property="beforeCorePoolSize" column="before_core_pool_size" jdbcType="INTEGER"/>
+            <result property="afterCorePoolSize" column="after_core_pool_size" jdbcType="INTEGER"/>
+            <result property="beforeMaxPoolSize" column="before_max_pool_size" jdbcType="INTEGER"/>
+            <result property="afterMaxPoolSize" column="after_max_pool_size" jdbcType="INTEGER"/>
+            <result property="adjustmentReason" column="adjustment_reason" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,pool_name,before_core_pool_size,
+        after_core_pool_size,before_max_pool_size,after_max_pool_size,
+        adjustment_reason,create_time
+    </sql>
+</mapper>

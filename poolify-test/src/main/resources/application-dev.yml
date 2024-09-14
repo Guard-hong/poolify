@@ -15,17 +15,11 @@ thread:
 # 动态线程池配置
 dynamic-thread-pool:
   registry:
-    redis:
+    nacos:
       host: localhost
-      port: 6379
-#      password: bancheng666..
-    report-cron: "0/10 * * * * ?"
-  alarm:
-    enabled: true
-    access-token:
-      ding-ding: xx
-    use-platform:
-      - "DingDing"
+      port: 8848
+      data-id: test
+#      group-id:
   web:
     context-path: /api
 spring:
@@ -40,3 +34,5 @@ spring:
         server-addr: localhost:8848
         import-check:
           enabled: false
+
+

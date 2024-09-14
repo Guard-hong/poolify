@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.poolify.admin.persistent.mapper.ThreadPoolRuntimeStatusMapper">
+
+    <resultMap id="BaseResultMap" type="cn.poolify.admin.persistent.po.ThreadPoolRuntimeStatus">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="poolName" column="pool_name" jdbcType="VARCHAR"/>
+            <result property="activeThreadCount" column="active_thread_count" jdbcType="INTEGER"/>
+            <result property="queueSize" column="queue_size" jdbcType="INTEGER"/>
+            <result property="completedTaskCount" column="completed_task_count" jdbcType="BIGINT"/>
+            <result property="rejectedTaskCount" column="rejected_task_count" jdbcType="BIGINT"/>
+            <result property="timestamp" column="timestamp" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,pool_name,active_thread_count,
+        queue_size,completed_task_count,rejected_task_count,
+        timestamp
+    </sql>
+</mapper>

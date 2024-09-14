@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.poolify.admin.persistent.mapper.ThreadPoolConfigMapper">
+
+    <resultMap id="BaseResultMap" type="cn.poolify.admin.persistent.po.ThreadPoolConfig">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="poolName" column="pool_name" jdbcType="VARCHAR"/>
+            <result property="corePoolSize" column="core_pool_size" jdbcType="INTEGER"/>
+            <result property="maxPoolSize" column="max_pool_size" jdbcType="INTEGER"/>
+            <result property="queueType" column="queue_type" jdbcType="VARCHAR"/>
+            <result property="queueCapacity" column="queue_capacity" jdbcType="INTEGER"/>
+            <result property="keepAliveTime" column="keep_alive_time" jdbcType="INTEGER"/>
+            <result property="keepAliveTimeUnit" column="keep_alive_time_unit" jdbcType="TINYINT"/>
+            <result property="rejectedPolicy" column="rejected_policy" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,pool_name,core_pool_size,
+        max_pool_size,queue_type,queue_capacity,
+        keep_alive_time,keep_alive_time_unit,rejected_policy,
+        create_time,update_time
+    </sql>
+</mapper>

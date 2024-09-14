@@ -18,6 +18,7 @@
         <module>poolify-admin</module>
         <module>poolify-core</module>
         <module>poolify-test</module>
+        <module>poolify-common</module>
     </modules>
 
     <properties>
