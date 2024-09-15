@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,6 +18,9 @@ import java.util.Date;
  */
 @TableName(value ="thread_pool_config")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ThreadPoolConfig implements Serializable {
     /**
      * 唯一标识符，主键
@@ -23,9 +29,14 @@ public class ThreadPoolConfig implements Serializable {
     private Long id;
 
     /**
+     * 应用名称，用于标识数据属于哪个应用
+     */
+    private String applicationName;
+
+    /**
      * 线程池的唯一名称，用于区分不同的线程池
      */
-    private String poolName;
+    private String threadPoolName;
 
     /**
      * 核心线程数
@@ -35,7 +46,7 @@ public class ThreadPoolConfig implements Serializable {
     /**
      * 最大线程数
      */
-    private Integer maxPoolSize;
+    private Integer maximumPoolSize;
 
     /**
      * 队列类型

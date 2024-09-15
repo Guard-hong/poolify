@@ -6,9 +6,10 @@
 
     <resultMap id="BaseResultMap" type="cn.poolify.admin.persistent.po.ThreadPoolConfig">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="poolName" column="pool_name" jdbcType="VARCHAR"/>
+        <result property="applicationName" column="application_name" jdbcType="VARCHAR"/>
+            <result property="threadPoolName" column="thread_pool_name" jdbcType="VARCHAR"/>
             <result property="corePoolSize" column="core_pool_size" jdbcType="INTEGER"/>
-            <result property="maxPoolSize" column="max_pool_size" jdbcType="INTEGER"/>
+            <result property="maximumPoolSize" column="max_pool_size" jdbcType="INTEGER"/>
             <result property="queueType" column="queue_type" jdbcType="VARCHAR"/>
             <result property="queueCapacity" column="queue_capacity" jdbcType="INTEGER"/>
             <result property="keepAliveTime" column="keep_alive_time" jdbcType="INTEGER"/>
@@ -24,4 +25,9 @@
         keep_alive_time,keep_alive_time_unit,rejected_policy,
         create_time,update_time
     </sql>
+    <update id="updateThreadPoolConfig">
+            update thread_pool_config
+            set corePool_size = #{corePoolSize},maximum_pool_size = #{maximumPoolSize}
+            where application_name = #{applicationName} and thread_pool_name = #{threadPoolName}
+    </update>
 </mapper>

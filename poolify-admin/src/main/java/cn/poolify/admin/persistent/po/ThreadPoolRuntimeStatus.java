@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,6 +18,9 @@ import java.util.Date;
  */
 @TableName(value ="thread_pool_runtime_status")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ThreadPoolRuntimeStatus implements Serializable {
     /**
      * 唯一标识符，主键
@@ -23,9 +29,13 @@ public class ThreadPoolRuntimeStatus implements Serializable {
     private Long id;
 
     /**
+     * 应用名称，用于标识数据属于哪个应用
+     */
+    private String applicationName;
+    /**
      * 线程池名称，用于标识数据属于哪个线程池
      */
-    private String poolName;
+    private String threadPoolName;
 
     /**
      * 当前线程池中正在执行任务的活跃线程数
@@ -41,11 +51,6 @@ public class ThreadPoolRuntimeStatus implements Serializable {
      * 线程池中已完成的任务总数
      */
     private Long completedTaskCount;
-
-    /**
-     * 线程池拒绝执行的任务总数
-     */
-    private Long rejectedTaskCount;
 
     /**
      * 记录状态的时间戳

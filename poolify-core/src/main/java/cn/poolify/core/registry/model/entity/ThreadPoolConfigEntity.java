@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -20,7 +19,7 @@ public class ThreadPoolConfigEntity {
     /** 应用名称 */
     private String applicationName;
     /** 线程池名称 */
-    private String threadPoolName;
+    private String threadthreadPoolName;
     /** 核心线程数 */
     private Integer corePoolSize;
     /** 最大线程数 */
@@ -39,18 +38,18 @@ public class ThreadPoolConfigEntity {
     /**
      * 建造一个线程池配置对象
      * @param applicationName 应用名
-     * @param threadPoolName 线程池名
+     * @param threadthreadPoolName 线程池名
      * @param executor 线程池执行器对象
      * @return 线程池配置对象
      */
     public static ThreadPoolConfigEntity buildThreadPoolConfigEntity(
             String applicationName,
-            String threadPoolName,
+            String threadthreadPoolName,
             ThreadPoolExecutor executor) {
 
         return new ThreadPoolConfigEntity(
                 applicationName,
-                threadPoolName,
+                threadthreadPoolName,
                 executor.getCorePoolSize(),
                 executor.getMaximumPoolSize(),
                 executor.getActiveCount(),

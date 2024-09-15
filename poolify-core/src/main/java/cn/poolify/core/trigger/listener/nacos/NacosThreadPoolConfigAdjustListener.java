@@ -4,7 +4,7 @@ import cn.poolify.common.constant.Constant;
 import cn.poolify.common.exception.DynamicThreadPoolException;
 import cn.poolify.core.config.properties.NacosRegistryProperties;
 import cn.poolify.core.registry.DynamicThreadPoolRegistry;
-import cn.poolify.core.registry.model.val.ListenerThreadPoolConfig;
+import cn.poolify.core.registry.model.val.RegistryThreadPoolVO;
 import cn.poolify.core.trigger.IThreadPoolConfigAdjustListener;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -25,22 +25,20 @@ import java.util.concurrent.Executor;
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
-public class NacosThreadPoolConfigAdjustListener implements IThreadPoolConfigAdjustListener<String> {
+public class NacosThreadPoolConfigAdjustListener implements IThreadPoolConfigAdjustListener {
 
     private NacosRegistryProperties nacosRegistryProperties;
     private ConfigService configService;
+    private DynamicThreadPoolRegistry dynamicThreadPoolRegistry;
 
     @Override
-    public void onReceived(String threadPoolName,String newConfig) {
-        // 将接收到的 JSON 字符串解析为 ThreadPoolConfigEntity 对象
-        ListenerThreadPoolConfig listenerThreadPoolConfig = JSON.parseObject(newConfig, ListenerThreadPoolConfig.class);
+    public void onReceived(String threadthreadPoolName, RegistryThreadPoolVO registryThreadPoolVO) {
         try {
             // 修改线程参数
-            DynamicThreadPoolRegistry.updateThreadPoolParameter(threadPoolName,listenerThreadPoolConfig);
+            dynamicThreadPoolRegistry.updateThreadPoolParameter(threadthreadPoolName,registryThreadPoolVO);
 
-            // todo 通过feign修改数据库
         } catch (DynamicThreadPoolException e) {
-            log.error("线程池: ${} 修改失败", threadPoolName);
+            log.error("线程池: ${} 修改失败", threadthreadPoolName);
         } catch (Exception e) {
 
         }
@@ -55,7 +53,7 @@ public class NacosThreadPoolConfigAdjustListener implements IThreadPoolConfigAdj
         String groupId = nacosRegistryProperties.getGroupId();
 
         // 注册 Nacos 配置监听器
-        DynamicThreadPoolRegistry.getAllThreadPools().forEach((key, val) -> {
+        dynamicThreadPoolRegistry.getAllThreadPools().forEach((key, val) -> {
             try {
                 configService.addListener(dataId + Constant.HYPHEN + key, groupId, new Listener() {
                     @Override
@@ -65,7 +63,9 @@ public class NacosThreadPoolConfigAdjustListener implements IThreadPoolConfigAdj
 
                     @Override
                     public void receiveConfigInfo(String configInfo) {
-                        onReceived(key,configInfo);
+                        // 将接收到的 JSON 字符串解析为 ThreadPoolConfigEntity 对象
+                        RegistryThreadPoolVO registryThreadPoolVO = JSON.parseObject(configInfo, RegistryThreadPoolVO.class);
+                        onReceived(key,registryThreadPoolVO);
                     }
 
                 });

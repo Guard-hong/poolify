@@ -22,9 +22,13 @@ public class ThreadPoolReport implements Serializable {
     private Long id;
 
     /**
+     * 应用名称，用于标识数据属于哪个应用
+     */
+    private String applicationName;
+    /**
      * 线程池名字
      */
-    private String poolName;
+    private String threadPoolName;
 
     /**
      * 线程池id

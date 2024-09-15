@@ -99,12 +99,11 @@
             <groupId>com.alibaba.nacos</groupId>
             <artifactId>nacos-spring-context</artifactId>
         </dependency>
-
-        <!-- 工程模块 -->
         <dependency>
-            <groupId>cn.poolify</groupId>
-            <artifactId>poolify-common</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
+        <!-- 工程模块 -->
         <dependency>
             <groupId>cn.poolify</groupId>
             <artifactId>poolify-common</artifactId>

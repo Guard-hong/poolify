@@ -6,7 +6,8 @@
 
     <resultMap id="BaseResultMap" type="cn.poolify.admin.persistent.po.ThreadPoolReport">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="poolName" column="pool_name" jdbcType="VARCHAR"/>
+        <result property="applicationName" column="application_name" jdbcType="VARCHAR"/>
+            <result property="threadPoolName" column="thread_pool_name" jdbcType="VARCHAR"/>
             <result property="poolId" column="pool_id" jdbcType="BIGINT"/>
             <result property="scheduleType" column="schedule_type" jdbcType="VARCHAR"/>
             <result property="scheduleConf" column="schedule_conf" jdbcType="VARCHAR"/>

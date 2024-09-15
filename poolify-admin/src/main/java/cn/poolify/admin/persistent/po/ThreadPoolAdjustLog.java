@@ -23,9 +23,14 @@ public class ThreadPoolAdjustLog implements Serializable {
     private Long id;
 
     /**
+     * 应用名称，用于标识数据属于哪个应用
+     */
+    private String applicationName;
+
+    /**
      * 被调整的线程池名称
      */
-    private String poolName;
+    private String threadPoolName;
 
     /**
      * 调整前的核心线程数
@@ -40,12 +45,12 @@ public class ThreadPoolAdjustLog implements Serializable {
     /**
      * 调整前的最大线程数
      */
-    private Integer beforeMaxPoolSize;
+    private Integer beforemaximumPoolSize;
 
     /**
      * 调整后的最大线程数
      */
-    private Integer afterMaxPoolSize;
+    private Integer aftermaximumPoolSize;
 
     /**
      * 调整的原因或触发条件

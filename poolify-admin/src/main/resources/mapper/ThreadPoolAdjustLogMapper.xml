@@ -6,11 +6,12 @@
 
     <resultMap id="BaseResultMap" type="cn.poolify.admin.persistent.po.ThreadPoolAdjustLog">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="poolName" column="pool_name" jdbcType="VARCHAR"/>
+        <result property="applicationName" column="application_name" jdbcType="VARCHAR"/>
+            <result property="threadPoolName" column="thread_pool_name" jdbcType="VARCHAR"/>
             <result property="beforeCorePoolSize" column="before_core_pool_size" jdbcType="INTEGER"/>
             <result property="afterCorePoolSize" column="after_core_pool_size" jdbcType="INTEGER"/>
-            <result property="beforeMaxPoolSize" column="before_max_pool_size" jdbcType="INTEGER"/>
-            <result property="afterMaxPoolSize" column="after_max_pool_size" jdbcType="INTEGER"/>
+            <result property="beforemaximumPoolSize" column="before_max_pool_size" jdbcType="INTEGER"/>
+            <result property="aftermaximumPoolSize" column="after_max_pool_size" jdbcType="INTEGER"/>
             <result property="adjustmentReason" column="adjustment_reason" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>

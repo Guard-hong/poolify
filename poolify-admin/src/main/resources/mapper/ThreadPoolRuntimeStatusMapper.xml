@@ -6,11 +6,11 @@
 
     <resultMap id="BaseResultMap" type="cn.poolify.admin.persistent.po.ThreadPoolRuntimeStatus">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="poolName" column="pool_name" jdbcType="VARCHAR"/>
+            <result property="applicationName" column="application_name" jdbcType="VARCHAR"/>
+            <result property="threadPoolName" column="thread_pool_name" jdbcType="VARCHAR"/>
             <result property="activeThreadCount" column="active_thread_count" jdbcType="INTEGER"/>
             <result property="queueSize" column="queue_size" jdbcType="INTEGER"/>
             <result property="completedTaskCount" column="completed_task_count" jdbcType="BIGINT"/>
-            <result property="rejectedTaskCount" column="rejected_task_count" jdbcType="BIGINT"/>
             <result property="timestamp" column="timestamp" jdbcType="TIMESTAMP"/>
     </resultMap>
 
@@ -19,4 +19,8 @@
         queue_size,completed_task_count,rejected_task_count,
         timestamp
     </sql>
+    <insert id="save">
+        insert into thread_pool_runtime_status(application_name,thread_pool_name,active_thread_count,queue_size,completed_task_count,timestamp)
+        values (#{applicationName},#{threadPoolName},#{activeThreadCount},#{queueSize},#{completedTaskCount},now())
+    </insert>
 </mapper>

@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface ThreadPoolRuntimeStatusMapper extends BaseMapper<ThreadPoolRuntimeStatus> {
 
+    void save(ThreadPoolRuntimeStatus threadPoolRuntimeStatus);
 }
 
 

@@ -1,7 +1,7 @@
 package cn.poolify.core.config;
 
-import cn.poolify.core.aop.DynamicThreadPoolProcessor;
 import cn.poolify.core.config.properties.NacosRegistryProperties;
+import cn.poolify.core.registry.DynamicThreadPoolRegistry;
 import cn.poolify.core.trigger.listener.nacos.NacosThreadPoolConfigAdjustListener;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -19,19 +19,17 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  **/
 @Slf4j
 @Configuration
-@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableConfigurationProperties(NacosRegistryProperties.class)
 public class NacosRegistryConfig {
 
     @Bean
-    public NacosThreadPoolConfigAdjustListener nacosThreadPoolConfigAdjustListener(NacosRegistryProperties nacosRegistryProperties,ConfigService configService){
-        return new NacosThreadPoolConfigAdjustListener(nacosRegistryProperties,configService);
+    public NacosThreadPoolConfigAdjustListener nacosThreadPoolConfigAdjustListener(NacosRegistryProperties nacosRegistryProperties,
+                                                                                   ConfigService configService,
+                                                                                   DynamicThreadPoolRegistry dynamicThreadPoolRegistry){
+        return new NacosThreadPoolConfigAdjustListener(nacosRegistryProperties,configService,dynamicThreadPoolRegistry);
     }
 
-    @Bean
-    public DynamicThreadPoolProcessor dynamicThreadPoolProcessor(){
-        return new DynamicThreadPoolProcessor();
-    }
+
 
     @Bean
     public ConfigService configService(NacosRegistryProperties nacosRegistryProperties) throws NacosException {

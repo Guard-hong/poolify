@@ -17,8 +17,9 @@
     <modules>
         <module>poolify-admin</module>
         <module>poolify-core</module>
-        <module>poolify-test</module>
+        <module>poolify-core-test</module>
         <module>poolify-common</module>
+        <module>poolify-admin-test</module>
     </modules>
 
     <properties>
@@ -29,6 +30,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-webflux</artifactId>
+                <version>2.7.12</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>alibaba-dingtalk-service-sdk</artifactId>
