@@ -1,30 +1,18 @@
-2024-09-14 00:42:11,352 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=1}
+2024-09-15 16:18:56,366 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=1}
 
-2024-09-14 00:42:11,835 INFO [PUSH-SUCC] 24ms, all delay time 528ms, SLA 483ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=1}, originalSize=1, DataSize=1, target=10.22.90.19
+2024-09-15 16:18:56,834 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=2}
 
-2024-09-14 00:59:04,039 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=3}
+2024-09-15 16:18:56,893 INFO [PUSH-SUCC] 9ms, all delay time 562ms, SLA 59ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=2}, originalSize=0, DataSize=0, target=10.22.90.245
 
-2024-09-14 00:59:04,534 INFO [PUSH-SUCC] 24ms, all delay time 540ms, SLA 495ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=3}, originalSize=1, DataSize=1, target=10.22.90.19
+2024-09-15 16:19:47,246 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=3}
 
-2024-09-14 01:07:27,731 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=5}
+2024-09-15 16:19:47,714 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=4}
 
-2024-09-14 01:07:28,297 INFO [PUSH-SUCC] 22ms, all delay time 609ms, SLA 566ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=5}, originalSize=1, DataSize=1, target=10.22.90.19
+2024-09-15 16:19:47,788 INFO [PUSH-SUCC] 9ms, all delay time 573ms, SLA 74ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=4}, originalSize=0, DataSize=0, target=10.22.90.245
 
-2024-09-14 01:13:24,044 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=7}
+2024-09-15 16:20:17,775 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=5}
 
-2024-09-14 01:13:24,541 INFO [PUSH-SUCC] 22ms, all delay time 540ms, SLA 497ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=7}, originalSize=1, DataSize=1, target=10.22.90.19
+2024-09-15 16:20:18,245 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=6}
 
-2024-09-14 01:15:41,788 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=9}
-
-2024-09-14 01:15:42,358 INFO [PUSH-SUCC] 28ms, all delay time 614ms, SLA 570ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=9}, originalSize=1, DataSize=1, target=10.22.90.19
-
-2024-09-14 01:16:39,614 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=11}
-
-2024-09-14 01:16:40,148 INFO [PUSH-SUCC] 22ms, all delay time 587ms, SLA 534ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=11}, originalSize=1, DataSize=1, target=10.22.90.19
-
-2024-09-14 01:17:24,780 INFO [PUSH] Task merge for Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=13}
-
-2024-09-14 01:17:25,324 INFO [PUSH-SUCC] 25ms, all delay time 585ms, SLA 544ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=13}, originalSize=1, DataSize=1, target=10.22.90.19
-
-2024-09-14 01:17:31,721 INFO [PUSH-SUCC] 11ms, all delay time 569ms, SLA 569ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=14}, originalSize=0, DataSize=0, target=10.22.90.19
+2024-09-15 16:20:18,344 INFO [PUSH-SUCC] 20ms, all delay time 600ms, SLA 99ms, Service{namespace='public', group='DEFAULT_GROUP', name='poolify-test', ephemeral=true, revision=6}, originalSize=0, DataSize=0, target=10.22.90.245
 

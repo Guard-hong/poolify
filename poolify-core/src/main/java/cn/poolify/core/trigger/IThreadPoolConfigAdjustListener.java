@@ -7,7 +7,12 @@ package cn.poolify.core.trigger;
  **/
 public interface IThreadPoolConfigAdjustListener<T> {
 
-     void onReceived(T newConfig);
+     /**
+      *
+      * @param threadName 修改线程池名字
+      * @param newConfig 修改参数
+      */
+     void onReceived(String threadName,T newConfig);
 
      void registryListener();
 }

@@ -14,17 +14,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ConfigurationProperties("dynamic-thread-pool.registry.nacos")
+@ConfigurationProperties("")
 public class NacosRegistryProperties {
 
-    private String host = "localhost";
+    @Value("${dynamic-thread-pool.registry.nacos.host:localhost}")
+    private String host;
 
-    private Integer port = 8848;
+    @Value("${dynamic-thread-pool.registry.nacos.port:8848}")
+    private Integer port;
 
-    @Value("${spring.name:''}")
+    @Value("${spring.name}")
     private String dataId;
 
-    private String groupId = "DEFAULT_GROUP";
+    @Value("${dynamic-thread-pool.registry.nacos.group-id:DEFAULT_GROUP}")
+    private String groupId;
 
 
 }

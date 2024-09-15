@@ -1,96 +1,48 @@
-2024-09-14 00:42:08,955 INFO [dump] add formal task. groupKey=dynamic-threadpool-config+DEFAULT_GROUP
+2024-09-15 16:18:14,064 INFO [dump] add formal task. groupKey=testthreadPoolExecutor01+DEFAULT_GROUP
 
-2024-09-14 00:42:09,008 INFO [dump] process formal task. groupKey=dynamic-threadpool-config+DEFAULT_GROUP
+2024-09-15 16:18:14,108 INFO [dump] process formal task. groupKey=testthreadPoolExecutor01+DEFAULT_GROUP
 
-2024-09-14 00:42:09,010 WARN [dump-ignore] ignore to save to disk cache. md5 consistent,groupKey=dynamic-threadpool-config+DEFAULT_GROUP, md5=62b39d3faef7d1028b9b395e8b411ad1
+2024-09-15 16:18:14,115 INFO [dump] md5 changed, save to disk cache ,groupKey=testthreadPoolExecutor01+DEFAULT_GROUP, newMd5=1cae33c9c93c86c1c717e70345716b99,oldMd5=
 
-2024-09-14 00:42:09,010 INFO [dump] md5 consistent ,timestamp changed, update timestamp only in jvm cache ,groupKey=dynamic-threadpool-config+DEFAULT_GROUP,lastModifiedTs=1726245728920
+2024-09-15 16:18:14,137 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=testthreadPoolExecutor01+DEFAULT_GROUP, newMd5=1cae33c9c93c86c1c717e70345716b99,oldMd5=,lastModifiedTs=1726388293936
 
-2024-09-14 00:58:54,908 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
+2024-09-15 16:18:14,166 INFO [dump] add formal task. groupKey=testthreadPoolExecutor02+DEFAULT_GROUP
 
-2024-09-14 00:58:54,994 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
+2024-09-15 16:18:14,239 INFO [dump] process formal task. groupKey=testthreadPoolExecutor02+DEFAULT_GROUP
 
-2024-09-14 00:58:54,995 INFO [dump] md5 changed, save to disk cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=62b39d3faef7d1028b9b395e8b411ad1,oldMd5=
+2024-09-15 16:18:14,240 INFO [dump] md5 changed, save to disk cache ,groupKey=testthreadPoolExecutor02+DEFAULT_GROUP, newMd5=cbb8b7cd23d73e711224b9466b415647,oldMd5=
 
-2024-09-14 00:58:54,996 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=62b39d3faef7d1028b9b395e8b411ad1,oldMd5=,lastModifiedTs=1726246734757
+2024-09-15 16:18:14,241 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=testthreadPoolExecutor02+DEFAULT_GROUP, newMd5=cbb8b7cd23d73e711224b9466b415647,oldMd5=,lastModifiedTs=1726388294108
 
-2024-09-14 01:00:08,667 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
+2024-09-15 16:19:03,579 INFO [dump] add formal task. groupKey=testDataIdthreadPoolExecutor01+DEFAULT_GROUP
 
-2024-09-14 01:00:08,723 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
+2024-09-15 16:19:03,631 INFO [dump] process formal task. groupKey=testDataIdthreadPoolExecutor01+DEFAULT_GROUP
 
-2024-09-14 01:00:08,724 INFO [dump] md5 changed, save to disk cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=53e56988d35b29de25a6bee8ccf87452,oldMd5=62b39d3faef7d1028b9b395e8b411ad1
+2024-09-15 16:19:03,632 INFO [dump] md5 changed, save to disk cache ,groupKey=testDataIdthreadPoolExecutor01+DEFAULT_GROUP, newMd5=1cae33c9c93c86c1c717e70345716b99,oldMd5=
 
-2024-09-14 01:00:08,724 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=53e56988d35b29de25a6bee8ccf87452,oldMd5=62b39d3faef7d1028b9b395e8b411ad1,lastModifiedTs=1726246808621
+2024-09-15 16:19:03,633 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=testDataIdthreadPoolExecutor01+DEFAULT_GROUP, newMd5=1cae33c9c93c86c1c717e70345716b99,oldMd5=,lastModifiedTs=1726388343544
 
-2024-09-14 01:00:55,997 INFO [dump] add formal task. groupKey=dynamic-threadpool-config+DEFAULT_GROUP
+2024-09-15 16:19:03,647 INFO [dump] add formal task. groupKey=testDataIdthreadPoolExecutor02+DEFAULT_GROUP
 
-2024-09-14 01:00:56,011 INFO [dump] process formal task. groupKey=dynamic-threadpool-config+DEFAULT_GROUP
+2024-09-15 16:19:03,734 INFO [dump] process formal task. groupKey=testDataIdthreadPoolExecutor02+DEFAULT_GROUP
 
-2024-09-14 01:00:56,012 INFO [dump] md5 changed, save to disk cache ,groupKey=dynamic-threadpool-config+DEFAULT_GROUP, newMd5=53e56988d35b29de25a6bee8ccf87452,oldMd5=62b39d3faef7d1028b9b395e8b411ad1
+2024-09-15 16:19:03,736 INFO [dump] md5 changed, save to disk cache ,groupKey=testDataIdthreadPoolExecutor02+DEFAULT_GROUP, newMd5=cbb8b7cd23d73e711224b9466b415647,oldMd5=
 
-2024-09-14 01:00:56,012 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=dynamic-threadpool-config+DEFAULT_GROUP, newMd5=53e56988d35b29de25a6bee8ccf87452,oldMd5=62b39d3faef7d1028b9b395e8b411ad1,lastModifiedTs=1726246855945
+2024-09-15 16:19:03,736 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=testDataIdthreadPoolExecutor02+DEFAULT_GROUP, newMd5=cbb8b7cd23d73e711224b9466b415647,oldMd5=,lastModifiedTs=1726388343587
 
-2024-09-14 01:07:22,813 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
+2024-09-15 16:19:57,392 INFO [dump] add formal task. groupKey=testDataIdthreadPoolExecutor01+DEFAULT_GROUP
 
-2024-09-14 01:07:22,899 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
+2024-09-15 16:19:57,429 INFO [dump] process formal task. groupKey=testDataIdthreadPoolExecutor01+DEFAULT_GROUP
 
-2024-09-14 01:07:22,899 INFO [dump] md5 changed, save to disk cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=62b39d3faef7d1028b9b395e8b411ad1,oldMd5=53e56988d35b29de25a6bee8ccf87452
+2024-09-15 16:19:57,430 WARN [dump-ignore] ignore to save to disk cache. md5 consistent,groupKey=testDataIdthreadPoolExecutor01+DEFAULT_GROUP, md5=1cae33c9c93c86c1c717e70345716b99
 
-2024-09-14 01:07:22,900 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=62b39d3faef7d1028b9b395e8b411ad1,oldMd5=53e56988d35b29de25a6bee8ccf87452,lastModifiedTs=1726247242686
+2024-09-15 16:19:57,430 INFO [dump] md5 consistent ,timestamp changed, update timestamp only in jvm cache ,groupKey=testDataIdthreadPoolExecutor01+DEFAULT_GROUP,lastModifiedTs=1726388397253
 
-2024-09-14 01:08:43,632 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
+2024-09-15 16:19:57,441 INFO [dump] add formal task. groupKey=testDataIdthreadPoolExecutor02+DEFAULT_GROUP
 
-2024-09-14 01:08:43,639 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
+2024-09-15 16:19:57,531 INFO [dump] process formal task. groupKey=testDataIdthreadPoolExecutor02+DEFAULT_GROUP
 
-2024-09-14 01:08:43,639 WARN [dump-ignore] ignore to save to disk cache. md5 consistent,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, md5=62b39d3faef7d1028b9b395e8b411ad1
+2024-09-15 16:19:57,532 WARN [dump-ignore] ignore to save to disk cache. md5 consistent,groupKey=testDataIdthreadPoolExecutor02+DEFAULT_GROUP, md5=cbb8b7cd23d73e711224b9466b415647
 
-2024-09-14 01:08:43,640 INFO [dump] md5 consistent ,timestamp changed, update timestamp only in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP,lastModifiedTs=1726247323507
-
-2024-09-14 01:09:53,416 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:09:53,463 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:09:53,464 INFO [dump] md5 changed, save to disk cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=d37864b3e5bc4664c6a94b0724bef9a5,oldMd5=62b39d3faef7d1028b9b395e8b411ad1
-
-2024-09-14 01:09:53,465 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=d37864b3e5bc4664c6a94b0724bef9a5,oldMd5=62b39d3faef7d1028b9b395e8b411ad1,lastModifiedTs=1726247393292
-
-2024-09-14 01:13:21,769 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:13:21,775 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:13:21,776 INFO [dump] md5 changed, save to disk cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=62b39d3faef7d1028b9b395e8b411ad1,oldMd5=d37864b3e5bc4664c6a94b0724bef9a5
-
-2024-09-14 01:13:21,776 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=62b39d3faef7d1028b9b395e8b411ad1,oldMd5=d37864b3e5bc4664c6a94b0724bef9a5,lastModifiedTs=1726247601522
-
-2024-09-14 01:13:35,963 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:13:36,000 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:13:36,001 INFO [dump] md5 changed, save to disk cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=d37864b3e5bc4664c6a94b0724bef9a5,oldMd5=62b39d3faef7d1028b9b395e8b411ad1
-
-2024-09-14 01:13:36,006 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=d37864b3e5bc4664c6a94b0724bef9a5,oldMd5=62b39d3faef7d1028b9b395e8b411ad1,lastModifiedTs=1726247615845
-
-2024-09-14 01:15:39,451 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:15:39,508 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:15:39,509 INFO [dump] md5 changed, save to disk cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=62b39d3faef7d1028b9b395e8b411ad1,oldMd5=d37864b3e5bc4664c6a94b0724bef9a5
-
-2024-09-14 01:15:39,509 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, newMd5=62b39d3faef7d1028b9b395e8b411ad1,oldMd5=d37864b3e5bc4664c6a94b0724bef9a5,lastModifiedTs=1726247739374
-
-2024-09-14 01:16:36,780 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:16:36,809 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:16:36,809 WARN [dump-ignore] ignore to save to disk cache. md5 consistent,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, md5=62b39d3faef7d1028b9b395e8b411ad1
-
-2024-09-14 01:16:36,810 INFO [dump] md5 consistent ,timestamp changed, update timestamp only in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP,lastModifiedTs=1726247796684
-
-2024-09-14 01:17:21,958 INFO [dump] add formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:17:21,987 INFO [dump] process formal task. groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP
-
-2024-09-14 01:17:21,987 WARN [dump-ignore] ignore to save to disk cache. md5 consistent,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP, md5=62b39d3faef7d1028b9b395e8b411ad1
-
-2024-09-14 01:17:21,988 INFO [dump] md5 consistent ,timestamp changed, update timestamp only in jvm cache ,groupKey=dynamic-threadpool-config-tset+DEFAULT_GROUP,lastModifiedTs=1726247841836
+2024-09-15 16:19:57,533 INFO [dump] md5 consistent ,timestamp changed, update timestamp only in jvm cache ,groupKey=testDataIdthreadPoolExecutor02+DEFAULT_GROUP,lastModifiedTs=1726388397401
 
