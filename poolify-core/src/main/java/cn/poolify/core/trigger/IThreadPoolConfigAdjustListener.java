@@ -1,6 +1,6 @@
 package cn.poolify.core.trigger;
 
-import cn.poolify.core.registry.model.val.RegistryThreadPoolVO;
+import cn.poolify.core.registry.model.entity.RegistryThreadPool;
 
 /**
  * @Author: HCJ
@@ -14,7 +14,7 @@ public interface IThreadPoolConfigAdjustListener {
       * @param threadName 修改线程池名字
       * @param newConfig 修改参数
       */
-     void onReceived(String threadName, RegistryThreadPoolVO newConfig);
+     void onReceived(String threadName, RegistryThreadPool newConfig);
 
      /**
       * 注册监听事件

@@ -13,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 public class NaocsAdjustThreadPoolConfig {
 
-    private String dataId;
+    private String threadPoolName;
     private String groupId;
     private Integer corePoolSize;
     private Integer maximumPoolSize;

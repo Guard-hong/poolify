@@ -2,8 +2,7 @@ package cn.poolify.core.registry;
 
 
 import cn.poolify.core.registry.model.entity.ThreadPoolConfigEntity;
-
-import java.util.List;
+import cn.poolify.core.registry.model.entity.RegistryThreadPool;
 
 /**
  * @Author: HCJ
@@ -23,5 +22,15 @@ public interface IRegistry<T> {
      * 上报更新线程池配置参数
      * @param updateThreadPoolConfig 更新线程池配置传输对象
      */
-    void reportAdjustThreadPoolConfig(T updateThreadPoolConfig) throws Exception;
+    void adjustThreadPoolConfig(T updateThreadPoolConfig) throws Exception;
+
+    /**
+     * 查询配置
+     * @param applicationName
+     * @param beanName
+     * @return
+     * @throws Exception
+     */
+    RegistryThreadPool queryThreadPoolConfig(String applicationName, String beanName) throws Exception;
+
 }

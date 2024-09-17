@@ -1,20 +1,17 @@
-package cn.poolify.core.registry.model.val;
+package cn.poolify.core.registry.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @Author: HCJ
  * @DateTime: 2024/9/15
  * @Description: 注册中心线程池数据对象
  **/
-@Getter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistryThreadPoolVO {
+public class RegistryThreadPool {
 
     /** 核心线程数 */
     private Integer corePoolSize;

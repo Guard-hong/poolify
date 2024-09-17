@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * @Author: HCJ
  * @DateTime: 2024/9/14
- * @Description: 持久化线程池配置对象
+ * @Description: 线程池配置信息
  **/
 @Data
 @NoArgsConstructor
@@ -19,7 +19,7 @@ public class ThreadPoolConfigEntity {
     /** 应用名称 */
     private String applicationName;
     /** 线程池名称 */
-    private String threadthreadPoolName;
+    private String threadPoolName;
     /** 核心线程数 */
     private Integer corePoolSize;
     /** 最大线程数 */
@@ -38,18 +38,18 @@ public class ThreadPoolConfigEntity {
     /**
      * 建造一个线程池配置对象
      * @param applicationName 应用名
-     * @param threadthreadPoolName 线程池名
+     * @param threadPoolName 线程池名
      * @param executor 线程池执行器对象
      * @return 线程池配置对象
      */
     public static ThreadPoolConfigEntity buildThreadPoolConfigEntity(
             String applicationName,
-            String threadthreadPoolName,
+            String threadPoolName,
             ThreadPoolExecutor executor) {
 
         return new ThreadPoolConfigEntity(
                 applicationName,
-                threadthreadPoolName,
+                threadPoolName,
                 executor.getCorePoolSize(),
                 executor.getMaximumPoolSize(),
                 executor.getActiveCount(),

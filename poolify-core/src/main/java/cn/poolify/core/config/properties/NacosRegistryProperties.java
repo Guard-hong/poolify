@@ -23,10 +23,7 @@ public class NacosRegistryProperties {
     @Value("${dynamic-thread-pool.registry.nacos.port:8848}")
     private Integer port;
 
-    @Value("${spring.name}")
-    private String dataId;
-
-    @Value("${dynamic-thread-pool.registry.nacos.group-id:DEFAULT_GROUP}")
+    @Value("${spring.name:DEFAULT_GROUP}")
     private String groupId;
 
 

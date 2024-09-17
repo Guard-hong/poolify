@@ -1,10 +1,9 @@
 package cn.poolify.core.trigger.listener.nacos;
 
-import cn.poolify.common.constant.Constant;
 import cn.poolify.common.exception.DynamicThreadPoolException;
 import cn.poolify.core.config.properties.NacosRegistryProperties;
 import cn.poolify.core.registry.DynamicThreadPoolRegistry;
-import cn.poolify.core.registry.model.val.RegistryThreadPoolVO;
+import cn.poolify.core.registry.model.entity.RegistryThreadPool;
 import cn.poolify.core.trigger.IThreadPoolConfigAdjustListener;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -32,13 +31,13 @@ public class NacosThreadPoolConfigAdjustListener implements IThreadPoolConfigAdj
     private DynamicThreadPoolRegistry dynamicThreadPoolRegistry;
 
     @Override
-    public void onReceived(String threadthreadPoolName, RegistryThreadPoolVO registryThreadPoolVO) {
+    public void onReceived(String threadPoolName, RegistryThreadPool registryThreadPool) {
         try {
             // 修改线程参数
-            dynamicThreadPoolRegistry.updateThreadPoolParameter(threadthreadPoolName,registryThreadPoolVO);
+            dynamicThreadPoolRegistry.updateThreadPoolParameter(threadPoolName, registryThreadPool);
 
         } catch (DynamicThreadPoolException e) {
-            log.error("线程池: ${} 修改失败", threadthreadPoolName);
+            log.error("线程池: {} 修改失败", threadPoolName);
         } catch (Exception e) {
 
         }
@@ -48,14 +47,13 @@ public class NacosThreadPoolConfigAdjustListener implements IThreadPoolConfigAdj
     @PostConstruct
     @Override
     public void registryListener() {
-        // 获取 dataId 和 groupId
-        String dataId = nacosRegistryProperties.getDataId();
+        // 获取 groupId
         String groupId = nacosRegistryProperties.getGroupId();
 
         // 注册 Nacos 配置监听器
         dynamicThreadPoolRegistry.getAllThreadPools().forEach((key, val) -> {
             try {
-                configService.addListener(dataId + Constant.HYPHEN + key, groupId, new Listener() {
+                configService.addListener(key, groupId, new Listener() {
                     @Override
                     public Executor getExecutor() {
                         return null;
@@ -64,8 +62,8 @@ public class NacosThreadPoolConfigAdjustListener implements IThreadPoolConfigAdj
                     @Override
                     public void receiveConfigInfo(String configInfo) {
                         // 将接收到的 JSON 字符串解析为 ThreadPoolConfigEntity 对象
-                        RegistryThreadPoolVO registryThreadPoolVO = JSON.parseObject(configInfo, RegistryThreadPoolVO.class);
-                        onReceived(key,registryThreadPoolVO);
+                        RegistryThreadPool registryThreadPool = JSON.parseObject(configInfo, RegistryThreadPool.class);
+                        onReceived(key, registryThreadPool);
                     }
 
                 });

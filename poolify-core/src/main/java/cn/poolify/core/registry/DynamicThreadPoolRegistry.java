@@ -4,10 +4,9 @@ import cn.poolify.common.exception.DynamicThreadPoolException;
 import cn.poolify.common.exception.ErrorCode;
 import cn.poolify.core.config.properties.DynamicThreadProperties;
 import cn.poolify.core.registry.model.val.CollectionThreadPoolConfigVO;
-import cn.poolify.core.registry.model.val.RegistryThreadPoolVO;
+import cn.poolify.core.registry.model.entity.RegistryThreadPool;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -65,11 +64,11 @@ public class DynamicThreadPoolRegistry {
     }
 
     // 修改线程池参数
-    public void updateThreadPoolParameter(String threadPoolName, RegistryThreadPoolVO registryThreadPoolVO) {
+    public void updateThreadPoolParameter(String threadPoolName, RegistryThreadPool registryThreadPool) {
         try {
             ThreadPoolExecutor threadPoolExecutor = getThreadPoolExecutor(threadPoolName);
-            threadPoolExecutor.setCorePoolSize(registryThreadPoolVO.getCorePoolSize());
-            threadPoolExecutor.setMaximumPoolSize(registryThreadPoolVO.getMaximumPoolSize());
+            threadPoolExecutor.setCorePoolSize(registryThreadPool.getCorePoolSize());
+            threadPoolExecutor.setMaximumPoolSize(registryThreadPool.getMaximumPoolSize());
         } catch (NullPointerException e) {
             log.error("线程池: {}不存在", threadPoolName);
             throw new DynamicThreadPoolException(ErrorCode.THREAD_POOL_NOT_EXIST);

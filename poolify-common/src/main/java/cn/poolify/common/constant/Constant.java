@@ -9,4 +9,8 @@ public interface Constant {
 
     String UNDERLINE = "_";
     String HYPHEN = "-";
+
+    interface NacosConstant{
+        String FORMAT_JSON = ".json";
+    }
 }
