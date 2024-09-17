@@ -20,7 +20,6 @@ dynamic-thread-pool:
     nacos:
       host: localhost
       port: 8848
-      data-id: testDataId
 #      group-id:
   web:
     context-path: /api

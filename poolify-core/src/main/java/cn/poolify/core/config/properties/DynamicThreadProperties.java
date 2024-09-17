@@ -14,7 +14,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @NoArgsConstructor
 @AllArgsConstructor
 @ConfigurationProperties("")
-//@Component
 public class DynamicThreadProperties {
 
     @Value("${dynamic-thread-pool.registry.type}")
@@ -22,11 +21,5 @@ public class DynamicThreadProperties {
 
     @Value("${spring.name}")
     private String applicationName;
-
-    @Value("${dynamic-thread-pool.management.enabled:true}")
-    private Boolean enabledAdmin;
-
-    @Value("${dynamic-thread-pool.management.addr:''}")
-    private String adminAddr;
 
 }
