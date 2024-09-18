@@ -6,7 +6,9 @@
 
     <resultMap id="BaseResultMap" type="cn.poolify.admin.persistent.po.ThreadPoolConfig">
             <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="applicationName" column="application_name" jdbcType="VARCHAR"/>
+            <result property="registryType" column="registry_type" jdbcType="VARCHAR"/>
+            <result property="addr" column="addr" jdbcType="VARCHAR"/>
+            <result property="applicationName" column="application_name" jdbcType="VARCHAR"/>
             <result property="threadPoolName" column="thread_pool_name" jdbcType="VARCHAR"/>
             <result property="corePoolSize" column="core_pool_size" jdbcType="INTEGER"/>
             <result property="maximumPoolSize" column="max_pool_size" jdbcType="INTEGER"/>

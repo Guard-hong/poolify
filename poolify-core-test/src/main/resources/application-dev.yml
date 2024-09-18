@@ -10,10 +10,10 @@ thread:
         policy: CallerRunsPolicy
 
 # 动态线程池配置
-dynamic-thread-pool:
+poolify:
   management:
     enabled: true
-    addr: localhost:8091
+    addr: http://localhost:8091
     collection-cron: "0/10 * * * * ?"
   registry:
     type: nacos

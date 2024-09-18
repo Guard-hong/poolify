@@ -13,7 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ConfigurationProperties("dynamic-thread-pool.management")
+@ConfigurationProperties("poolify.management")
 public class ManagementProperties {
 
     private String addr;

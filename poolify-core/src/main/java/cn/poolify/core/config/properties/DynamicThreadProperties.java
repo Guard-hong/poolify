@@ -16,7 +16,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("")
 public class DynamicThreadProperties {
 
-    @Value("${dynamic-thread-pool.registry.type}")
+    @Value("${poolify.registry.type}")
     private String type;
 
     @Value("${spring.name}")

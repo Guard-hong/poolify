@@ -67,8 +67,8 @@ public class DynamicThreadPoolRegistry {
     public void updateThreadPoolParameter(String threadPoolName, RegistryThreadPool registryThreadPool) {
         try {
             ThreadPoolExecutor threadPoolExecutor = getThreadPoolExecutor(threadPoolName);
-            threadPoolExecutor.setCorePoolSize(registryThreadPool.getCorePoolSize());
             threadPoolExecutor.setMaximumPoolSize(registryThreadPool.getMaximumPoolSize());
+            threadPoolExecutor.setCorePoolSize(registryThreadPool.getCorePoolSize());
         } catch (NullPointerException e) {
             log.error("线程池: {}不存在", threadPoolName);
             throw new DynamicThreadPoolException(ErrorCode.THREAD_POOL_NOT_EXIST);

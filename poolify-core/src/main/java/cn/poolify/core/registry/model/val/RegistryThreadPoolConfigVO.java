@@ -1,32 +1,21 @@
-package cn.poolify.admin.persistent.po;
+package cn.poolify.core.registry.model.val;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 存储线程池的配置信息表
  * @TableName thread_pool_config
  */
-@TableName(value ="thread_pool_config")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ThreadPoolConfig implements Serializable {
-    /**
-     * 唯一标识符，主键
-     */
-    @TableId(type = IdType.ASSIGN_ID)
-    private Long id;
+public class RegistryThreadPoolConfigVO implements Serializable {
 
     /**
      * 注册中心类型
@@ -82,16 +71,4 @@ public class ThreadPoolConfig implements Serializable {
      */
     private String rejectedPolicy;
 
-    /**
-     * 线程池配置创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 线程池配置最近更新时间
-     */
-    private Date updateTime;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 }

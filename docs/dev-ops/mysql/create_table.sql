@@ -11,3 +11,21 @@ CREATE TABLE thread_pool_runtime_status (
                                             completed_task_count BIGINT COMMENT '线程池中已完成的任务总数',
                                             timestamp DATETIME COMMENT '记录状态的时间戳'
 ) COMMENT='线程池运行状态记录表';
+
+DROP TABLE IF EXISTS thread_pool_config;
+CREATE TABLE thread_pool_config (
+                                    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键，自增 ID',       -- 主键，自增 ID
+                                    registry_type varchar(10) NOT NULL COMMENT '注册中心类型',
+                                    addr VARCHAR(255) NOT NULL COMMENT '地址字段',                      -- 地址字段
+                                    application_name VARCHAR(255) NOT NULL COMMENT '应用名称',          -- 应用名称
+                                    thread_pool_name VARCHAR(255) NOT NULL COMMENT '线程池名称',        -- 线程池名称
+                                    core_pool_size INT NOT NULL COMMENT '核心线程池大小',              -- 核心线程池大小
+                                    maximum_pool_size INT NOT NULL COMMENT '最大线程池大小',               -- 最大线程池大小
+                                    queue_type VARCHAR(100) NOT NULL COMMENT '队列类型',               -- 队列类型
+                                    queue_capacity INT NULL COMMENT '队列容量',                    -- 队列容量
+                                    keep_alive_time INT NULL COMMENT '存活时间',                   -- 存活时间
+                                    keep_alive_time_unit TINYINT NULL COMMENT '存活时间单位',       -- 存活时间单位
+                                    rejected_policy VARCHAR(100) NULL COMMENT '拒绝策略',           -- 拒绝策略
+                                    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', -- 创建时间
+                                    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' -- 更新时间
+) COMMENT '线程池配置表';

@@ -1,29 +1,27 @@
 package cn.poolify.admin.config;
 
-import cn.poolify.admin.config.properties.ThreadPoolWebConfigProperties;
-import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.annotation.Resource;
 
 /**
  * @Author: HCJ
  * @DateTime: 2024/9/15
  * @Description:
  **/
-@MapperScan("cn.poolify.admin.persistent.mapper")
+
 @Configuration
 public class ThreadPoolFrontendConfig implements WebMvcConfigurer {
 
-    @Resource
-    private ThreadPoolWebConfigProperties threadPoolWebConfigProperties;
+    @Value("${poolify.management.web.context-path:manage}")
+    private String contextPath;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler(threadPoolWebConfigProperties.getContextPath() + "/**")
+                .addResourceHandler(contextPath+"/**")
                 .addResourceLocations("classpath:/web/");
         registry
                 .addResourceHandler("/f8e5c81e18c8522/**")
@@ -33,8 +31,8 @@ public class ThreadPoolFrontendConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController(
-                threadPoolWebConfigProperties.getContextPath(),
-                threadPoolWebConfigProperties.getContextPath() + "/index.html"
+                contextPath,
+                contextPath + "/index.html"
         );
     }
 }

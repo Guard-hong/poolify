@@ -17,10 +17,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("")
 public class NacosRegistryProperties {
 
-    @Value("${dynamic-thread-pool.registry.nacos.host:localhost}")
+    @Value("${poolify.registry.nacos.host:localhost}")
     private String host;
 
-    @Value("${dynamic-thread-pool.registry.nacos.port:8848}")
+    @Value("${poolify.registry.nacos.port:8848}")
     private Integer port;
 
     @Value("${spring.name:DEFAULT_GROUP}")

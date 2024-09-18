@@ -10,6 +10,11 @@ import lombok.Data;
 @Data
 public class UpdateThreadPoolConfigDTO {
 
+    private Long id;
+    /** 注册中心类型 */
+    private String registryType;
+    /** 请求地址 */
+    private String addr;
     /** 应用名 */
     private String applicationName;
     /**

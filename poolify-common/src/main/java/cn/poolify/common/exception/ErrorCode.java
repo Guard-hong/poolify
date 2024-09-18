@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     THREAD_POOL_NOT_EXIST("error_001","线程池不存在"),
+    REPORT_THREAD_POOL_CONFIG_FAIL("error_002","发布线程池配置失败")
     ;
 
     /**

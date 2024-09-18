@@ -18,6 +18,12 @@ poolify是一款轻量级的动态线程池框架，目前支持的注册中心�
 - 数据采集 - 使用mysql和定时任务方式，实时采集线程池参数
 - 运行监控 - 实时查看线程池运行时数据，自定义时间内线程池运行数据图表展示。
 
+### 架构
+![poolify-架构.png](./docs/imgs/poolify-架构.png)
+
+### 功能
+![poolify-功能流程.png](./docs/imgs/poolify-功能流程.png)
+
 ### poolify模块介绍
 ```lua
 poolify -------------------------------------父项目，公共依赖
@@ -41,7 +47,7 @@ poolify -------------------------------------父项目，公共依赖
 ```yml
 spring:
   name: poolify # 必填
-dynamic-thread-pool:
+poolify:
   management: # 选填
     enabled: true  # 是否开启管理端，默认为true，可设置false关闭
     addr: localhost:8091 # 管理端地址
