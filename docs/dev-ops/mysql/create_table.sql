@@ -29,3 +29,14 @@ CREATE TABLE thread_pool_config (
                                     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', -- 创建时间
                                     update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' -- 更新时间
 ) COMMENT '线程池配置表';
+
+DROP TABLE IF EXISTS thread_pool_adjust_log;
+CREATE TABLE thread_pool_adjust_log (
+                                    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键，自增 ID',
+                                    thread_pool_config_id BIGINT NOT NULL COMMENT '线程池配置id',
+                                    before_adjust_config VARCHAR(255) NOT NULL COMMENT '调整前配置',
+                                    adjust_config VARCHAR(255) NOT NULL COMMENT '调整后配置',
+                                    state tinyint NOT NULL COMMENT '线程池调整状态',
+                                    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' -- 更新时间
+) COMMENT '线程池调整日志表';

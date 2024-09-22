@@ -24,6 +24,8 @@ poolify是一款轻量级的动态线程池框架，目前支持的注册中心�
 ### 功能
 ![poolify-功能流程.png](./docs/imgs/poolify-功能流程.png)
 
+#### 警告功能
+![poolify-警告.png](./docs/imgs/警告.png)
 ### poolify模块介绍
 ```lua
 poolify -------------------------------------父项目，公共依赖
@@ -35,6 +37,8 @@ poolify -------------------------------------父项目，公共依赖
 ```
 
 ### 使用教程
+
+#### core 模块
 1. 在项目中引入poolify-core模块
 ```
 <dependency>
@@ -58,6 +62,25 @@ poolify:
       host: localhost # 指定nacos地址
       port: 8848 # 指定nacos端口号
 ```
+#### admin模块
+1. 在项目中引入poolify-admin模块
+2. 编写application文件
+```yml
+# 还需要加入数据库
+poolify:
+  alarm:
+    enabled: true # 是否开启警告
+    usePlatform: # 通知应用列表
+      - dingding # 目前只支持dingding
+    token: xxxx # token
+```
 
 ### 页面
-todo
+主页
+![poolify-主页.png](./docs/imgs/主页.png)
+修改参数页面
+![poolify-修改参数页面.png](./docs/imgs/修改参数页面.png)
+线程池监控页面
+![poolify-线程池监控页面.png](./docs/imgs/线程池监控页面.png)
+管理监控页面
+![poolify-管理监控页面.png](./docs/imgs/管理监控页面.png)

@@ -56,6 +56,8 @@ public class DynamicThreadPoolRegistry {
                     .applicationName(dynamicThreadProperties.getApplicationName())
                     .threadPoolName(key)
                     .activeThreadCount(val.getActiveCount())
+                    .corePoolSize(val.getCorePoolSize())
+                    .maximumPoolSize(val.getMaximumPoolSize())
                     .queueSize(val.getPoolSize())
                     .completedTaskCount(val.getCompletedTaskCount())
                     .build());

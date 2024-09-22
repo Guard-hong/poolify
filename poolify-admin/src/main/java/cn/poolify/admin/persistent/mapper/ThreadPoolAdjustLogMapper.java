@@ -1,7 +1,13 @@
 package cn.poolify.admin.persistent.mapper;
 
+import cn.poolify.admin.trigger.http.api.vo.thread.ThreadPoolAdjustLineVO;
+import cn.poolify.admin.trigger.http.api.vo.thread.ThreadPoolAdjustPieVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import cn.poolify.admin.persistent.po.ThreadPoolAdjustLog;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+import java.util.List;
 
 /**
 * @author 洪
@@ -11,6 +17,9 @@ import cn.poolify.admin.persistent.po.ThreadPoolAdjustLog;
 */
 public interface ThreadPoolAdjustLogMapper extends BaseMapper<ThreadPoolAdjustLog> {
 
+    List<ThreadPoolAdjustLineVO> selectThreadPoolAdjustLogByLine(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
+
+    List<ThreadPoolAdjustPieVO> selectThreadPoolAdjustLogByPie(Date beginDate, Date endDate);
 }
 
 

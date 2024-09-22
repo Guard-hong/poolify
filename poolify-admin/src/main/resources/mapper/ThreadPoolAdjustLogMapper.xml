@@ -6,19 +6,37 @@
 
     <resultMap id="BaseResultMap" type="cn.poolify.admin.persistent.po.ThreadPoolAdjustLog">
             <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="applicationName" column="application_name" jdbcType="VARCHAR"/>
-            <result property="threadPoolName" column="thread_pool_name" jdbcType="VARCHAR"/>
-            <result property="beforeCorePoolSize" column="before_core_pool_size" jdbcType="INTEGER"/>
-            <result property="afterCorePoolSize" column="after_core_pool_size" jdbcType="INTEGER"/>
-            <result property="beforemaximumPoolSize" column="before_max_pool_size" jdbcType="INTEGER"/>
-            <result property="aftermaximumPoolSize" column="after_max_pool_size" jdbcType="INTEGER"/>
-            <result property="adjustmentReason" column="adjustment_reason" jdbcType="VARCHAR"/>
+            <result property="threadPoolConfigId" column="thread_pool_config_id" jdbcType="BIGINT"/>
+            <result property="beforeAdjustConfig" column="before_adjust_config" jdbcType="VARCHAR"/>
+            <result property="adjustConfig" column="adjust_config" jdbcType="VARCHAR"/>
+            <result property="state" column="state" jdbcType="INTEGER"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <select id="selectThreadPoolAdjustLogByLine"
+            resultType="cn.poolify.admin.trigger.http.api.vo.thread.ThreadPoolAdjustLineVO">
+        SELECT
+            DATE(create_time) AS date,
+            COUNT(*) AS count
+        FROM
+            thread_pool_adjust_log
+        where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+        GROUP BY
+            DATE(create_time)
+    </select>
+    <select id="selectThreadPoolAdjustLogByPie"
+            resultType="cn.poolify.admin.trigger.http.api.vo.thread.ThreadPoolAdjustPieVO">
+        SELECT
+        state,
+        COUNT(*) AS count
+        FROM
+        thread_pool_adjust_log
+        where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+        GROUP BY
+        state
 
-    <sql id="Base_Column_List">
-        id,pool_name,before_core_pool_size,
-        after_core_pool_size,before_max_pool_size,after_max_pool_size,
-        adjustment_reason,create_time
-    </sql>
+
+
+    </select>
+
 </mapper>

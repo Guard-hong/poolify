@@ -1,8 +1,7 @@
 package cn.poolify.admin.registry.nacos;
 
 import cn.poolify.admin.registry.IRegistryReport;
-import cn.poolify.admin.trigger.http.controller.utils.ReturnUtil;
-import cn.poolify.admin.trigger.http.controller.vo.RegistryThreadPoolVO;
+import cn.poolify.admin.trigger.http.api.vo.thread.RegistryThreadPoolVO;
 import cn.poolify.common.exception.DynamicThreadPoolException;
 import cn.poolify.common.exception.ErrorCode;
 import com.alibaba.fastjson.JSON;

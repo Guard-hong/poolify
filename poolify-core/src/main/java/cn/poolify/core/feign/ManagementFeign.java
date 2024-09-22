@@ -20,7 +20,7 @@ public class ManagementFeign {
 
     public void collectionThreadPoolData(CollectionThreadPoolConfigVO collectionThreadPoolConfigVO){
         webClient.post()
-                .uri("/dynamic_thread/collection")
+                .uri("/inner/dynamic_thread/collection")
                 .bodyValue(collectionThreadPoolConfigVO)
                 .retrieve() // 发起请求并准备处理响应
                 .bodyToMono(HttpResponse.class) // 将响应体转换为字符串
@@ -38,7 +38,7 @@ public class ManagementFeign {
 
     public void registryThreadPool(RegistryThreadPoolConfigVO registryThreadPoolConfigVO){
         webClient.post()
-                .uri("/dynamic_thread/registry")
+                .uri("/inner/dynamic_thread/registry")
                 .bodyValue(registryThreadPoolConfigVO)
                 .retrieve()
                 .bodyToMono(HttpResponse.class)

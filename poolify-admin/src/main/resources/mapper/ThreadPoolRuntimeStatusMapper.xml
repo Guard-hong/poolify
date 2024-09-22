@@ -23,4 +23,9 @@
         insert into thread_pool_runtime_status(application_name,thread_pool_name,active_thread_count,queue_size,completed_task_count,timestamp)
         values (#{applicationName},#{threadPoolName},#{activeThreadCount},#{queueSize},#{completedTaskCount},now())
     </insert>
+    <select id="getLineChart"
+            resultType="cn.poolify.admin.trigger.http.api.vo.thread.ThreadPoolRuntimeStatusLineVO">
+        select timestamp as date,active_thread_count from thread_pool_runtime_status where application_name = #{applicationName}
+        and thread_pool_name = #{threadPoolName} order by timestamp limit 15
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-package cn.poolify.admin.trigger.http.controller.utils;
+package cn.poolify.admin.trigger.http.utils;
 
 import cn.poolify.common.response.HttpErrorCode;
 import cn.poolify.common.response.HttpResponse;

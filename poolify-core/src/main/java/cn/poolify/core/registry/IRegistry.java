@@ -9,7 +9,7 @@ import cn.poolify.core.registry.model.entity.RegistryThreadPool;
  * @DateTime: 2024/9/14
  * @Description:
  **/
-public interface IRegistry<T> {
+public interface IRegistry {
     String mark();
 
     /**
@@ -18,11 +18,6 @@ public interface IRegistry<T> {
      */
     void reportThreadPool(ThreadPoolConfigEntity threadPoolConfigEntity) throws Exception;
 
-    /**
-     * 上报更新线程池配置参数
-     * @param updateThreadPoolConfig 更新线程池配置传输对象
-     */
-    void adjustThreadPoolConfig(T updateThreadPoolConfig) throws Exception;
 
     /**
      * 查询配置

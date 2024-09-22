@@ -1,9 +1,7 @@
 package cn.poolify.core.registry.impl.nacos;
 
-import cn.poolify.common.constant.Constant;
 import cn.poolify.core.config.properties.NacosRegistryProperties;
 import cn.poolify.core.registry.IRegistry;
-import cn.poolify.core.registry.impl.nacos.model.NaocsAdjustThreadPoolConfig;
 import cn.poolify.core.registry.model.entity.ThreadPoolConfigEntity;
 import cn.poolify.core.registry.model.entity.RegistryThreadPool;
 import com.alibaba.fastjson.JSON;
@@ -21,7 +19,7 @@ import javax.annotation.Resource;
  **/
 @Slf4j
 @Component("nacos")
-public class NacosRegistry implements IRegistry<NaocsAdjustThreadPoolConfig> {
+public class NacosRegistry implements IRegistry {
 
     @Resource
     private ConfigService configService;
@@ -43,14 +41,6 @@ public class NacosRegistry implements IRegistry<NaocsAdjustThreadPoolConfig> {
                         .build()));
     }
 
-    @Override
-    public void adjustThreadPoolConfig(NaocsAdjustThreadPoolConfig updateThreadPoolConfig) throws NacosException {
-        configService.publishConfig(updateThreadPoolConfig.getThreadPoolName(), updateThreadPoolConfig.getGroupId(),
-                getPublishJSON(RegistryThreadPool.builder()
-                        .corePoolSize(updateThreadPoolConfig.getCorePoolSize())
-                        .maximumPoolSize(updateThreadPoolConfig.getMaximumPoolSize())
-                        .build()));
-    }
 
     @Override
     public RegistryThreadPool queryThreadPoolConfig(String applicationName, String beanName) throws NacosException {

@@ -1,4 +1,4 @@
-package cn.poolify.admin.trigger.http.controller.vo;
+package cn.poolify.admin.trigger.http.api.vo.thread;
 
 import lombok.*;
 

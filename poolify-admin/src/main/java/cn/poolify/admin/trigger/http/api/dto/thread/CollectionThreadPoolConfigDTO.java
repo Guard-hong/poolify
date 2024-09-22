@@ -1,4 +1,4 @@
-package cn.poolify.admin.trigger.http.controller.dto;
+package cn.poolify.admin.trigger.http.api.dto.thread;
 
 import lombok.Data;
 
@@ -21,6 +21,14 @@ public class CollectionThreadPoolConfigDTO {
      * 当前线程池中正在执行任务的活跃线程数
      */
     private Integer activeThreadCount;
+    /**
+     *  核心线程数
+     */
+    private Integer corePoolSize;
+    /**
+     * 总线程数
+     */
+    private Integer maximumPoolSize;
 
     /**
      * 当前线程池任务队列中等待执行的任务数

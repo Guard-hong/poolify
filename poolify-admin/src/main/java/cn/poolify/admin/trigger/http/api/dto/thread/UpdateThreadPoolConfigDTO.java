@@ -1,4 +1,4 @@
-package cn.poolify.admin.trigger.http.controller.dto;
+package cn.poolify.admin.trigger.http.api.dto.thread;
 
 import lombok.Data;
 

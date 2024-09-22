@@ -1,7 +1,10 @@
 package cn.poolify.admin.persistent.mapper;
 
 import cn.poolify.admin.persistent.po.ThreadPoolRuntimeStatus;
+import cn.poolify.admin.trigger.http.api.vo.thread.ThreadPoolRuntimeStatusLineVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
 * @author 洪
@@ -12,6 +15,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface ThreadPoolRuntimeStatusMapper extends BaseMapper<ThreadPoolRuntimeStatus> {
 
     void save(ThreadPoolRuntimeStatus threadPoolRuntimeStatus);
+
+    List<ThreadPoolRuntimeStatusLineVO> getLineChart(ThreadPoolRuntimeStatus threadPoolRuntimeStatus);
 }
 
 

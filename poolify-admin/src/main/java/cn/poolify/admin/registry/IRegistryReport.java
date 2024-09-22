@@ -1,8 +1,7 @@
 package cn.poolify.admin.registry;
 
-import cn.poolify.admin.trigger.http.controller.vo.RegistryThreadPoolVO;
+import cn.poolify.admin.trigger.http.api.vo.thread.RegistryThreadPoolVO;
 import cn.poolify.common.exception.DynamicThreadPoolException;
-import com.alibaba.fastjson.JSON;
 
 /**
  * @Author: HCJ
