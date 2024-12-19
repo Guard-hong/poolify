@@ -1,7 +1,9 @@
 package cn.poolify.core.timer;
 
+import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -12,36 +14,64 @@ import java.util.concurrent.atomic.AtomicLong;
  * @Description:
  **/
 public class HashedWheelTimer implements Timer {
-//    private static Integer INIT = 0;
-//    private static Integer START = 1;
-//    private static Integer STOP = 2;
-//
-//    // 计时器状态
-//    private static Integer state = INIT;
-//
-//    private static AtomicIntegerFieldUpdater<HashedWheelTimer> STATE_UPDATER =
-//            AtomicIntegerFieldUpdater.newUpdater(HashedWheelTimer.class, "state");
+
+    private static final int MAX_CAPACITY = 1<<30;
+    // 最大一个时钟走200ms
+    private static final long MAX_TICK_DURATION = TimeUnit.MICROSECONDS.toNanos(200);
 
     // 构造扫描线程
-    private TimerTickerRunnable tickerRunnable = new TimerTickerRunnable(this);
-    private Thread scanThread = new Thread(tickerRunnable);
+    private final TimerTickerRunnable tickerRunnable = new TimerTickerRunnable(this);
+    private final Thread scanThread;
 
 
     // 工作队列 -- 监控的线程池队列
-    private Queue<HashedWheelTimeout> timeouts = new LinkedBlockingQueue<>();
+    private final Queue<HashedWheelTimeout> timeouts = new LinkedBlockingQueue<>();
     // 桶数组
-    private HashedWheelBucket[] wheel;
+    private final HashedWheelBucket[] wheel;
+    // wheel是2的多少次方
+    private final int wheelBit;
     // 掩码
-    private long mask;
+    private final int mask;
     // 记录队列中有多少个任务
-    AtomicLong pendingTimeoutCount = new AtomicLong(0);
+    private AtomicLong pendingTimeoutCount = new AtomicLong(0);
     // 队列中最多可以有多少任务
-    long maxPendingTimeoutCount;
-
-    volatile long startTime;
-
+    private final long maxPendingTimeoutCount;
     // 一次运行的持续时间
-    long tickDuration;
+    private final long tickDuration;
+
+    private volatile long startTime;
+
+
+
+    public HashedWheelTimer(ThreadFactory threadFactory,
+                            long tickDuration,
+                            TimeUnit unit,
+                            long maxPendingTimeoutCount,
+                            int initialCapacity
+                            ){
+        if (threadFactory == null) {
+            throw new NullPointerException("threadFactory");
+        }
+        if (unit == null) {
+            throw new NullPointerException("unit");
+        }
+        this.tickDuration = Math.max(MAX_TICK_DURATION,unit.toNanos(tickDuration));
+        this.scanThread = threadFactory.newThread(tickerRunnable);
+        this.maxPendingTimeoutCount = maxPendingTimeoutCount;
+
+        // wheel 相关初始化
+        this.wheelBit = Integer.numberOfLeadingZeros(initialCapacity - 1)+1;
+        int cap = 1<<this.wheelBit;
+        if(cap>MAX_CAPACITY){
+            throw new IllegalStateException("exceeding maximum capacity");
+        }
+        this.wheel = new HashedWheelBucket[cap];
+        this.mask = cap-1;
+
+        // 扫描线程启动
+        scanThread.start();
+    }
+
 
 
     private static class HashedWheelTimeout implements Timeout {
@@ -57,11 +87,10 @@ public class HashedWheelTimer implements Timer {
         private long deadline;
         // 剩余轮数
         private long remainingRounds;
-        HashedWheelTimer timer;
-
-        HashedWheelTimeout pre;
-        HashedWheelTimeout next;
-        HashedWheelBucket bucket;
+        private HashedWheelTimer timer;
+        private HashedWheelTimeout pre;
+        private HashedWheelTimeout next;
+        private HashedWheelBucket bucket;
 
 
         public HashedWheelTimeout(HashedWheelTimer timer, TimeTask task, long deadline) {
@@ -206,7 +235,7 @@ public class HashedWheelTimer implements Timer {
                 HashedWheelBucket bucket = timer.wheel[(int) (tick & timer.mask)];
                 bucket.expireTimeouts();
                 tick++;
-            } while (state.get() == TTR_RUNNING); // TODO: 判断线程状态处于运行状态
+            } while (state.get() == TTR_RUNNING);
             // TODO: stop后置处理
         }
 
