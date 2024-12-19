@@ -202,13 +202,25 @@ public class HashedWheelTimer implements Timer {
     }
 
     @Override
-    public Timeout createTimeout(TimeTask timeTask, long delay, TimeUnit unit) {
-        // TODO: 校验 =》 null值校验 && 任务数校验
-
-
-        // todo 根据delay和unit和当前时间计算这个任务的最后期限 deadline
-
-        return null;
+    public Timeout createTimeout(TimeTask task, long delay, TimeUnit unit) {
+        if (task == null) {
+            throw new NullPointerException("task");
+        }
+        if (unit == null) {
+            throw new NullPointerException("unit");
+        }
+        // ??? 是否需要，可以直接让任务参与过期状态??
+//        if(delay<0){
+//            throw new IllegalStateException("delay cannot be negative");
+//        }
+        // deadline>0 说明还未过期， deadline<0说明已经过期，会在HashedWheelBucket.expireTimeouts()计算得到当前桶
+        // TODO: 是否加一个状态用来标识【<0】情况
+        //  特殊：加入到队列中，已经过期，但是还没到下一个时间片，外部任务执行结束调用cancel
+        //  还是将这种特殊情况考虑到容错中，允许这种情况发生。即允许有1个时间片的容错
+        long deadline = unit.toNanos(delay)+System.nanoTime()-startTime;
+        HashedWheelTimeout timeout = new HashedWheelTimeout(this, task, deadline);
+        timeouts.add(timeout);
+        return timeout;
     }
 
     private static class TimerTickerRunnable implements Runnable {
@@ -220,7 +232,7 @@ public class HashedWheelTimer implements Timer {
 
         private final HashedWheelTimer timer;
 
-        //
+        // 时钟转数
         private long tick;
 
         TimerTickerRunnable(HashedWheelTimer timer) {

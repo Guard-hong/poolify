@@ -12,10 +12,10 @@ public interface Timer {
 
     /**
      *
-     * @param timeTask
+     * @param task
      * @param delay
      * @param unit
      * @return
      */
-    Timeout createTimeout(TimeTask timeTask, long delay, TimeUnit unit);
+    Timeout createTimeout(TimeTask task, long delay, TimeUnit unit);
 }
