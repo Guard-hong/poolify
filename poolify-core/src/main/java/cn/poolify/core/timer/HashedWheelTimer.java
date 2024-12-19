@@ -3,6 +3,7 @@ package cn.poolify.core.timer;
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,10 +21,6 @@ public class HashedWheelTimer implements Timer {
     private static final long MAX_TICK_DURATION = TimeUnit.MICROSECONDS.toNanos(200);
     private static final long MAX_TIMEOUT_COUNT = 1<<30;
 
-    // 构造扫描线程
-    private final TimerTickerRunnable tickerRunnable = new TimerTickerRunnable(this);
-    private final Thread scanThread;
-
 
     // 工作队列 -- 监控的线程池队列
     private final Queue<HashedWheelTimeout> timeouts = new LinkedBlockingQueue<>();
@@ -34,9 +31,9 @@ public class HashedWheelTimer implements Timer {
     // 掩码
     private final int mask;
     // 记录队列中有多少个任务
-    private AtomicLong pendingTimeoutCount = new AtomicLong(0);
+    private final AtomicLong pendingTimeoutsCount = new AtomicLong(0);
     // 队列中最多可以有多少任务
-    private final long maxPendingTimeoutCount;
+    private final long maxPendingTimeoutsCount;
     // 一次运行的持续时间
     private final long tickDuration;
 
@@ -47,7 +44,7 @@ public class HashedWheelTimer implements Timer {
     public HashedWheelTimer(ThreadFactory threadFactory,
                             long tickDuration,
                             TimeUnit unit,
-                            long maxPendingTimeoutCount,
+                            long maxPendingTimeoutsCount,
                             int initialCapacity
                             ){
         if (threadFactory == null) {
@@ -56,12 +53,12 @@ public class HashedWheelTimer implements Timer {
         if (unit == null) {
             throw new NullPointerException("unit");
         }
-        if(maxPendingTimeoutCount<0){
-            throw new IllegalStateException("maxPendingTimeoutCount cannot be negative");
+        if(maxPendingTimeoutsCount<0){
+            throw new IllegalStateException("maxPendingTimeoutsCount cannot be negative");
         }
         this.tickDuration = Math.min(MAX_TICK_DURATION,unit.toNanos(tickDuration));
-        this.scanThread = threadFactory.newThread(tickerRunnable);
-        this.maxPendingTimeoutCount = Math.min(MAX_TIMEOUT_COUNT,maxPendingTimeoutCount);
+
+        this.maxPendingTimeoutsCount = Math.min(MAX_TIMEOUT_COUNT,maxPendingTimeoutsCount);
 
         // wheel 相关初始化
         this.wheelBit = Integer.numberOfLeadingZeros(initialCapacity - 1)+1;
@@ -71,11 +68,20 @@ public class HashedWheelTimer implements Timer {
         }
         this.wheel = new HashedWheelBucket[cap];
         this.mask = cap-1;
+        initialWheel();
 
+        // 构造扫描线程
+        TimerTickerRunnable tickerRunnable = new TimerTickerRunnable(this);
+        Thread scanThread = threadFactory.newThread(tickerRunnable);
         // 扫描线程启动
         scanThread.start();
     }
 
+    private void initialWheel() {
+        for (int i = 0; i < wheel.length; i++) {
+            wheel[i] = new HashedWheelBucket();
+        }
+    }
 
 
     private static class HashedWheelTimeout implements Timeout {
@@ -209,10 +215,21 @@ public class HashedWheelTimer implements Timer {
         if (unit == null) {
             throw new NullPointerException("unit");
         }
+        // 判断队列中任务数是否大于最大任务数
+        long pendingTimeoutsCount = incrementPendingTimeoutCount();
+        if(pendingTimeoutsCount>maxPendingTimeoutsCount){
+            decrementPendingTimeoutCount();
+            throw new RejectedExecutionException("Number of pending timeouts ("
+                    + pendingTimeoutsCount + ") is greater than or equal to maximum allowed pending "
+                    + "timeouts (" + maxPendingTimeoutsCount + ")");
+        }
+
+
         // ??? 是否需要，可以直接让任务参与过期状态??
 //        if(delay<0){
 //            throw new IllegalStateException("delay cannot be negative");
 //        }
+
         // deadline>0 说明还未过期， deadline<0说明已经过期，会在HashedWheelBucket.expireTimeouts()计算得到当前桶
         // TODO: 是否加一个状态用来标识【<0】情况
         //  特殊：加入到队列中，已经过期，但是还没到下一个时间片，外部任务执行结束调用cancel
@@ -274,8 +291,9 @@ public class HashedWheelTimer implements Timer {
                 // 打散
 
                 long needTick = timeout.deadline / timer.tickDuration;
-                // TODO: 后续将 wheel.length 设为 2^n ，这里可以使用位运算 >>n
-                timeout.remainingRounds = (needTick - tick) / timer.wheel.length;
+                // (needTick - tick)>>timer.wheelBit 等价于 (needTick - tick)/timer.wheel.length
+                // 原因: wheel.length 是2的n次方
+                timeout.remainingRounds = (needTick - tick) >> timer.wheelBit;
                 // needTick<tick时说明已经超时，加入到当前的桶中进行处理
                 long ticks = Math.max(needTick, tick);
                 int addIdx = (int) (ticks & timer.mask);
@@ -319,8 +337,11 @@ public class HashedWheelTimer implements Timer {
 
     }
 
-    long decrementPendingTimeoutCount() {
-        return pendingTimeoutCount.decrementAndGet();
+    private long decrementPendingTimeoutCount() {
+        return pendingTimeoutsCount.decrementAndGet();
+    }
+    private long incrementPendingTimeoutCount() {
+        return pendingTimeoutsCount.incrementAndGet();
     }
 
 }
