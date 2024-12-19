@@ -2,7 +2,6 @@ package cn.poolify.core.timer;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -12,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @DateTime: 2024/12/17
  * @Description:
  **/
-public class HashedWheelTimer implements Timer{
+public class HashedWheelTimer implements Timer {
 //    private static Integer INIT = 0;
 //    private static Integer START = 1;
 //    private static Integer STOP = 2;
@@ -29,9 +28,11 @@ public class HashedWheelTimer implements Timer{
 
 
     // 工作队列 -- 监控的线程池队列
-    private static Queue<HashedWheelTimeout> timeouts = new LinkedBlockingQueue<>();
-    //
+    private Queue<HashedWheelTimeout> timeouts = new LinkedBlockingQueue<>();
+    // 桶数组
     private HashedWheelBucket[] wheel;
+    // 掩码
+    private long mask;
     // 记录队列中有多少个任务
     AtomicLong pendingTimeoutCount = new AtomicLong(0);
     // 队列中最多可以有多少任务
@@ -39,15 +40,17 @@ public class HashedWheelTimer implements Timer{
 
     volatile long startTime;
 
+    // 一次运行的持续时间
+    long tickDuration;
 
 
-    private static class HashedWheelTimeout implements Timeout{
+    private static class HashedWheelTimeout implements Timeout {
         // 定义状态
         private static Integer HWT_INIT = 1;
         private static Integer HWT_CANCEL = 2;
         private static Integer HWT_EXPIRE = 3;
 
-        private AtomicInteger state;
+        private AtomicInteger state = new AtomicInteger(HWT_INIT);
         // 任务
         private TimeTask task;
         // 期限
@@ -61,25 +64,25 @@ public class HashedWheelTimer implements Timer{
         HashedWheelBucket bucket;
 
 
-        public HashedWheelTimeout(HashedWheelTimer timer,TimeTask task, long deadline) {
+        public HashedWheelTimeout(HashedWheelTimer timer, TimeTask task, long deadline) {
             this.timer = timer;
             this.task = task;
             this.deadline = deadline;
         }
 
-        void remove(){
+        void remove() {
             HashedWheelBucket bucket = this.bucket;
-            if(bucket != null){
+            if (bucket != null) {
                 bucket.remove(this);
-            }else{
+            } else {
                 timer.decrementPendingTimeoutCount();
             }
         }
 
-        void expire(){
+        void expire() {
             // 修改状态 -- init => expire
-            if(!state.compareAndSet(HWT_INIT,HWT_EXPIRE)){
-                return ;
+            if (!state.compareAndSet(HWT_INIT, HWT_EXPIRE)) {
+                return;
             }
             task.run();
         }
@@ -87,27 +90,31 @@ public class HashedWheelTimer implements Timer{
         @Override
         public boolean cancel() {
             // 修改状态 -- init => cancel
-            if(!state.compareAndSet(HWT_INIT,HWT_CANCEL)){
+            if (!state.compareAndSet(HWT_INIT, HWT_CANCEL)) {
                 return false;
             }
             // 移除
             remove();
             return true;
         }
+
+        public boolean isCancel() {
+            return state.get() == HWT_CANCEL;
+        }
     }
 
-    private static class HashedWheelBucket{
+    private static class HashedWheelBucket {
         private HashedWheelTimeout head;
         private HashedWheelTimeout tail;
 
-        void addTimeout(HashedWheelTimeout timeout){
+        void addTimeout(HashedWheelTimeout timeout) {
             assert timeout.bucket == null;
             timeout.bucket = this;
 
             // 桶未初始化
-            if(head == null){
+            if (head == null) {
                 head = tail = timeout;
-            }else {
+            } else {
                 // 添加到末尾
                 timeout.pre = tail;
                 tail.next = timeout;
@@ -115,17 +122,17 @@ public class HashedWheelTimer implements Timer{
             }
         }
 
-        void remove(HashedWheelTimeout timeout){
+        HashedWheelTimeout remove(HashedWheelTimeout timeout) {
             HashedWheelTimeout next = timeout.next;
             HashedWheelTimeout pre = timeout.pre;
-            if(timeout == head){
+            if (timeout == head) {
                 this.head = next;
-            } else{  //
+            } else {  //
                 timeout.pre.next = next;
             }
-            if(timeout == tail){
+            if (timeout == tail) {
                 this.tail = pre;
-            }else{
+            } else {
                 timeout.next.pre = pre;
             }
 
@@ -136,6 +143,26 @@ public class HashedWheelTimer implements Timer{
 
             // 计数
             timeout.timer.decrementPendingTimeoutCount();
+            return next;
+        }
+
+        public void expireTimeouts() {
+            HashedWheelTimeout timeout = head;
+            while (timeout != null) {
+                HashedWheelTimeout next = timeout.next;
+
+                if (timeout.remainingRounds <= 0) {
+                    // expire
+                    timeout.expire();
+                    next = remove(timeout);
+                } else if (timeout.isCancel()) {
+                    // unexpired && cancel(运行结束)
+                    next = remove(timeout);
+                } else {
+                    timeout.remainingRounds--;
+                }
+                timeout = next;
+            }
 
         }
     }
@@ -149,14 +176,17 @@ public class HashedWheelTimer implements Timer{
         return null;
     }
 
-    private static class TimerTickerRunnable implements Runnable{
+    private static class TimerTickerRunnable implements Runnable {
         private static Integer TTR_INIT = 1;
         private static Integer TTR_RUNNING = 2;
         private static Integer TTR_STOP = 3;
 
         private AtomicInteger state = new AtomicInteger(TTR_INIT);
-        
+
         private HashedWheelTimer timer;
+
+        //
+        private long tick;
 
         TimerTickerRunnable(HashedWheelTimer timer) {
             this.timer = timer;
@@ -168,19 +198,71 @@ public class HashedWheelTimer implements Timer{
             initializeStartTime();
 
             do {
-
-            } while(state.get() == TTR_RUNNING); // TODO: 判断线程状态处于运行状态
+                // 1. 暂停一段时间 防止频繁工作
+                waitForNextTick();
+                // 2. 从队列中取出任务打散到桶中
+                scatterToBucket();
+                // 3. 扫描当前桶中的元素
+                HashedWheelBucket bucket = timer.wheel[(int) (tick & timer.mask)];
+                bucket.expireTimeouts();
+                tick++;
+            } while (state.get() == TTR_RUNNING); // TODO: 判断线程状态处于运行状态
             // TODO: stop后置处理
         }
 
-        private void initializeStartTime(){
-            for(;;){
+        private void scatterToBucket() {
+            Queue<HashedWheelTimeout> timeouts = timer.timeouts;
+            // 一次最多处理10000条数据
+            for (int i = 0; i < 10000; i++) {
+                HashedWheelTimeout timeout = timeouts.poll();
+                if (timeout == null) {
+                    // 队列中没有任务
+                    break;
+                }
+                // 是否可以无脑打散？？？ 在expire时进行判断
+                if (timeout.isCancel()) {
+                    // 在队列中，但是处于cancel状态
+                    continue;
+                }
+                // 打散
+
+                long needTick = timeout.deadline / timer.tickDuration;
+                // TODO: 后续将 wheel.length 设为 2^n ，这里可以使用位运算 >>n
+                timeout.remainingRounds = (needTick - tick) / timer.wheel.length;
+                // needTick<tick时说明已经超时，加入到当前的桶中进行处理
+                long ticks = Math.max(needTick, tick);
+                int addIdx = (int) (ticks & timer.mask);
+                timer.wheel[addIdx].addTimeout(timeout);
+            }
+        }
+
+        private long waitForNextTick() {
+            long deadline = timer.tickDuration * (tick + 1);
+            long startTime = timer.startTime;
+            for (; ; ) {
+                long currentTime = System.nanoTime() - startTime;
+                if (currentTime >= deadline) {
+                    return currentTime;
+                }
+                long sleepMs = (deadline - currentTime) / 1000;
+                try {
+                    Thread.sleep(sleepMs);
+                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+                    // TODO: 做相应处理
+                }
+            }
+
+        }
+
+        private void initializeStartTime() {
+            for (; ; ) {
                 timer.startTime = System.nanoTime();
-                if(timer.startTime != 0) {
+                if (timer.startTime != 0) {
                     // 修改为运行状态 -- init=>running
-                    if(state.compareAndSet(TTR_INIT,TTR_RUNNING)){
-                        return ;
-                    }else{ // 初始化时未处于init状态
+                    if (state.compareAndSet(TTR_INIT, TTR_RUNNING)) {
+                        return;
+                    } else { // 初始化时未处于init状态
                         throw new IllegalStateException("illegal state");
                     }
                 }
@@ -190,7 +272,7 @@ public class HashedWheelTimer implements Timer{
 
     }
 
-    long decrementPendingTimeoutCount(){
+    long decrementPendingTimeoutCount() {
         return pendingTimeoutCount.decrementAndGet();
     }
 
