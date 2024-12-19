@@ -2,7 +2,9 @@ package cn.poolify.core.timer;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -20,6 +22,12 @@ public class HashedWheelTimer implements Timer{
 //
 //    private static AtomicIntegerFieldUpdater<HashedWheelTimer> STATE_UPDATER =
 //            AtomicIntegerFieldUpdater.newUpdater(HashedWheelTimer.class, "state");
+
+    // 构造扫描线程
+    private TimerTickerRunnable tickerRunnable = new TimerTickerRunnable(this);
+    private Thread scanThread = new Thread(tickerRunnable);
+
+
     // 工作队列 -- 监控的线程池队列
     private static Queue<HashedWheelTimeout> timeouts = new LinkedBlockingQueue<>();
     //
@@ -33,24 +41,28 @@ public class HashedWheelTimer implements Timer{
 
 
 
+    private static class HashedWheelTimeout implements Timeout{
+        // 定义状态
+        private static Integer HWT_INIT = 1;
+        private static Integer HWT_CANCEL = 2;
+        private static Integer HWT_EXPIRE = 3;
 
-    private class HashedWheelTimeout implements Timeout{
-        // todo 定义状态
-
+        private AtomicInteger state;
         // 任务
         private TimeTask task;
         // 期限
         private long deadline;
         // 剩余轮数
         private long remainingRounds;
+        HashedWheelTimer timer;
 
-        //
         HashedWheelTimeout pre;
         HashedWheelTimeout next;
         HashedWheelBucket bucket;
 
 
-        public HashedWheelTimeout(TimeTask task, long deadline) {
+        public HashedWheelTimeout(HashedWheelTimer timer,TimeTask task, long deadline) {
+            this.timer = timer;
             this.task = task;
             this.deadline = deadline;
         }
@@ -60,19 +72,31 @@ public class HashedWheelTimer implements Timer{
             if(bucket != null){
                 bucket.remove(this);
             }else{
-                decrementPendingTimeoutCount();
+                timer.decrementPendingTimeoutCount();
             }
         }
 
         void expire(){
-            // TODO: 判断状态
-
-
+            // 修改状态 -- init => expire
+            if(!state.compareAndSet(HWT_INIT,HWT_EXPIRE)){
+                return ;
+            }
             task.run();
+        }
+
+        @Override
+        public boolean cancel() {
+            // 修改状态 -- init => cancel
+            if(!state.compareAndSet(HWT_INIT,HWT_CANCEL)){
+                return false;
+            }
+            // 移除
+            remove();
+            return true;
         }
     }
 
-    private class HashedWheelBucket{
+    private static class HashedWheelBucket{
         private HashedWheelTimeout head;
         private HashedWheelTimeout tail;
 
@@ -111,7 +135,7 @@ public class HashedWheelTimer implements Timer{
             timeout.bucket = null;
 
             // 计数
-            decrementPendingTimeoutCount();
+            timeout.timer.decrementPendingTimeoutCount();
 
         }
     }
@@ -125,7 +149,18 @@ public class HashedWheelTimer implements Timer{
         return null;
     }
 
-    private class TimerTickerRunnable implements Runnable{
+    private static class TimerTickerRunnable implements Runnable{
+        private static Integer TTR_INIT = 1;
+        private static Integer TTR_RUNNING = 2;
+        private static Integer TTR_STOP = 3;
+
+        private AtomicInteger state;
+        
+        private HashedWheelTimer timer;
+
+        TimerTickerRunnable(HashedWheelTimer timer) {
+            this.timer = timer;
+        }
 
         @Override
         public void run() {
@@ -134,14 +169,21 @@ public class HashedWheelTimer implements Timer{
 
             do {
 
-            } while(false); // TODO: 判断线程状态处于运行状态
+            } while(state.get() == TTR_RUNNING); // TODO: 判断线程状态处于运行状态
             // TODO: stop后置处理
         }
 
         void initializeStartTime(){
             for(;;){
-                startTime = System.nanoTime();
-                if(startTime != 0) return ;
+                timer.startTime = System.nanoTime();
+                if(timer.startTime != 0) {
+                    // 修改为运行状态 -- init=>running
+                    if(state.compareAndSet(TTR_INIT,TTR_RUNNING)){
+                        return ;
+                    }else{ // 初始化时未处于init状态
+                        throw new IllegalStateException("cannot be started once stopped");
+                    }
+                }
             }
         }
 

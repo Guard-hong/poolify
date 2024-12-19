@@ -7,5 +7,5 @@ package cn.poolify.core.timer;
  **/
 public interface Timeout {
 
-
+    boolean cancel();
 }
