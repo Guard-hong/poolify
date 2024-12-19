@@ -1,6 +1,5 @@
 package cn.poolify.core.timer;
 
-import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -13,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @Author: HCJ
  * @DateTime: 2024/12/17
  * @Description:
+ * TODO: 状态管理
  **/
 public class HashedWheelTimer implements Timer {
 
