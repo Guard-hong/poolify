@@ -18,6 +18,7 @@ public class HashedWheelTimer implements Timer {
     private static final int MAX_CAPACITY = 1<<30;
     // 最大一个时钟走200ms
     private static final long MAX_TICK_DURATION = TimeUnit.MICROSECONDS.toNanos(200);
+    private static final long MAX_TIMEOUT_COUNT = 1<<30;
 
     // 构造扫描线程
     private final TimerTickerRunnable tickerRunnable = new TimerTickerRunnable(this);
@@ -55,9 +56,12 @@ public class HashedWheelTimer implements Timer {
         if (unit == null) {
             throw new NullPointerException("unit");
         }
-        this.tickDuration = Math.max(MAX_TICK_DURATION,unit.toNanos(tickDuration));
+        if(maxPendingTimeoutCount<0){
+            throw new IllegalStateException("maxPendingTimeoutCount cannot be negative");
+        }
+        this.tickDuration = Math.min(MAX_TICK_DURATION,unit.toNanos(tickDuration));
         this.scanThread = threadFactory.newThread(tickerRunnable);
-        this.maxPendingTimeoutCount = maxPendingTimeoutCount;
+        this.maxPendingTimeoutCount = Math.min(MAX_TIMEOUT_COUNT,maxPendingTimeoutCount);
 
         // wheel 相关初始化
         this.wheelBit = Integer.numberOfLeadingZeros(initialCapacity - 1)+1;
@@ -76,18 +80,19 @@ public class HashedWheelTimer implements Timer {
 
     private static class HashedWheelTimeout implements Timeout {
         // 定义状态
-        private static Integer HWT_INIT = 1;
-        private static Integer HWT_CANCEL = 2;
-        private static Integer HWT_EXPIRE = 3;
+        private static final Integer HWT_INIT = 1;
+        private static final Integer HWT_CANCEL = 2;
+        private static final Integer HWT_EXPIRE = 3;
+        private final HashedWheelTimer timer;
 
-        private AtomicInteger state = new AtomicInteger(HWT_INIT);
+        private final AtomicInteger state = new AtomicInteger(HWT_INIT);
         // 任务
-        private TimeTask task;
+        private final TimeTask task;
         // 期限
-        private long deadline;
+        private final long deadline;
         // 剩余轮数
         private long remainingRounds;
-        private HashedWheelTimer timer;
+
         private HashedWheelTimeout pre;
         private HashedWheelTimeout next;
         private HashedWheelBucket bucket;
@@ -200,19 +205,20 @@ public class HashedWheelTimer implements Timer {
     public Timeout createTimeout(TimeTask timeTask, long delay, TimeUnit unit) {
         // TODO: 校验 =》 null值校验 && 任务数校验
 
+
         // todo 根据delay和unit和当前时间计算这个任务的最后期限 deadline
 
         return null;
     }
 
     private static class TimerTickerRunnable implements Runnable {
-        private static Integer TTR_INIT = 1;
-        private static Integer TTR_RUNNING = 2;
-        private static Integer TTR_STOP = 3;
+        private static final Integer TTR_INIT = 1;
+        private static final Integer TTR_RUNNING = 2;
+        private static final Integer TTR_STOP = 3;
 
-        private AtomicInteger state = new AtomicInteger(TTR_INIT);
+        private final AtomicInteger state = new AtomicInteger(TTR_INIT);
 
-        private HashedWheelTimer timer;
+        private final HashedWheelTimer timer;
 
         //
         private long tick;
