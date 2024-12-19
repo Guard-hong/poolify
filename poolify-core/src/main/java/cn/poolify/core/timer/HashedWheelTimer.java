@@ -154,7 +154,7 @@ public class HashedWheelTimer implements Timer{
         private static Integer TTR_RUNNING = 2;
         private static Integer TTR_STOP = 3;
 
-        private AtomicInteger state;
+        private AtomicInteger state = new AtomicInteger(TTR_INIT);
         
         private HashedWheelTimer timer;
 
@@ -173,7 +173,7 @@ public class HashedWheelTimer implements Timer{
             // TODO: stop后置处理
         }
 
-        void initializeStartTime(){
+        private void initializeStartTime(){
             for(;;){
                 timer.startTime = System.nanoTime();
                 if(timer.startTime != 0) {
@@ -181,7 +181,7 @@ public class HashedWheelTimer implements Timer{
                     if(state.compareAndSet(TTR_INIT,TTR_RUNNING)){
                         return ;
                     }else{ // 初始化时未处于init状态
-                        throw new IllegalStateException("cannot be started once stopped");
+                        throw new IllegalStateException("illegal state");
                     }
                 }
             }
