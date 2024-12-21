@@ -1,4 +1,6 @@
 docs/dev-ops/nacos
+.idea
+
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
