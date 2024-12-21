@@ -17,5 +17,5 @@ public interface Timer {
      * @param unit
      * @return
      */
-    Timeout createTimeout(TimeTask task, long delay, TimeUnit unit);
+    Timeout createTimeout(TimerTask task, long delay, TimeUnit unit);
 }

@@ -93,7 +93,7 @@ public class HashedWheelTimer implements Timer {
 
         private final AtomicInteger state = new AtomicInteger(HWT_INIT);
         // 任务
-        private final TimeTask task;
+        private final TimerTask task;
         // 期限
         private final long deadline;
         // 剩余轮数
@@ -104,7 +104,7 @@ public class HashedWheelTimer implements Timer {
         private HashedWheelBucket bucket;
 
 
-        public HashedWheelTimeout(HashedWheelTimer timer, TimeTask task, long deadline) {
+        public HashedWheelTimeout(HashedWheelTimer timer, TimerTask task, long deadline) {
             this.timer = timer;
             this.task = task;
             this.deadline = deadline;
@@ -208,7 +208,7 @@ public class HashedWheelTimer implements Timer {
     }
 
     @Override
-    public Timeout createTimeout(TimeTask task, long delay, TimeUnit unit) {
+    public Timeout createTimeout(TimerTask task, long delay, TimeUnit unit) {
         if (task == null) {
             throw new NullPointerException("task");
         }
