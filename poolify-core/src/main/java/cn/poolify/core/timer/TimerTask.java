@@ -9,5 +9,5 @@ import cn.poolify.core.wrapper.ExecutorWrapper;
  **/
 public interface TimerTask {
 
-    void run(ExecutorWrapper executorWrapper, Runnable runnable);
+    void run();
 }

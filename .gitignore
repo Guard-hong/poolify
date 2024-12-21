@@ -1,5 +1,5 @@
 docs/dev-ops/nacos
-.idea
+.idea/*
 
 
 target/

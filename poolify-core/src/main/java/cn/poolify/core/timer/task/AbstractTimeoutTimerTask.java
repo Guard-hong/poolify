@@ -1,22 +1,29 @@
 package cn.poolify.core.timer.task;
 
 import cn.poolify.core.monitor.ThreadPoolMonitor;
-import cn.poolify.core.timer.TimerTask;
 import cn.poolify.core.wrapper.ExecutorWrapper;
+import cn.poolify.core.timer.TimerTask;
 
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/21
  * @Description: 将超时的定时任务公共逻辑抽离
  **/
-public abstract class AbstractTimeoutTimerTask implements TimerTask {
+public abstract class AbstractTimeoutTimerTask implements TimerTask{
 
     // 执行器
-    private ExecutorWrapper executorWrapper;
+    protected ExecutorWrapper executorWrapper;
     // 执行线程
-    private Runnable runnable;
+    protected Runnable runnable;
+
+    protected AbstractTimeoutTimerTask(ExecutorWrapper executorWrapper,Runnable runnable){
+        this.executorWrapper = executorWrapper;
+        this.runnable = runnable;
+    }
+
+
     @Override
-    public void run(ExecutorWrapper executorWrapper,Runnable runnable) {
+    public void run() {
         ThreadPoolMonitor monitor = executorWrapper.getThreadPoolMonitor();
         if(monitor == null) return ;
         doRun(monitor);

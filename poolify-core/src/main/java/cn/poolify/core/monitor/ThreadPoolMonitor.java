@@ -4,12 +4,13 @@ import cn.poolify.core.manager.ContextManagerHelper;
 import cn.poolify.core.timer.HashedWheelTimer;
 import cn.poolify.core.timer.Timeout;
 import cn.poolify.core.timer.TimerTask;
+import cn.poolify.core.timer.task.QueueTimeoutTimerTask;
+import cn.poolify.core.wrapper.ExecutorWrapper;
 import lombok.Data;
 
 import java.lang.ref.SoftReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -24,7 +25,7 @@ public class ThreadPoolMonitor {
     /**
      * 线程池
      */
-    private ThreadPoolExecutor executor;
+    private ExecutorWrapper executorWrapper;
 
     /**
      * 任务运行超时时间，单位ms
@@ -56,14 +57,16 @@ public class ThreadPoolMonitor {
      */
     private final Map<Runnable, SoftReference<Timeout>> queueTimeoutMap = new ConcurrentHashMap<>();
 
-    public ThreadPoolMonitor(ThreadPoolExecutor executor) {
-        this.executor = executor;
+    public ThreadPoolMonitor(ExecutorWrapper executorWrapper) {
+        this.executorWrapper = executorWrapper;
+        // TODO: 其他参数补充
     }
 
     public void startRunTimeoutTask(Thread t,Runnable r){
+        // 设置的超时时间不符合
+        if(queueTimeout <= 0) return ;
         HashedWheelTimer timer = ContextManagerHelper.geBean(HashedWheelTimer.class);
-        // TODO: 创建定时器任务
-        TimerTask task = ()->{};
+        TimerTask task = new QueueTimeoutTimerTask(executorWrapper,r);
         queueTimeoutMap.put(r, new SoftReference<>(timer.createTimeout(task,queueTimeout, TimeUnit.MICROSECONDS)));
     }
 
