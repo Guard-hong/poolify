@@ -53,7 +53,7 @@ public class ThreadPoolMonitor {
     private final LongAdder queueTimeoutCount = new LongAdder();
 
     /**
-     * k->Runnable v->Timer. ps：线程由于异常退出 k=null,v不能正常gc。参考ThreadLocal k-v设计
+     * k->Runnable v->Timeout. ps：线程由于异常退出 k=null,v不能正常gc。参考ThreadLocal k-v设计
      */
     private final Map<Runnable, SoftReference<Timeout>> queueTimeoutMap = new ConcurrentHashMap<>();
 

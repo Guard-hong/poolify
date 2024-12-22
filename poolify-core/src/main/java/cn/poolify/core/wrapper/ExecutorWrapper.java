@@ -3,6 +3,8 @@ package cn.poolify.core.wrapper;
 import cn.poolify.core.monitor.ThreadPoolMonitor;
 import lombok.Data;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/21
@@ -11,5 +13,7 @@ import lombok.Data;
 @Data
 public class ExecutorWrapper {
 
+    private ThreadPoolExecutor executor;
     private ThreadPoolMonitor threadPoolMonitor;
+
 }
