@@ -49,6 +49,9 @@ public class ContextManagerHelper implements ApplicationContextAware {
         return getInstance().getBean(clazz);
     }
 
+    public static ApplicationContext getContext(){
+        return context;
+    }
 
 }
 

@@ -5,12 +5,15 @@ import cn.poolify.core.timer.HashedWheelTimer;
 import cn.poolify.core.timer.Timeout;
 import cn.poolify.core.timer.TimerTask;
 import cn.poolify.core.timer.task.QueueTimeoutTimerTask;
+import cn.poolify.core.timer.task.RunnableTimeoutTimerTask;
 import cn.poolify.core.wrapper.ExecutorWrapper;
 import lombok.Data;
 
 import java.lang.ref.SoftReference;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -23,7 +26,7 @@ import java.util.concurrent.atomic.LongAdder;
 public class ThreadPoolMonitor {
 
     /**
-     * 线程池
+     * 线程池增强
      */
     private ExecutorWrapper executorWrapper;
 
@@ -57,17 +60,42 @@ public class ThreadPoolMonitor {
      */
     private final Map<Runnable, SoftReference<Timeout>> queueTimeoutMap = new ConcurrentHashMap<>();
 
+    /**
+     * k->Runnable v->Timeout. ps：线程由于异常退出 k=null,v不能正常gc。参考ThreadLocal k-v设计
+     */
+    private final Map<Runnable, SoftReference<Timeout>> runTimeoutMap = new ConcurrentHashMap<>();
+
     public ThreadPoolMonitor(ExecutorWrapper executorWrapper) {
         this.executorWrapper = executorWrapper;
         // TODO: 其他参数补充
     }
 
-    public void startRunTimeoutTask(Thread t,Runnable r){
+    public void startQueueTimeoutTask(Runnable r){
         // 设置的超时时间不符合
         if(queueTimeout <= 0) return ;
         HashedWheelTimer timer = ContextManagerHelper.geBean(HashedWheelTimer.class);
         TimerTask task = new QueueTimeoutTimerTask(executorWrapper,r);
         queueTimeoutMap.put(r, new SoftReference<>(timer.createTimeout(task,queueTimeout, TimeUnit.MICROSECONDS)));
+    }
+    public void cancelQueueTimeoutTask(Runnable r){
+        Optional.ofNullable(queueTimeoutMap.get(r))
+                .map(SoftReference::get)
+                .ifPresent(Timeout::cancel);
+    }
+
+
+    public void startRunTimeoutTask(Thread t,Runnable r){
+        // 设置的超时时间不符合
+        if(runTimeout <= 0) return ;
+        HashedWheelTimer timer = ContextManagerHelper.geBean(HashedWheelTimer.class);
+        TimerTask task = new RunnableTimeoutTimerTask(executorWrapper,r);
+        runTimeoutMap.put(r, new SoftReference<>(timer.createTimeout(task,runTimeout, TimeUnit.MICROSECONDS)));
+    }
+
+    public void cancelRunTimeoutTask(Runnable r){
+        Optional.ofNullable(runTimeoutMap.get(r))
+                .map(SoftReference::get)
+                .ifPresent(Timeout::cancel);
     }
 
 }
