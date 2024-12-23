@@ -1,4 +1,4 @@
-package cn.poolify.core.aop;
+package cn.poolify.core.annotation;
 
 import java.lang.annotation.*;
 

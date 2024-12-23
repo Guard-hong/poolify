@@ -1,8 +1,7 @@
 package cn.poolify.core.config;
 
-import cn.poolify.core.aop.DynamicThreadPoolProcessor;
+import cn.poolify.core.annotation.DynamicThreadPoolProcessor;
 import cn.poolify.core.config.properties.DynamicThreadProperties;
-import cn.poolify.core.registry.DtpRegistry;
 import cn.poolify.core.registry.IRegistry;
 import cn.poolify.core.registry.impl.nacos.NacosRegistry;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

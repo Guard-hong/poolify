@@ -1,6 +1,5 @@
-package cn.poolify.core.aop;
+package cn.poolify.core.annotation;
 
-import cn.poolify.core.monitor.ExecutorMonitor;
 import cn.poolify.core.proxy.ThreadPoolExecutorProxy;
 import cn.poolify.core.registry.DtpRegistry;
 import cn.poolify.core.wrapper.ExecutorWrapper;

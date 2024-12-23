@@ -1,6 +1,6 @@
 package cn.poolify.core.test.starter.config;
 
-import cn.poolify.core.aop.DynamicThreadPool;
+import cn.poolify.core.annotation.DynamicThreadPool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
