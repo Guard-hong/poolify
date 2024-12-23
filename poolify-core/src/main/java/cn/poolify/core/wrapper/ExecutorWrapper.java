@@ -1,6 +1,7 @@
 package cn.poolify.core.wrapper;
 
 import cn.poolify.core.monitor.ExecutorMonitor;
+import cn.poolify.core.proxy.ThreadPoolExecutorProxy;
 import lombok.Data;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -13,14 +14,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Data
 public class ExecutorWrapper {
 
-    private ThreadPoolExecutor executor;
+    private ThreadPoolExecutorProxy executor;
     private ExecutorMonitor executorMonitor;
 
-    public ExecutorWrapper(ThreadPoolExecutor executor, long queueTimeout, long runTimeout) {
-        this.executor = executor;
-        this.executorMonitor = new ExecutorMonitor(this, queueTimeout, runTimeout);
-    }
-    public ExecutorWrapper(ThreadPoolExecutor executor) {
+    public ExecutorWrapper(ThreadPoolExecutorProxy executor) {
         this.executor = executor;
         this.executorMonitor = new ExecutorMonitor(this);
     }

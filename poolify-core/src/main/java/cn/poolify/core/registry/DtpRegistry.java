@@ -20,8 +20,6 @@ public class DtpRegistry {
 
     private static final Map<ThreadPoolExecutor, ExecutorWrapper> DYNAMIC_EXECUTORS = new ConcurrentHashMap<>();
 
-
-
     public static ExecutorMonitor getThreadPoolMonitor(ThreadPoolExecutor executor){
         return Optional.ofNullable(DYNAMIC_EXECUTORS.get(executor))
                 .map(ExecutorWrapper::getExecutorMonitor)

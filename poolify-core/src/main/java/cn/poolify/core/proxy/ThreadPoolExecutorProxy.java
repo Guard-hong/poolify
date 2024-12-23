@@ -14,6 +14,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class ThreadPoolExecutorProxy extends ThreadPoolExecutor {
 
+    private long queueTimeout;
+    private long runTimeout;
+
 
     public ThreadPoolExecutorProxy(String name,ThreadPoolExecutor originExecutor){
         super(originExecutor.getCorePoolSize(), originExecutor.getMaximumPoolSize(),
@@ -50,5 +53,21 @@ public class ThreadPoolExecutorProxy extends ThreadPoolExecutor {
     protected void afterExecute(Runnable r, Throwable t) {
         AwareManager.afterExecutor(this,r);
         super.afterExecute(r, t);
+    }
+
+    public long getQueueTimeout() {
+        return queueTimeout;
+    }
+
+    public void setQueueTimeout(long queueTimeout) {
+        this.queueTimeout = queueTimeout;
+    }
+
+    public long getRunTimeout() {
+        return runTimeout;
+    }
+
+    public void setRunTimeout(long runTimeout) {
+        this.runTimeout = runTimeout;
     }
 }

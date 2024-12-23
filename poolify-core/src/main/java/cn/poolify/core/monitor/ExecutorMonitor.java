@@ -1,6 +1,7 @@
 package cn.poolify.core.monitor;
 
 import cn.poolify.core.manager.ContextManagerHelper;
+import cn.poolify.core.proxy.ThreadPoolExecutorProxy;
 import cn.poolify.core.timer.HashedWheelTimer;
 import cn.poolify.core.timer.Timeout;
 import cn.poolify.core.timer.TimerTask;
@@ -65,11 +66,12 @@ public class ExecutorMonitor {
     private final Map<Runnable, SoftReference<Timeout>> runTimeoutMap = new ConcurrentHashMap<>();
 
     public ExecutorMonitor(ExecutorWrapper executorWrapper) {
-        this(executorWrapper,0,0);
+        this(executorWrapper,executorWrapper.getExecutor().getQueueTimeout(),executorWrapper.getExecutor().getRunTimeout());
     }
 
     public ExecutorMonitor(ExecutorWrapper executorWrapper, long queueTimeout, long runTimeout){
         this.executorWrapper = executorWrapper;
+        // TODO: 需要冗余吗？？还是从 executorWrapper 中取
         this.queueTimeout = queueTimeout;
         this.runTimeout = runTimeout;
     }
