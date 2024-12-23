@@ -27,9 +27,8 @@ public class DtpRegistry {
                 .map(ExecutorWrapper::getExecutorMonitor)
                 .orElseThrow(()-> new NoSuchElementException("ExecutorMonitor not found"));
     }
-    public static void register(String poolName,ThreadPoolExecutor executor){
-        ExecutorWrapper executorWrapper = new ExecutorWrapper(executor);
-        DYNAMIC_EXECUTORS.putIfAbsent(executor,executorWrapper);
+    public static void register(ExecutorWrapper executorWrapper){
+        DYNAMIC_EXECUTORS.putIfAbsent(executorWrapper.getExecutor(),executorWrapper);
     }
 
 }

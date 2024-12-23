@@ -43,9 +43,14 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, BeanFactor
     }
 
     private Object doRegisterAndProxy(String poolName,ThreadPoolExecutor executor) {
+        // TODO: 1.从配置文件中读取线程池相关参数替换线程池中的参数
 
-        DtpRegistry.register(poolName,executor);
-        return new ThreadPoolExecutorProxy(executor);
+        // 2. 创建代理对象
+        ThreadPoolExecutorProxy proxy = new ThreadPoolExecutorProxy(poolName,executor);
+        // 3. 注册
+        ExecutorWrapper executorWrapper = new ExecutorWrapper(proxy);
+        DtpRegistry.register(executorWrapper);
+        return proxy;
     }
 
     @Override

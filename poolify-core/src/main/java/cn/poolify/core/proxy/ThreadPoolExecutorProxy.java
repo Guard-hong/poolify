@@ -1,6 +1,7 @@
 package cn.poolify.core.proxy;
 
 import cn.poolify.core.aware.AwareManager;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -10,15 +11,26 @@ import java.util.concurrent.TimeUnit;
  * @DateTime: 2024/12/22
  * @Description:
  **/
+@Slf4j
 public class ThreadPoolExecutorProxy extends ThreadPoolExecutor {
 
 
-    public ThreadPoolExecutorProxy(ThreadPoolExecutor originExecutor){
+    public ThreadPoolExecutorProxy(String name,ThreadPoolExecutor originExecutor){
         super(originExecutor.getCorePoolSize(), originExecutor.getMaximumPoolSize(),
                 originExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS), TimeUnit.MILLISECONDS,
                 originExecutor.getQueue(), originExecutor.getThreadFactory(),
                 originExecutor.getRejectedExecutionHandler());
         allowCoreThreadTimeOut(originExecutor.allowsCoreThreadTimeOut());
+        // 关闭原有线程池
+        showdownAsync(name,originExecutor);
+        originExecutor.shutdown();
+    }
+
+    private static void showdownAsync(String name, ThreadPoolExecutor executor) {
+        new Thread(()->{
+            executor.shutdown();
+            log.info("ThreadPoolExecutor: {} showdown",name);
+        }).start();
     }
 
 
