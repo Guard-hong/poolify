@@ -3,9 +3,11 @@ package cn.poolify.core.registry;
 import cn.poolify.common.exception.DynamicThreadPoolException;
 import cn.poolify.common.exception.ErrorCode;
 import cn.poolify.core.config.properties.DynamicThreadProperties;
+import cn.poolify.core.monitor.ThreadPoolMonitor;
 import cn.poolify.core.registry.model.val.CollectionThreadPoolConfigVO;
 import cn.poolify.core.registry.model.entity.RegistryThreadPool;
 import lombok.extern.slf4j.Slf4j;
+import sun.nio.ch.ThreadPool;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,12 +22,18 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Description: 动态线程池注册和管理
  **/
 @Slf4j
-public class DynamicThreadPoolRegistry {
+public class DtpRegistry {
 
     private final DynamicThreadProperties dynamicThreadProperties;
     private final Map<String, ThreadPoolExecutor> DYNAMIC_THREAD_POOLS = new ConcurrentHashMap<>();
 
-    public DynamicThreadPoolRegistry(DynamicThreadProperties dynamicThreadProperties) {
+    private static final Map<ThreadPoolExecutor, ThreadPoolMonitor> MONITOR_MAP = new ConcurrentHashMap<>();
+
+
+    public static ThreadPoolMonitor getThreadPoolMonitor(ThreadPoolExecutor executor){
+        return MONITOR_MAP.get(executor);
+    }
+    public DtpRegistry(DynamicThreadProperties dynamicThreadProperties) {
         this.dynamicThreadProperties = dynamicThreadProperties;
     }
 

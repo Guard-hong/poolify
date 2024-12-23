@@ -1,7 +1,7 @@
 package cn.poolify.core.config;
 
 import cn.poolify.core.config.properties.NacosRegistryProperties;
-import cn.poolify.core.registry.DynamicThreadPoolRegistry;
+import cn.poolify.core.registry.DtpRegistry;
 import cn.poolify.core.trigger.listener.nacos.NacosThreadPoolConfigAdjustListener;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * @Author: HCJ
@@ -25,8 +24,8 @@ public class NacosRegistryConfig {
     @Bean
     public NacosThreadPoolConfigAdjustListener nacosThreadPoolConfigAdjustListener(NacosRegistryProperties nacosRegistryProperties,
                                                                                    ConfigService configService,
-                                                                                   DynamicThreadPoolRegistry dynamicThreadPoolRegistry){
-        return new NacosThreadPoolConfigAdjustListener(nacosRegistryProperties,configService,dynamicThreadPoolRegistry);
+                                                                                   DtpRegistry dtpRegistry){
+        return new NacosThreadPoolConfigAdjustListener(nacosRegistryProperties,configService, dtpRegistry);
     }
 
 

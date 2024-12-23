@@ -23,7 +23,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ManagementConfig {
 
 //    @Bean
-//    public IThreadPoolDataCollectionJob nacosThreadDataCollectionJob(ManagementProperties managementProperties, DynamicThreadPoolRegistry dynamicThreadPoolRegistry, WebClient webClient) {
+//    public IThreadPoolDataCollectionJob nacosThreadDataCollectionJob(ManagementProperties managementProperties, DtpRegistry dynamicThreadPoolRegistry, WebClient webClient) {
 //        return new NacosThreadDataCollectionJob(managementProperties, dynamicThreadPoolRegistry, webClient);
 //    }
 

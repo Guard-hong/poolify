@@ -2,7 +2,8 @@ package cn.poolify.core.aop;
 
 import cn.poolify.core.config.properties.DynamicThreadProperties;
 import cn.poolify.core.feign.ManagementFeign;
-import cn.poolify.core.registry.DynamicThreadPoolRegistry;
+import cn.poolify.core.manager.ContextManagerHelper;
+import cn.poolify.core.registry.DtpRegistry;
 import cn.poolify.core.registry.IRegistry;
 import cn.poolify.core.registry.model.entity.ThreadPoolConfigEntity;
 import cn.poolify.core.registry.model.entity.RegistryThreadPool;
@@ -28,9 +29,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  **/
 @Slf4j
 @Component
-public class DynamicThreadPoolProcessor implements BeanPostProcessor, ApplicationContextAware {
-    private static ApplicationContext CONTEXT;
-
+public class DynamicThreadPoolProcessor implements BeanPostProcessor {
     @Resource
     private Map<String, IRegistry> registryMap;
 
@@ -38,7 +37,7 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, Applicatio
     private DynamicThreadProperties dynamicThreadProperties;
 
     @Resource
-    private DynamicThreadPoolRegistry dynamicThreadPoolRegistry;
+    private DtpRegistry dtpRegistry;
 
     @Autowired(required = false)
     private ManagementFeign managementFeign;
@@ -52,9 +51,9 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, Applicatio
 
     @Override
     public Object postProcessAfterInitialization(Object bean, @NotNull String beanName) throws BeansException {
-        if (bean instanceof ThreadPoolExecutor && CONTEXT.findAnnotationOnBean(beanName, DynamicThreadPool.class) != null) {
+        if (bean instanceof ThreadPoolExecutor && ContextManagerHelper.getContext().findAnnotationOnBean(beanName, DynamicThreadPool.class) != null) {
             ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) bean;
-            dynamicThreadPoolRegistry.register(beanName, threadPoolExecutor);
+            dtpRegistry.register(beanName, threadPoolExecutor);
             IRegistry registry = registryMap.get(dynamicThreadProperties.getType());
             try {
                 String applicationName = dynamicThreadProperties.getApplicationName();
@@ -62,14 +61,14 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, Applicatio
                 // 已经注册过
                 if (registryThreadPool != null) {
                     // 更新线程池
-                    dynamicThreadPoolRegistry.updateThreadPoolParameter(beanName, registryThreadPool);
+                    dtpRegistry.updateThreadPoolParameter(beanName, registryThreadPool);
                 } else {
                     // 发布注册信息
                     registry.reportThreadPool(ThreadPoolConfigEntity.buildThreadPoolConfigEntity(applicationName, beanName, threadPoolExecutor));
                     if (managementFeign != null) {
                         managementFeign.registryThreadPool(RegistryThreadPoolConfigVO.builder()
                                 .registryType(dynamicThreadProperties.getType())
-                                .addr(HTTP + InetAddress.getLocalHost().getHostAddress() + COLON + CONTEXT.getEnvironment().getProperty(ENV_PORT))
+                                .addr(HTTP + InetAddress.getLocalHost().getHostAddress() + COLON + ContextManagerHelper.getContext().getEnvironment().getProperty(ENV_PORT))
                                 .applicationName(applicationName)
                                 .threadPoolName(beanName)
                                 .corePoolSize(threadPoolExecutor.getCorePoolSize())
@@ -87,13 +86,7 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, Applicatio
                 throw new RuntimeException(e);
             }
         }
-
-
         return bean;
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        DynamicThreadPoolProcessor.CONTEXT = applicationContext;
-    }
 }

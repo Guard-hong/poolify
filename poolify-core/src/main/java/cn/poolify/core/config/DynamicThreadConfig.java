@@ -2,7 +2,7 @@ package cn.poolify.core.config;
 
 import cn.poolify.core.aop.DynamicThreadPoolProcessor;
 import cn.poolify.core.config.properties.DynamicThreadProperties;
-import cn.poolify.core.registry.DynamicThreadPoolRegistry;
+import cn.poolify.core.registry.DtpRegistry;
 import cn.poolify.core.registry.IRegistry;
 import cn.poolify.core.registry.impl.nacos.NacosRegistry;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,8 +25,8 @@ public class DynamicThreadConfig {
         return new NacosRegistry();
     }
     @Bean
-    public DynamicThreadPoolRegistry dynamicThreadPoolRegistry(DynamicThreadProperties dynamicThreadProperties){
-        return new DynamicThreadPoolRegistry(dynamicThreadProperties);
+    public DtpRegistry dynamicThreadPoolRegistry(DynamicThreadProperties dynamicThreadProperties){
+        return new DtpRegistry(dynamicThreadProperties);
     }
 
     @Bean
