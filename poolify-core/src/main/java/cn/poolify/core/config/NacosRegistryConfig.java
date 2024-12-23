@@ -1,8 +1,6 @@
 package cn.poolify.core.config;
 
 import cn.poolify.core.config.properties.NacosRegistryProperties;
-import cn.poolify.core.registry.DtpRegistry;
-import cn.poolify.core.trigger.listener.nacos.NacosThreadPoolConfigAdjustListener;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
@@ -20,14 +18,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(NacosRegistryProperties.class)
 public class NacosRegistryConfig {
-
-    @Bean
-    public NacosThreadPoolConfigAdjustListener nacosThreadPoolConfigAdjustListener(NacosRegistryProperties nacosRegistryProperties,
-                                                                                   ConfigService configService,
-                                                                                   DtpRegistry dtpRegistry){
-        return new NacosThreadPoolConfigAdjustListener(nacosRegistryProperties,configService, dtpRegistry);
-    }
-
 
 
     @Bean

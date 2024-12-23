@@ -12,6 +12,8 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.PriorityOrdered;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -23,7 +25,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  **/
 @Slf4j
 @Component
-public class DynamicThreadPoolProcessor implements BeanPostProcessor, BeanFactoryAware {
+public class DynamicThreadPoolProcessor implements BeanPostProcessor, BeanFactoryAware, PriorityOrdered {
 
     private DefaultListableBeanFactory factory;
 
@@ -56,5 +58,11 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, BeanFactor
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.factory = (DefaultListableBeanFactory)beanFactory;
+    }
+
+
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
     }
 }
