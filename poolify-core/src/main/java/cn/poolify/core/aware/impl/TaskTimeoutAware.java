@@ -1,7 +1,7 @@
 package cn.poolify.core.aware.impl;
 
 import cn.poolify.core.aware.ExecutorAware;
-import cn.poolify.core.monitor.ThreadPoolMonitor;
+import cn.poolify.core.monitor.ExecutorMonitor;
 import cn.poolify.core.registry.DtpRegistry;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -14,13 +14,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class TaskTimeoutAware implements ExecutorAware {
     @Override
     public void execute(ThreadPoolExecutor executor,Runnable r) {
-        ThreadPoolMonitor monitor = DtpRegistry.getThreadPoolMonitor(executor);
+        ExecutorMonitor monitor = DtpRegistry.getThreadPoolMonitor(executor);
         monitor.startQueueTimeoutTask(r);
     }
 
     @Override
     public Runnable beforeExecuteWrap(ThreadPoolExecutor executor, Runnable r, Thread t) {
-        ThreadPoolMonitor monitor = DtpRegistry.getThreadPoolMonitor(executor);
+        ExecutorMonitor monitor = DtpRegistry.getThreadPoolMonitor(executor);
         monitor.cancelQueueTimeoutTask(r);
         monitor.startRunTimeoutTask(t,r);
         return r;
@@ -28,7 +28,7 @@ public class TaskTimeoutAware implements ExecutorAware {
 
     @Override
     public Runnable afterExecutor(ThreadPoolExecutor executor, Runnable r) {
-        ThreadPoolMonitor monitor = DtpRegistry.getThreadPoolMonitor(executor);
+        ExecutorMonitor monitor = DtpRegistry.getThreadPoolMonitor(executor);
         monitor.cancelRunTimeoutTask(r);
         return r;
     }

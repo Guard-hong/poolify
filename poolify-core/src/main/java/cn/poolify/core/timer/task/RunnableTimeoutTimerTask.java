@@ -1,6 +1,6 @@
 package cn.poolify.core.timer.task;
 
-import cn.poolify.core.monitor.ThreadPoolMonitor;
+import cn.poolify.core.monitor.ExecutorMonitor;
 import cn.poolify.core.wrapper.ExecutorWrapper;
 
 /**
@@ -15,7 +15,7 @@ public class RunnableTimeoutTimerTask extends AbstractTimeoutTimerTask{
     }
 
     @Override
-    protected void doRun(ThreadPoolMonitor monitor) {
+    protected void doRun(ExecutorMonitor monitor) {
         // TODO: 报警
     }
 }

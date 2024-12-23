@@ -1,6 +1,6 @@
 package cn.poolify.core.timer.task;
 
-import cn.poolify.core.monitor.ThreadPoolMonitor;
+import cn.poolify.core.monitor.ExecutorMonitor;
 import cn.poolify.core.wrapper.ExecutorWrapper;
 import cn.poolify.core.timer.TimerTask;
 
@@ -24,10 +24,10 @@ public abstract class AbstractTimeoutTimerTask implements TimerTask{
 
     @Override
     public void run() {
-        ThreadPoolMonitor monitor = executorWrapper.getThreadPoolMonitor();
+        ExecutorMonitor monitor = executorWrapper.getExecutorMonitor();
         if(monitor == null) return ;
         doRun(monitor);
     }
 
-    protected abstract void doRun(ThreadPoolMonitor monitor);
+    protected abstract void doRun(ExecutorMonitor monitor);
 }

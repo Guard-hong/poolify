@@ -2,8 +2,6 @@ package cn.poolify.core.config;
 
 import cn.poolify.core.config.properties.ManagementProperties;
 import cn.poolify.core.feign.ManagementFeign;
-import cn.poolify.core.trigger.IThreadPoolDataCollectionJob;
-import cn.poolify.core.trigger.job.nacos.NacosThreadDataCollectionJob;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -27,10 +25,6 @@ public class ManagementConfig {
 //        return new NacosThreadDataCollectionJob(managementProperties, dynamicThreadPoolRegistry, webClient);
 //    }
 
-    @Bean
-    public IThreadPoolDataCollectionJob nacosThreadDataCollectionJob() {
-        return new NacosThreadDataCollectionJob();
-    }
     @Bean
     public WebClient webClient(ManagementProperties managementProperties) {
         return WebClient.builder()

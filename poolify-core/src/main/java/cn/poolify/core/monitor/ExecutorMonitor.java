@@ -13,7 +13,6 @@ import java.lang.ref.SoftReference;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -23,7 +22,7 @@ import java.util.concurrent.atomic.LongAdder;
  * @Description: jk
  **/
 @Data
-public class ThreadPoolMonitor {
+public class ExecutorMonitor {
 
     /**
      * 线程池增强
@@ -65,9 +64,14 @@ public class ThreadPoolMonitor {
      */
     private final Map<Runnable, SoftReference<Timeout>> runTimeoutMap = new ConcurrentHashMap<>();
 
-    public ThreadPoolMonitor(ExecutorWrapper executorWrapper) {
+    public ExecutorMonitor(ExecutorWrapper executorWrapper) {
+        this(executorWrapper,0,0);
+    }
+
+    public ExecutorMonitor(ExecutorWrapper executorWrapper, long queueTimeout, long runTimeout){
         this.executorWrapper = executorWrapper;
-        // TODO: 其他参数补充
+        this.queueTimeout = queueTimeout;
+        this.runTimeout = runTimeout;
     }
 
     public void startQueueTimeoutTask(Runnable r){

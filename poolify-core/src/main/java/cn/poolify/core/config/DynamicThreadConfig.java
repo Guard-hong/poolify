@@ -24,10 +24,6 @@ public class DynamicThreadConfig {
     public IRegistry nacos(){
         return new NacosRegistry();
     }
-    @Bean
-    public DtpRegistry dynamicThreadPoolRegistry(DynamicThreadProperties dynamicThreadProperties){
-        return new DtpRegistry(dynamicThreadProperties);
-    }
 
     @Bean
     public DynamicThreadPoolProcessor dynamicThreadPoolProcessor(){

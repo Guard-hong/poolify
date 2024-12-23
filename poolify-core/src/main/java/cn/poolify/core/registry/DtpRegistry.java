@@ -1,18 +1,12 @@
 package cn.poolify.core.registry;
 
-import cn.poolify.common.exception.DynamicThreadPoolException;
-import cn.poolify.common.exception.ErrorCode;
-import cn.poolify.core.config.properties.DynamicThreadProperties;
-import cn.poolify.core.monitor.ThreadPoolMonitor;
-import cn.poolify.core.registry.model.val.CollectionThreadPoolConfigVO;
-import cn.poolify.core.registry.model.entity.RegistryThreadPool;
+import cn.poolify.core.monitor.ExecutorMonitor;
+import cn.poolify.core.wrapper.ExecutorWrapper;
 import lombok.extern.slf4j.Slf4j;
-import sun.nio.ch.ThreadPool;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -24,64 +18,18 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Slf4j
 public class DtpRegistry {
 
-    private final DynamicThreadProperties dynamicThreadProperties;
-    private final Map<String, ThreadPoolExecutor> DYNAMIC_THREAD_POOLS = new ConcurrentHashMap<>();
-
-    private static final Map<ThreadPoolExecutor, ThreadPoolMonitor> MONITOR_MAP = new ConcurrentHashMap<>();
+    private static final Map<ThreadPoolExecutor, ExecutorWrapper> DYNAMIC_EXECUTORS = new ConcurrentHashMap<>();
 
 
-    public static ThreadPoolMonitor getThreadPoolMonitor(ThreadPoolExecutor executor){
-        return MONITOR_MAP.get(executor);
+
+    public static ExecutorMonitor getThreadPoolMonitor(ThreadPoolExecutor executor){
+        return Optional.ofNullable(DYNAMIC_EXECUTORS.get(executor))
+                .map(ExecutorWrapper::getExecutorMonitor)
+                .orElseThrow(()-> new NoSuchElementException("ExecutorMonitor not found"));
     }
-    public DtpRegistry(DynamicThreadProperties dynamicThreadProperties) {
-        this.dynamicThreadProperties = dynamicThreadProperties;
-    }
-
-    // 注册线程池
-    public void register(String threadPoolId, ThreadPoolExecutor executor) {
-        DYNAMIC_THREAD_POOLS.put(threadPoolId, executor);
+    public static void register(String poolName,ThreadPoolExecutor executor){
+        ExecutorWrapper executorWrapper = new ExecutorWrapper(executor);
+        DYNAMIC_EXECUTORS.putIfAbsent(executor,executorWrapper);
     }
 
-    // 获取线程池
-    public ThreadPoolExecutor getThreadPoolExecutor(String threadPoolId) {
-        return DYNAMIC_THREAD_POOLS.get(threadPoolId);
-    }
-
-    // 获取所有注册的线程池
-    public Map<String, ThreadPoolExecutor> getAllThreadPools() {
-        return Collections.unmodifiableMap(DYNAMIC_THREAD_POOLS);
-    }
-
-    /**
-     * 收集所有线程池参数
-     *
-     * @return
-     */
-    public List<CollectionThreadPoolConfigVO> getAllThreadPoolConfig() {
-        List<CollectionThreadPoolConfigVO> threadPoolConfigVOS = new ArrayList<>();
-        DYNAMIC_THREAD_POOLS.forEach((key, val) -> {
-            threadPoolConfigVOS.add(CollectionThreadPoolConfigVO.builder()
-                    .applicationName(dynamicThreadProperties.getApplicationName())
-                    .threadPoolName(key)
-                    .activeThreadCount(val.getActiveCount())
-                    .corePoolSize(val.getCorePoolSize())
-                    .maximumPoolSize(val.getMaximumPoolSize())
-                    .queueSize(val.getPoolSize())
-                    .completedTaskCount(val.getCompletedTaskCount())
-                    .build());
-        });
-        return threadPoolConfigVOS;
-    }
-
-    // 修改线程池参数
-    public void updateThreadPoolParameter(String threadPoolName, RegistryThreadPool registryThreadPool) {
-        try {
-            ThreadPoolExecutor threadPoolExecutor = getThreadPoolExecutor(threadPoolName);
-            threadPoolExecutor.setMaximumPoolSize(registryThreadPool.getMaximumPoolSize());
-            threadPoolExecutor.setCorePoolSize(registryThreadPool.getCorePoolSize());
-        } catch (NullPointerException e) {
-            log.error("线程池: {}不存在", threadPoolName);
-            throw new DynamicThreadPoolException(ErrorCode.THREAD_POOL_NOT_EXIST);
-        }
-    }
 }
