@@ -20,7 +20,8 @@ import java.util.concurrent.atomic.LongAdder;
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/21
- * @Description: jk
+ * @Description:
+ * TODO: 将属性移入到proxy中
  **/
 @Data
 public class ExecutorMonitor {

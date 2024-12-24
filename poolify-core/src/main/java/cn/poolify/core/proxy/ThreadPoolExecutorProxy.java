@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
  * @Author: HCJ
  * @DateTime: 2024/12/22
  * @Description:
+ * TODO: 再抽象一层，让proxy继承它
  **/
 @Slf4j
 public class ThreadPoolExecutorProxy extends ThreadPoolExecutor {
