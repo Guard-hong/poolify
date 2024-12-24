@@ -11,15 +11,14 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/17
- * @Description:
- * TODO: 状态管理
+ * @Description: TODO: 状态管理
  **/
 public class HashedWheelTimer implements Timer {
 
-    private static final int MAX_CAPACITY = 1<<30;
+    private static final int MAX_CAPACITY = 1 << 30;
     // 最大一个时钟走200ms
     private static final long MAX_TICK_DURATION = TimeUnit.MICROSECONDS.toNanos(200);
-    private static final long MAX_TIMEOUT_COUNT = 1<<30;
+    private static final long MAX_TIMEOUT_COUNT = 1 << 30;
 
 
     // 工作队列 -- 监控的线程池队列
@@ -40,34 +39,39 @@ public class HashedWheelTimer implements Timer {
     private volatile long startTime;
 
 
+    public HashedWheelTimer(
+            ThreadFactory threadFactory, long tickDuration, TimeUnit unit) {
+        this(threadFactory, tickDuration, unit, 512);
+    }
 
-    public HashedWheelTimer(ThreadFactory threadFactory,
-                            long tickDuration,
-                            TimeUnit unit,
-                            long maxPendingTimeoutsCount,
-                            int initialCapacity
-                            ){
+    public HashedWheelTimer(
+            ThreadFactory threadFactory,
+            long tickDuration, TimeUnit unit, int initialCapacity) {
+        this(threadFactory, tickDuration, unit, initialCapacity, -1);
+    }
+
+    public HashedWheelTimer(
+            ThreadFactory threadFactory,
+            long tickDuration,
+            TimeUnit unit,
+            int initialCapacity,
+            long maxPendingTimeoutsCount) {
         if (threadFactory == null) {
             throw new NullPointerException("threadFactory");
         }
         if (unit == null) {
             throw new NullPointerException("unit");
         }
-        if(maxPendingTimeoutsCount<0){
-            throw new IllegalStateException("maxPendingTimeoutsCount cannot be negative");
-        }
-        this.tickDuration = Math.min(MAX_TICK_DURATION,unit.toNanos(tickDuration));
-
-        this.maxPendingTimeoutsCount = Math.min(MAX_TIMEOUT_COUNT,maxPendingTimeoutsCount);
-
+        this.tickDuration = Math.min(MAX_TICK_DURATION, unit.toNanos(tickDuration));
+        this.maxPendingTimeoutsCount = maxPendingTimeoutsCount;
         // wheel 相关初始化
-        this.wheelBit = Integer.numberOfLeadingZeros(initialCapacity - 1)+1;
-        int cap = 1<<this.wheelBit;
-        if(cap>MAX_CAPACITY){
+        this.wheelBit = Integer.numberOfLeadingZeros(initialCapacity - 1) + 1;
+        int cap = 1 << this.wheelBit;
+        if (cap > MAX_CAPACITY) {
             throw new IllegalStateException("exceeding maximum capacity");
         }
         this.wheel = new HashedWheelBucket[cap];
-        this.mask = cap-1;
+        this.mask = cap - 1;
         initialWheel();
 
         // 构造扫描线程
@@ -217,7 +221,7 @@ public class HashedWheelTimer implements Timer {
         }
         // 判断队列中任务数是否大于最大任务数
         long pendingTimeoutsCount = incrementPendingTimeoutCount();
-        if(pendingTimeoutsCount>maxPendingTimeoutsCount){
+        if (maxPendingTimeoutsCount>0 && pendingTimeoutsCount > maxPendingTimeoutsCount) {
             decrementPendingTimeoutCount();
             throw new RejectedExecutionException("Number of pending timeouts ("
                     + pendingTimeoutsCount + ") is greater than or equal to maximum allowed pending "
@@ -234,7 +238,7 @@ public class HashedWheelTimer implements Timer {
         // TODO: 是否加一个状态用来标识【<0】情况
         //  特殊：加入到队列中，已经过期，但是还没到下一个时间片，外部任务执行结束调用cancel
         //  还是将这种特殊情况考虑到容错中，允许这种情况发生。即允许有1个时间片的容错
-        long deadline = unit.toNanos(delay)+System.nanoTime()-startTime;
+        long deadline = unit.toNanos(delay) + System.nanoTime() - startTime;
         HashedWheelTimeout timeout = new HashedWheelTimeout(this, task, deadline);
         timeouts.add(timeout);
         return timeout;
@@ -340,6 +344,7 @@ public class HashedWheelTimer implements Timer {
     private long decrementPendingTimeoutCount() {
         return pendingTimeoutsCount.decrementAndGet();
     }
+
     private long incrementPendingTimeoutCount() {
         return pendingTimeoutsCount.incrementAndGet();
     }
