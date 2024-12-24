@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.poolify.core.annotation.DtpBaseBeanDefinitionRegistrar,\
   cn.poolify.core.config.DynamicThreadConfig,\
   cn.poolify.core.config.NacosRegistryConfig,\
   cn.poolify.core.config.ManagementConfig
