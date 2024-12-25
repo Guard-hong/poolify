@@ -1,6 +1,6 @@
 package cn.poolify.core.annotation;
 
-import cn.poolify.core.proxy.ThreadPoolExecutorProxy;
+import cn.poolify.core.executor.ThreadPoolExecutorProxy;
 import cn.poolify.core.registry.DtpRegistry;
 import cn.poolify.core.wrapper.ExecutorWrapper;
 import lombok.extern.slf4j.Slf4j;

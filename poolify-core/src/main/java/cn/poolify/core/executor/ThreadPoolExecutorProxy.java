@@ -1,4 +1,4 @@
-package cn.poolify.core.proxy;
+package cn.poolify.core.executor;
 
 import cn.poolify.core.aware.AwareManager;
 import lombok.extern.slf4j.Slf4j;

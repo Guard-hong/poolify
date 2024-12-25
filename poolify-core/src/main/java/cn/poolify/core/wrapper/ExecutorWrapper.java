@@ -1,10 +1,8 @@
 package cn.poolify.core.wrapper;
 
 import cn.poolify.core.monitor.ExecutorMonitor;
-import cn.poolify.core.proxy.ThreadPoolExecutorProxy;
+import cn.poolify.core.executor.ThreadPoolExecutorProxy;
 import lombok.Data;
-
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @Author: HCJ

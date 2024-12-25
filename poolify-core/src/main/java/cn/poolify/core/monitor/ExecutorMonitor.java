@@ -1,7 +1,6 @@
 package cn.poolify.core.monitor;
 
 import cn.poolify.core.manager.ContextManagerHelper;
-import cn.poolify.core.proxy.ThreadPoolExecutorProxy;
 import cn.poolify.core.timer.HashedWheelTimer;
 import cn.poolify.core.timer.Timeout;
 import cn.poolify.core.timer.TimerTask;

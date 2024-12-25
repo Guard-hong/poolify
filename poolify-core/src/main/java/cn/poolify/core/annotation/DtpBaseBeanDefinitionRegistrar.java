@@ -1,6 +1,6 @@
 package cn.poolify.core.annotation;
 
-import cn.poolify.core.factory.DefaultThreadFactory;
+import cn.poolify.core.executor.DefaultThreadFactory;
 import cn.poolify.core.manager.ContextManagerHelper;
 import cn.poolify.core.timer.HashedWheelTimer;
 import cn.poolify.core.utils.BeanRegistrationUtil;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
