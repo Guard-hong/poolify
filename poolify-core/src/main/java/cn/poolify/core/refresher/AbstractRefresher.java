@@ -9,11 +9,10 @@ import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 
-import javax.swing.event.ChangeEvent;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static cn.poolify.core.constants.DtpConstants.MAIN_PROPERTIES_PREFIX;
+import static cn.poolify.core.constants.DtpConstants.DTP_EXECUTOR_PROP;
 
 /**
  * @Author: HCJ
@@ -58,7 +57,7 @@ public abstract class AbstractRefresher implements IRefresher, SmartApplicationL
             return false;
         }
         changedKeys = changedKeys.stream()
-                .filter(str -> str.startsWith(MAIN_PROPERTIES_PREFIX))
+                .filter(str -> str.startsWith(DTP_EXECUTOR_PROP))
                 .collect(Collectors.toSet());
         return !CollectionUtils.isEmpty(changedKeys);
     }

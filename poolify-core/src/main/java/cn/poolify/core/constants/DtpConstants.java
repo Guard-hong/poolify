@@ -8,4 +8,6 @@ package cn.poolify.core.constants;
 public interface DtpConstants {
 
     String MAIN_PROPERTIES_PREFIX = "poolify";
+
+    String DTP_EXECUTOR_PROP = MAIN_PROPERTIES_PREFIX +".executors";
 }
