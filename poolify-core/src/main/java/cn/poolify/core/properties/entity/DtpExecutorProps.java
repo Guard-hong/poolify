@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/25
- * @Description:
+ * @Description: 动态线程池属性
  * TODO: 配置默认值
  **/
 @Data
@@ -19,5 +19,4 @@ public class DtpExecutorProps {
     private TimeUnit unit;
     private long queueTimeout;
     private long runTimeout;
-
 }

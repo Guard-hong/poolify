@@ -11,7 +11,8 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/17
- * @Description: TODO: 状态管理
+ * @Description: 时间轮，用于任务等待超时和运行超时
+ * TODO: 状态管理
  **/
 public class HashedWheelTimer implements Timer {
 

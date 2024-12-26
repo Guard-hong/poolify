@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/25
- * @Description:
+ * @Description: 用于加载配置文件
  **/
 @Data
 public class DtpProperties {

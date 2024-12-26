@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.LongAdder;
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/26
- * @Description:
+ * @Description: 增强线程池基类
  **/
 @Getter
 @Slf4j
@@ -81,14 +81,6 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
         }).start();
     }
 
-
-    public void setRunTimeout(long runTimeout) {
-        this.runTimeout = runTimeout;
-    }
-
-    public void setQueueTimeout(long queueTimeout) {
-        this.queueTimeout = queueTimeout;
-    }
 
     public void startQueueTimeoutTask(Runnable r){
         // 设置的超时时间不符合

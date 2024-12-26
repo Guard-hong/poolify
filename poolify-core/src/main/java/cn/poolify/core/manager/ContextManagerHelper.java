@@ -28,7 +28,7 @@ import java.util.Objects;
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/21
- * @Description:
+ * @Description: 上下文管理
  **/
 @Slf4j
 public class ContextManagerHelper implements ApplicationContextAware {

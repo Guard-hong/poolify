@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * @Author: HCJ
  * @DateTime: 2024/9/14
- * @Description: 获取动态线程池
+ * @Description: 注册动态线程池
  **/
 @Slf4j
 @Component

@@ -3,7 +3,7 @@ package cn.poolify.core.constants;
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/26
- * @Description:
+ * @Description: 常量定义
  **/
 public interface DtpConstants {
 

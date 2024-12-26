@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/23
- * @Description:
+ * @Description: 加载依赖bean
  **/
 public class DtpBaseBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
 
