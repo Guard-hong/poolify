@@ -2,7 +2,6 @@ package cn.poolify.core.annotation;
 
 import cn.poolify.core.executor.ThreadPoolExecutorProxy;
 import cn.poolify.core.registry.DtpRegistry;
-import cn.poolify.core.wrapper.ExecutorWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -48,9 +47,7 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, BeanFactor
 
         // 2. 创建代理对象
         ThreadPoolExecutorProxy proxy = new ThreadPoolExecutorProxy(poolName,executor);
-        // 3. 注册
-        ExecutorWrapper executorWrapper = new ExecutorWrapper(proxy);
-        DtpRegistry.register(executorWrapper);
+        DtpRegistry.register(poolName,proxy);
         return proxy;
     }
 

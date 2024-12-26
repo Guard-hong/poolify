@@ -1,4 +1,4 @@
-package cn.poolify.core.monitor;
+package cn.poolify.core.executor;
 
 import cn.poolify.core.manager.ContextManagerHelper;
 import cn.poolify.core.timer.HashedWheelTimer;
@@ -6,29 +6,25 @@ import cn.poolify.core.timer.Timeout;
 import cn.poolify.core.timer.TimerTask;
 import cn.poolify.core.timer.task.QueueTimeoutTimerTask;
 import cn.poolify.core.timer.task.RunnableTimeoutTimerTask;
-import cn.poolify.core.wrapper.ExecutorWrapper;
-import lombok.Data;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.ref.SoftReference;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
  * @Author: HCJ
- * @DateTime: 2024/12/21
+ * @DateTime: 2024/12/26
  * @Description:
- * TODO: 将属性移入到proxy中
  **/
-@Data
-public class ExecutorMonitor {
-
-    /**
-     * 线程池增强
-     */
-    private ExecutorWrapper executorWrapper;
+@Getter
+@Slf4j
+public class ExecutorWrapper extends ThreadPoolExecutor {
 
     /**
      * 任务运行超时时间，单位ms
@@ -65,22 +61,40 @@ public class ExecutorMonitor {
      */
     private final Map<Runnable, SoftReference<Timeout>> runTimeoutMap = new ConcurrentHashMap<>();
 
-    public ExecutorMonitor(ExecutorWrapper executorWrapper) {
-        this(executorWrapper,executorWrapper.getExecutor().getQueueTimeout(),executorWrapper.getExecutor().getRunTimeout());
+
+    public ExecutorWrapper(String name,ThreadPoolExecutor originExecutor){
+        super(originExecutor.getCorePoolSize(), originExecutor.getMaximumPoolSize(),
+                originExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS), TimeUnit.MILLISECONDS,
+                originExecutor.getQueue(), originExecutor.getThreadFactory(),
+                originExecutor.getRejectedExecutionHandler());
+        allowCoreThreadTimeOut(originExecutor.allowsCoreThreadTimeOut());
+
+        // 关闭原有线程池
+        showdownAsync(name,originExecutor);
+        // 创建监控
     }
 
-    public ExecutorMonitor(ExecutorWrapper executorWrapper, long queueTimeout, long runTimeout){
-        this.executorWrapper = executorWrapper;
-        // TODO: 需要冗余吗？？还是从 executorWrapper 中取
-        this.queueTimeout = queueTimeout;
+    private static void showdownAsync(String name, ThreadPoolExecutor executor) {
+        new Thread(()->{
+            executor.shutdown();
+            log.info("ThreadPoolExecutor: {} showdown",name);
+        }).start();
+    }
+
+
+    public void setRunTimeout(long runTimeout) {
         this.runTimeout = runTimeout;
+    }
+
+    public void setQueueTimeout(long queueTimeout) {
+        this.queueTimeout = queueTimeout;
     }
 
     public void startQueueTimeoutTask(Runnable r){
         // 设置的超时时间不符合
         if(queueTimeout <= 0) return ;
         HashedWheelTimer timer = ContextManagerHelper.geBean(HashedWheelTimer.class);
-        TimerTask task = new QueueTimeoutTimerTask(executorWrapper,r);
+        TimerTask task = new QueueTimeoutTimerTask(this,r);
         queueTimeoutMap.put(r, new SoftReference<>(timer.createTimeout(task,queueTimeout, TimeUnit.MICROSECONDS)));
     }
     public void cancelQueueTimeoutTask(Runnable r){
@@ -94,7 +108,7 @@ public class ExecutorMonitor {
         // 设置的超时时间不符合
         if(runTimeout <= 0) return ;
         HashedWheelTimer timer = ContextManagerHelper.geBean(HashedWheelTimer.class);
-        TimerTask task = new RunnableTimeoutTimerTask(executorWrapper,r);
+        TimerTask task = new RunnableTimeoutTimerTask(this,r);
         runTimeoutMap.put(r, new SoftReference<>(timer.createTimeout(task,runTimeout, TimeUnit.MICROSECONDS)));
     }
 
@@ -103,5 +117,4 @@ public class ExecutorMonitor {
                 .map(SoftReference::get)
                 .ifPresent(Timeout::cancel);
     }
-
 }

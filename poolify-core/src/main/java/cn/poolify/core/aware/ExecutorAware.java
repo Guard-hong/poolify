@@ -1,6 +1,6 @@
 package cn.poolify.core.aware;
 
-import java.util.concurrent.ThreadPoolExecutor;
+import cn.poolify.core.executor.ExecutorWrapper;
 
 /**
  * @Author: HCJ
@@ -9,9 +9,9 @@ import java.util.concurrent.ThreadPoolExecutor;
  **/
 public interface ExecutorAware {
 
-    void  execute(ThreadPoolExecutor executor,Runnable r);
-    Runnable beforeExecuteWrap(ThreadPoolExecutor executor,Runnable r,Thread t);
+    void  execute(ExecutorWrapper executor, Runnable r);
+    Runnable beforeExecuteWrap(ExecutorWrapper executor,Runnable r,Thread t);
 
 
-    Runnable afterExecutor(ThreadPoolExecutor executor, Runnable r);
+    Runnable afterExecutor(ExecutorWrapper executor, Runnable r);
 }
