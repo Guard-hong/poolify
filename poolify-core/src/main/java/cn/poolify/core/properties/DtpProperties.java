@@ -12,6 +12,12 @@ import java.util.List;
  **/
 @Data
 public class DtpProperties {
-    private List<DtpExecutorProps> executorProps;
+    private List<DtpExecutorProps> executors;
 
+    public static DtpProperties getInstance() {
+        return Holder.INSTANCE;
+    }
+    private static class Holder{
+        private static final DtpProperties INSTANCE = new DtpProperties();
+    }
 }

@@ -1,11 +1,16 @@
 package cn.poolify.core.refresher;
 
 import cn.poolify.core.properties.DtpProperties;
+import cn.poolify.core.registry.DtpRegistry;
+import cn.poolify.core.utils.BinderUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.event.SmartApplicationListener;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 
@@ -13,6 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static cn.poolify.core.constants.DtpConstants.DTP_EXECUTOR_PROP;
+import static cn.poolify.core.constants.DtpConstants.MAIN_PROPERTIES_PREFIX;
 
 /**
  * @Author: HCJ
@@ -21,19 +27,26 @@ import static cn.poolify.core.constants.DtpConstants.DTP_EXECUTOR_PROP;
  **/
 public abstract class AbstractRefresher implements IRefresher, SmartApplicationListener,EnvironmentAware {
     private Environment environment;
-    @Override
-    public void refresh() {
-        DtpProperties dtpProperties = doParse();
-        doRefresh(dtpProperties);
+    private final DtpProperties dtpProperties;
+
+    public AbstractRefresher(DtpProperties dtpProperties) {
+        this.dtpProperties = dtpProperties;
     }
 
-    private void doRefresh(DtpProperties dtpProperties) {
-        // TODO: 刷新线程池
+    @Override
+    public void refresh() {
+        doBind();
+        doRefresh();
+    }
 
+    private void doRefresh() {
+        DtpRegistry.refresh(dtpProperties);
         // TODO: 通知
     }
 
-    protected abstract DtpProperties doParse();
+    protected void doBind(){
+        BinderUtils.bindDtpProperties(environment,dtpProperties);
+    }
 
     @Override
     public void setEnvironment(@NotNull Environment environment) {

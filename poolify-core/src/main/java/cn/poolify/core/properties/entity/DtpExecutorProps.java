@@ -1,5 +1,6 @@
 package cn.poolify.core.properties.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.concurrent.TimeUnit;
@@ -10,13 +11,22 @@ import java.util.concurrent.TimeUnit;
  * @Description: 动态线程池属性
  * TODO: 配置默认值
  **/
+@Builder
 @Data
 public class DtpExecutorProps {
+    private String threadPoolName;
     private long keepAliveTime;
     private boolean allowCoreThreadTimeOut;
-    private long corePoolSize;
-    private long maximumPoolSize;
+    private int corePoolSize;
+    private int maximumPoolSize;
     private TimeUnit unit;
     private long queueTimeout;
     private long runTimeout;
+
+    public boolean coreParamIsInValid() {
+        return this.getCorePoolSize() < 0
+                || this.getMaximumPoolSize() <= 0
+                || this.getMaximumPoolSize() < this.getCorePoolSize()
+                || this.getKeepAliveTime() < 0;
+    }
 }

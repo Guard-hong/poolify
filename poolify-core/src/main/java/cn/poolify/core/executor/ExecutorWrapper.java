@@ -27,6 +27,10 @@ import java.util.concurrent.atomic.LongAdder;
 public class ExecutorWrapper extends ThreadPoolExecutor {
 
     /**
+     * 线程池名称
+     */
+    private String threadPoolName;
+    /**
      * 任务运行超时时间，单位ms
      */
     private long runTimeout = 0;
@@ -61,17 +65,23 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
      */
     private final Map<Runnable, SoftReference<Timeout>> runTimeoutMap = new ConcurrentHashMap<>();
 
+    public void setRunTimeout(long runTimeout) {
+        this.runTimeout = runTimeout;
+    }
 
-    public ExecutorWrapper(String name,ThreadPoolExecutor originExecutor){
+    public void setQueueTimeout(long queueTimeout) {
+        this.queueTimeout = queueTimeout;
+    }
+
+    public ExecutorWrapper(String name, ThreadPoolExecutor originExecutor){
         super(originExecutor.getCorePoolSize(), originExecutor.getMaximumPoolSize(),
                 originExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS), TimeUnit.MILLISECONDS,
                 originExecutor.getQueue(), originExecutor.getThreadFactory(),
                 originExecutor.getRejectedExecutionHandler());
         allowCoreThreadTimeOut(originExecutor.allowsCoreThreadTimeOut());
-
+        this.threadPoolName = name;
         // 关闭原有线程池
         showdownAsync(name,originExecutor);
-        // 创建监控
     }
 
     private static void showdownAsync(String name, ThreadPoolExecutor executor) {
@@ -109,4 +119,7 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
                 .map(SoftReference::get)
                 .ifPresent(Timeout::cancel);
     }
+
+
+
 }

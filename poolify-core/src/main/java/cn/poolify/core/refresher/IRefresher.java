@@ -7,5 +7,7 @@ package cn.poolify.core.refresher;
  **/
 public interface IRefresher {
 
+    String mark();
+
     void refresh();
 }
