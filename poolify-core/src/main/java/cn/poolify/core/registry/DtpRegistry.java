@@ -1,5 +1,6 @@
 package cn.poolify.core.registry;
 
+import cn.poolify.core.executor.ExecutorConverter;
 import cn.poolify.core.executor.ExecutorWrapper;
 import cn.poolify.core.properties.DtpProperties;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
@@ -44,7 +45,7 @@ public class DtpRegistry {
 
 
     /**
-     * // TODO: 添加差异日志
+     *
      * @param executorWrapper
      * @param props
      */
@@ -53,7 +54,15 @@ public class DtpRegistry {
             log.error("DynamicTp refresh, invalid parameters exist, properties: {}", props);
             return;
         }
+        DtpExecutorProps oldProps = ExecutorConverter.toDtpExecutorProps(executorWrapper);
         doRefresh(executorWrapper, props);
+        DtpExecutorProps newProps = ExecutorConverter.toDtpExecutorProps(executorWrapper);
+        if (oldProps.equals(newProps)){
+            log.debug("DynamicTp refresh, main properties of [{}] have not changed.",
+                    executorWrapper.getThreadPoolName());
+            return;
+        }
+        // TODO: 更新差异日志
     }
 
     private static void doRefresh(ExecutorWrapper executor, DtpExecutorProps props) {

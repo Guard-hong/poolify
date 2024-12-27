@@ -1,5 +1,6 @@
 package cn.poolify.core.properties.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.concurrent.TimeUnit;
@@ -10,6 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @Description: 动态线程池属性
  * TODO: 配置默认值
  **/
+@Builder
 @Data
 public class DtpExecutorProps {
     private String threadPoolName;
