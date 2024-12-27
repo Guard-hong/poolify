@@ -1,9 +1,14 @@
 package cn.poolify.core.registry;
 
 import cn.poolify.core.executor.ExecutorWrapper;
+import cn.poolify.core.properties.DtpProperties;
+import cn.poolify.core.properties.entity.DtpExecutorProps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -18,6 +23,68 @@ public class DtpRegistry {
 
     public static void register(String poolName,ExecutorWrapper executorWrapper){
         DYNAMIC_EXECUTORS.putIfAbsent(poolName,executorWrapper);
+    }
+
+    public static void refresh(DtpProperties dtpProperties){
+        dtpProperties.getExecutors().forEach(DtpRegistry::refresh);
+    }
+
+    private static void refresh(DtpExecutorProps props) {
+        if (Objects.isNull(props) || StringUtils.isBlank(props.getThreadPoolName())) {
+            log.warn("DynamicTp refresh, thread pool name must not be blank, executorProps: {}", props);
+            return;
+        }
+        ExecutorWrapper executorWrapper = DYNAMIC_EXECUTORS.get(props.getThreadPoolName());
+        if (Objects.nonNull(executorWrapper)) {
+            refresh(executorWrapper, props);
+            return;
+        }
+        log.warn("DynamicTp refresh, cannot find specified executor, name: {}.", props.getThreadPoolName());
+    }
+
+
+    /**
+     * // TODO: 添加差异日志
+     * @param executorWrapper
+     * @param props
+     */
+    private static void refresh(ExecutorWrapper executorWrapper, DtpExecutorProps props) {
+        if (props.coreParamIsInValid()) {
+            log.error("DynamicTp refresh, invalid parameters exist, properties: {}", props);
+            return;
+        }
+        doRefresh(executorWrapper, props);
+    }
+
+    private static void doRefresh(ExecutorWrapper executor, DtpExecutorProps props) {
+        if(!Objects.equals(executor.getRunTimeout(),props.getRunTimeout())){
+            executor.setRunTimeout(props.getRunTimeout());
+        }
+        if(!Objects.equals(executor.getQueueTimeout(),props.getQueueTimeout())){
+            executor.setQueueTimeout(props.getQueueTimeout());
+        }
+        doRefreshPoolSize(executor,props);
+        if (!Objects.equals(executor.getKeepAliveTime(props.getUnit()), props.getKeepAliveTime())) {
+            executor.setKeepAliveTime(props.getKeepAliveTime(), props.getUnit());
+        }
+    }
+
+    private static void doRefreshPoolSize(ExecutorWrapper executor, DtpExecutorProps props) {
+        if (props.getMaximumPoolSize() < executor.getMaximumPoolSize()) {
+            if (!Objects.equals(executor.getCorePoolSize(), props.getCorePoolSize())) {
+                executor.setCorePoolSize(props.getCorePoolSize());
+            }
+            if (!Objects.equals(executor.getMaximumPoolSize(), props.getMaximumPoolSize())) {
+                executor.setMaximumPoolSize(props.getMaximumPoolSize());
+            }
+            return;
+        }
+        if (!Objects.equals(executor.getMaximumPoolSize(), props.getMaximumPoolSize())) {
+            executor.setMaximumPoolSize(props.getMaximumPoolSize());
+        }
+        if (!Objects.equals(executor.getCorePoolSize(), props.getCorePoolSize())) {
+            executor.setCorePoolSize(props.getCorePoolSize());
+        }
     }
 
 }

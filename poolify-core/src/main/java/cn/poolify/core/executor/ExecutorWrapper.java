@@ -61,8 +61,15 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
      */
     private final Map<Runnable, SoftReference<Timeout>> runTimeoutMap = new ConcurrentHashMap<>();
 
+    public void setRunTimeout(long runTimeout) {
+        this.runTimeout = runTimeout;
+    }
 
-    public ExecutorWrapper(String name,ThreadPoolExecutor originExecutor){
+    public void setQueueTimeout(long queueTimeout) {
+        this.queueTimeout = queueTimeout;
+    }
+
+    public ExecutorWrapper(String name, ThreadPoolExecutor originExecutor){
         super(originExecutor.getCorePoolSize(), originExecutor.getMaximumPoolSize(),
                 originExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS), TimeUnit.MILLISECONDS,
                 originExecutor.getQueue(), originExecutor.getThreadFactory(),
@@ -109,4 +116,5 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
                 .map(SoftReference::get)
                 .ifPresent(Timeout::cancel);
     }
+
 }
