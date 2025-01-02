@@ -1,5 +1,6 @@
 package cn.poolify.core.executor;
 
+import cn.poolify.core.aware.AwareManager;
 import cn.poolify.core.manager.ContextManagerHelper;
 import cn.poolify.core.timer.HashedWheelTimer;
 import cn.poolify.core.timer.Timeout;
@@ -25,6 +26,7 @@ import java.util.concurrent.atomic.LongAdder;
 @Slf4j
 public class ExecutorWrapper extends ThreadPoolExecutor {
 
+    public Object getOpenTimeout;
     /**
      * 线程池名称
      */
@@ -69,10 +71,11 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
 
     /**
      * 用于代理
+     *
      * @param name
      * @param originExecutor
      */
-    public ExecutorWrapper(String name, ThreadPoolExecutor originExecutor){
+    public ExecutorWrapper(String name, ThreadPoolExecutor originExecutor) {
         this(originExecutor.getCorePoolSize(), originExecutor.getMaximumPoolSize(),
                 originExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS), TimeUnit.MILLISECONDS,
                 originExecutor.getQueue(), originExecutor.getThreadFactory(),
@@ -80,11 +83,12 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
         allowCoreThreadTimeOut(originExecutor.allowsCoreThreadTimeOut());
         this.threadPoolName = name;
         // 关闭原有线程池
-        showdownAsync(name,originExecutor);
+        showdownAsync(name, originExecutor);
     }
 
     /**
      * 用于配置创建
+     *
      * @param corePoolSize
      * @param maximumPoolSize
      * @param keepAliveTime
@@ -99,43 +103,71 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, queue, factory, rejectedExecutionHandler);
     }
 
+    /**
+     * use proxy,add runTimeout and queueTimeout
+     *
+     * @param name
+     * @param originExecutor
+     */
+    public ExecutorWrapper(String name, long runTimeout, long queueTimeout, ThreadPoolExecutor originExecutor) {
+        this(name, originExecutor);
+        this.runTimeout = runTimeout;
+        this.queueTimeout = queueTimeout;
+    }
+
+    @Override
+    public void execute(Runnable command) {
+        AwareManager.executor(this, command);
+        super.execute(command);
+    }
+
+    @Override
+    protected void beforeExecute(Thread t, Runnable r) {
+        AwareManager.beforeExecutor(this, r, t);
+        super.beforeExecute(t, r);
+    }
+
+    @Override
+    protected void afterExecute(Runnable r, Throwable t) {
+        AwareManager.afterExecutor(this, r);
+        super.afterExecute(r, t);
+    }
 
     private static void showdownAsync(String name, ThreadPoolExecutor executor) {
-        new Thread(()->{
+        new Thread(() -> {
             executor.shutdown();
-            log.info("ThreadPoolExecutor: {} showdown",name);
+            log.info("ThreadPoolExecutor: {} showdown", name);
         }).start();
     }
 
 
-    public void startQueueTimeoutTask(Runnable r){
+    public void startQueueTimeoutTask(Runnable r) {
         // 设置的超时时间不符合
-        if(queueTimeout <= 0) return ;
+        if (queueTimeout <= 0) return;
         HashedWheelTimer timer = ContextManagerHelper.geBean(HashedWheelTimer.class);
-        TimerTask task = new QueueTimeoutTimerTask(this,r);
-        queueTimeoutMap.put(r, new SoftReference<>(timer.createTimeout(task,queueTimeout, TimeUnit.MICROSECONDS)));
+        TimerTask task = new QueueTimeoutTimerTask(this, r);
+        queueTimeoutMap.put(r, new SoftReference<>(timer.createTimeout(task, queueTimeout, TimeUnit.MICROSECONDS)));
     }
-    public void cancelQueueTimeoutTask(Runnable r){
+
+    public void cancelQueueTimeoutTask(Runnable r) {
         Optional.ofNullable(queueTimeoutMap.get(r))
                 .map(SoftReference::get)
                 .ifPresent(Timeout::cancel);
     }
 
 
-    public void startRunTimeoutTask(Thread t,Runnable r){
+    public void startRunTimeoutTask(Thread t, Runnable r) {
         // 设置的超时时间不符合
-        if(runTimeout <= 0) return ;
+        if (runTimeout <= 0) return;
         HashedWheelTimer timer = ContextManagerHelper.geBean(HashedWheelTimer.class);
-        TimerTask task = new RunnableTimeoutTimerTask(this,r);
-        runTimeoutMap.put(r, new SoftReference<>(timer.createTimeout(task,runTimeout, TimeUnit.MICROSECONDS)));
+        TimerTask task = new RunnableTimeoutTimerTask(this, r);
+        runTimeoutMap.put(r, new SoftReference<>(timer.createTimeout(task, runTimeout, TimeUnit.MICROSECONDS)));
     }
 
-    public void cancelRunTimeoutTask(Runnable r){
+    public void cancelRunTimeoutTask(Runnable r) {
         Optional.ofNullable(runTimeoutMap.get(r))
                 .map(SoftReference::get)
                 .ifPresent(Timeout::cancel);
     }
-
-
 
 }

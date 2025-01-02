@@ -1,6 +1,6 @@
 package cn.poolify.core.annotation;
 
-import cn.poolify.core.executor.ThreadPoolExecutorProxy;
+import cn.poolify.core.executor.ExecutorProxy;
 import cn.poolify.core.registry.DtpRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -40,12 +40,14 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, BeanFactor
         }
         String dtpAnnoValue = dynamicThreadPool.value();
         String poolName = StringUtils.isNotBlank(dtpAnnoValue) ? dtpAnnoValue : beanName;
-        return doRegisterAndProxy(poolName,(ThreadPoolExecutor)bean);
+        return doRegisterAndProxy(poolName,(ThreadPoolExecutor)bean,
+                dynamicThreadPool.runTimeout(),
+                dynamicThreadPool.queueTimeout());
     }
 
-    private Object doRegisterAndProxy(String poolName,ThreadPoolExecutor executor) {
+    private Object doRegisterAndProxy(String poolName,ThreadPoolExecutor executor,long runTimeout,long queueTimeout) {
         // 1. 创建代理对象
-        ThreadPoolExecutorProxy proxy = new ThreadPoolExecutorProxy(poolName,executor);
+        ExecutorProxy proxy = ExecutorProxy.of(poolName,executor,runTimeout,queueTimeout);
         DtpRegistry.register(poolName,proxy);
         return proxy;
     }
