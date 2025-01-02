@@ -1,5 +1,8 @@
 package cn.poolify.core.test.starter.controller;
 
+import cn.poolify.core.executor.ExecutorConverter;
+import cn.poolify.core.executor.ExecutorWrapper;
+import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.test.starter.model.ThreadPoolEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +27,8 @@ public class ThreadPoolTestController {
     @Resource
     private Map<String, ThreadPoolExecutor> threadPoolExecutorMap;
 
+    @Resource
+    private ThreadPoolExecutor dtp1;
     @GetMapping("/getThreadPoolList")
     public List<ThreadPoolEntity> ThreadPoolList(){
         ArrayList<ThreadPoolEntity> threadPoolEntities = new ArrayList<>();
@@ -40,5 +45,11 @@ public class ThreadPoolTestController {
     @GetMapping
     public String test(){
         return "test";
+    }
+
+    @GetMapping("dtp1")
+    public String getDtp1(){
+        DtpExecutorProps dtpExecutorProps = ExecutorConverter.toDtpExecutorProps((ExecutorWrapper) dtp1);
+        return "dtp1";
     }
 }
