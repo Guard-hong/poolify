@@ -13,4 +13,7 @@ import java.lang.annotation.*;
 public @interface DynamicThreadPool {
 
     String value() default "";
+
+    long runTimeout() default 0L;
+    long queueTimeout() default 0L;
 }
