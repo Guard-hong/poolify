@@ -16,14 +16,16 @@ public class ExecutorConverter {
     ;
 
     public static DtpExecutorProps toDtpExecutorProps(ExecutorWrapper executor) {
-        return DtpExecutorProps.builder()
-                .threadPoolName(executor.toString())
-                .corePoolSize(executor.getCorePoolSize())
-                .maximumPoolSize(executor.getMaximumPoolSize())
-                .keepAliveTime(executor.getKeepAliveTime(TimeUnit.SECONDS))
-                .allowCoreThreadTimeOut(executor.allowsCoreThreadTimeOut())
-                .queueTimeout(executor.getQueueTimeout())
-                .runTimeout(executor.getRunTimeout())
-                .build();
+        DtpExecutorProps dtpExecutorProps = new DtpExecutorProps();
+        dtpExecutorProps.setThreadPoolName(executor.getThreadPoolName());
+        dtpExecutorProps.setQueueTimeout(executor.getQueueTimeout());
+        dtpExecutorProps.setRunTimeout(executor.getRunTimeout());
+        dtpExecutorProps.setKeepAliveTime(executor.getKeepAliveTime(TimeUnit.SECONDS));
+        dtpExecutorProps.setAllowCoreThreadTimeOut(false);
+        dtpExecutorProps.setCorePoolSize(executor.getCorePoolSize());
+        dtpExecutorProps.setMaximumPoolSize(executor.getMaximumPoolSize());
+        dtpExecutorProps.setAllowCoreThreadTimeOut(executor.allowsCoreThreadTimeOut());
+
+        return dtpExecutorProps;
     }
 }

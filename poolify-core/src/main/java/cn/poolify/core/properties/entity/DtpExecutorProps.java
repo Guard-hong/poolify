@@ -11,22 +11,11 @@ import java.util.concurrent.TimeUnit;
  * @Description: 动态线程池属性
  * TODO: 配置默认值
  **/
-@Builder
 @Data
-public class DtpExecutorProps {
+public class DtpExecutorProps extends TpExecutorProps{
     private String threadPoolName;
-    private long keepAliveTime;
-    private boolean allowCoreThreadTimeOut;
-    private int corePoolSize;
-    private int maximumPoolSize;
-    private TimeUnit unit;
+    private String executorType;
     private long queueTimeout;
     private long runTimeout;
 
-    public boolean coreParamIsInValid() {
-        return this.getCorePoolSize() < 0
-                || this.getMaximumPoolSize() <= 0
-                || this.getMaximumPoolSize() < this.getCorePoolSize()
-                || this.getKeepAliveTime() < 0;
-    }
 }

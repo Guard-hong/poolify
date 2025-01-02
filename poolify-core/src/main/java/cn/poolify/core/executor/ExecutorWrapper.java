@@ -7,14 +7,13 @@ import cn.poolify.core.timer.TimerTask;
 import cn.poolify.core.timer.task.QueueTimeoutTimerTask;
 import cn.poolify.core.timer.task.RunnableTimeoutTimerTask;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.ref.SoftReference;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
@@ -29,15 +28,18 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
     /**
      * 线程池名称
      */
+    @Setter
     private String threadPoolName;
     /**
      * 任务运行超时时间，单位ms
      */
+    @Setter
     private long runTimeout = 0;
 
     /**
      * 任务等待超时时间，单位ms
      */
+    @Setter
     private long queueTimeout = 0;
 
     /**
@@ -65,16 +67,13 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
      */
     private final Map<Runnable, SoftReference<Timeout>> runTimeoutMap = new ConcurrentHashMap<>();
 
-    public void setRunTimeout(long runTimeout) {
-        this.runTimeout = runTimeout;
-    }
-
-    public void setQueueTimeout(long queueTimeout) {
-        this.queueTimeout = queueTimeout;
-    }
-
+    /**
+     * 用于代理
+     * @param name
+     * @param originExecutor
+     */
     public ExecutorWrapper(String name, ThreadPoolExecutor originExecutor){
-        super(originExecutor.getCorePoolSize(), originExecutor.getMaximumPoolSize(),
+        this(originExecutor.getCorePoolSize(), originExecutor.getMaximumPoolSize(),
                 originExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS), TimeUnit.MILLISECONDS,
                 originExecutor.getQueue(), originExecutor.getThreadFactory(),
                 originExecutor.getRejectedExecutionHandler());
@@ -83,6 +82,23 @@ public class ExecutorWrapper extends ThreadPoolExecutor {
         // 关闭原有线程池
         showdownAsync(name,originExecutor);
     }
+
+    /**
+     * 用于配置创建
+     * @param corePoolSize
+     * @param maximumPoolSize
+     * @param keepAliveTime
+     * @param unit
+     * @param queue
+     * @param factory
+     * @param rejectedExecutionHandler
+     */
+    public ExecutorWrapper(int corePoolSize, int maximumPoolSize, long keepAliveTime,
+                           TimeUnit unit, BlockingQueue<Runnable> queue, ThreadFactory factory,
+                           RejectedExecutionHandler rejectedExecutionHandler) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, queue, factory, rejectedExecutionHandler);
+    }
+
 
     private static void showdownAsync(String name, ThreadPoolExecutor executor) {
         new Thread(()->{

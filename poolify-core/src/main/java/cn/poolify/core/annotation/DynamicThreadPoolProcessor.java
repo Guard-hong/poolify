@@ -20,6 +20,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Author: HCJ
  * @DateTime: 2024/9/14
  * @Description: 注册动态线程池
+ * TODO: 考虑去掉使用注解方式来管理线程池
  **/
 @Slf4j
 @Component
@@ -43,9 +44,7 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, BeanFactor
     }
 
     private Object doRegisterAndProxy(String poolName,ThreadPoolExecutor executor) {
-        // TODO: 1.从配置文件中读取线程池相关参数替换线程池中的参数
-
-        // 2. 创建代理对象
+        // 1. 创建代理对象
         ThreadPoolExecutorProxy proxy = new ThreadPoolExecutorProxy(poolName,executor);
         DtpRegistry.register(poolName,proxy);
         return proxy;

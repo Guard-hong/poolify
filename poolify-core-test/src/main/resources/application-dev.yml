@@ -1,16 +1,12 @@
-# 线程池配置
-thread:
-  pool:
-    executor:
-      config:
-        core-pool-size: 20
-        max-pool-size: 50
-        keep-alive-time: 5000
-        block-queue-size: 5000
-        policy: CallerRunsPolicy
-
 # 动态线程池配置
 poolify:
+  executors:
+    - thread-pool-name: dtp1
+      queue-timeout: 100
+      run-timeout: 100
+      core-pool-size: 10
+      maximum-pool-size: 20
+      keep-alive-time: 100
   management:
     enabled: true
     addr: http://localhost:8091
