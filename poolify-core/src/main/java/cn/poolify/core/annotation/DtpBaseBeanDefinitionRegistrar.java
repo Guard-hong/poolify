@@ -4,11 +4,12 @@ import cn.poolify.core.executor.DefaultThreadFactory;
 import cn.poolify.core.manager.ContextManagerHelper;
 import cn.poolify.core.timer.HashedWheelTimer;
 import cn.poolify.core.utils.BeanRegistrationUtil;
-import com.alibaba.nacos.shaded.com.google.common.collect.Lists;
+import cn.poolify.core.utils.CollectionUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,7 +35,7 @@ public class DtpBaseBeanDefinitionRegistrar implements ImportBeanDefinitionRegis
 
         // 在 ExecutorMonitor 的执行方法中，contextManagerHelper 和 HashedWheelTimer 是必需的，所以必须先注册它们
         BeanRegistrationUtil.registerIfAbsent(registry, DTP_POST_PROCESSOR, DynamicThreadPoolProcessor.class,
-                null, Lists.newArrayList(CONTEXT_MANAGER_HELPER, HASHED_WHEEL_TIMER));
+                null, CollectionUtils.newList(new String[]{CONTEXT_MANAGER_HELPER, HASHED_WHEEL_TIMER}));
     }
 
     private void registerHashedWheelTimer(BeanDefinitionRegistry registry) {

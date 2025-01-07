@@ -1,6 +1,5 @@
 package cn.poolify.core.utils;
 
-import com.alibaba.nacos.common.utils.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.ListableBeanFactory;

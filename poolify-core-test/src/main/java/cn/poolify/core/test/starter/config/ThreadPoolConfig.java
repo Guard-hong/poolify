@@ -38,7 +38,7 @@ public class ThreadPoolConfig {
     }
 
     @Bean
-//    @DynamicThreadPool
+    @DynamicThreadPool(value="dtp3",runTimeout = 50L,queueTimeout = 50L)
     public ThreadPoolExecutor threadPoolExecutor03() {
         return new ThreadPoolExecutor(
                 5,5,5,

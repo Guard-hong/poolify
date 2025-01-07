@@ -4,7 +4,6 @@ import cn.poolify.core.executor.ExecutorProxy;
 import cn.poolify.core.registry.DtpRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -29,7 +28,7 @@ public class DynamicThreadPoolProcessor implements BeanPostProcessor, BeanFactor
     private DefaultListableBeanFactory factory;
 
     @Override
-    public Object postProcessAfterInitialization(Object bean, @NotNull String beanName) throws BeansException {
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         // 使用了注解和类型为ThreadPoolExecutor被管理
         if (!(bean instanceof ThreadPoolExecutor)) {
             return bean;

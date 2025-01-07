@@ -29,6 +29,8 @@ public class ThreadPoolTestController {
 
     @Resource
     private ThreadPoolExecutor dtp1;
+//    @Resource
+//    private ThreadPoolExecutor dtp3;
     @GetMapping("/getThreadPoolList")
     public List<ThreadPoolEntity> ThreadPoolList(){
         ArrayList<ThreadPoolEntity> threadPoolEntities = new ArrayList<>();
@@ -52,4 +54,9 @@ public class ThreadPoolTestController {
         DtpExecutorProps dtpExecutorProps = ExecutorConverter.toDtpExecutorProps((ExecutorWrapper) dtp1);
         return "dtp1";
     }
+//    @GetMapping("dtp3")
+//    public String getDtp3(){
+//        DtpExecutorProps dtpExecutorProps = ExecutorConverter.toDtpExecutorProps((ExecutorWrapper) dtp3);
+//        return "dtp3";
+//    }
 }

@@ -21,16 +21,16 @@ poolify:
     context-path: /api
 spring:
   name: testApplicationName
-  datasource:
-    url: jdbc:mysql://localhost:3306/poolify?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
-    username: root
-    password: hcj
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  cloud:
-    nacos:
-      config:
-        server-addr: localhost:8848
-        import-check:
-          enabled: false
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/poolify?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+#    username: root
+#    password: hcj
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  cloud:
+#    nacos:
+#      config:
+#        server-addr: localhost:8848
+#        import-check:
+#          enabled: false
 
 

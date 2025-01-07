@@ -6,14 +6,13 @@ import cn.poolify.core.properties.DtpProperties;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.utils.BeanRegistrationUtil;
 import cn.poolify.core.utils.BinderUtils;
-import com.alibaba.nacos.shaded.com.google.common.collect.Maps;
+import cn.poolify.core.utils.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -78,7 +77,7 @@ public class DtpBeanDefinitionRegister implements ImportBeanDefinitionRegistrar,
      * @return
      */
     private Map<String, Object> buildPropertyValues(DtpExecutorProps props) {
-        Map<String, Object> propertyValues = Maps.newHashMap();
+        Map<String, Object> propertyValues = CollectionUtils.newHashMap();
         propertyValues.put(THREAD_POOL_NAME, props.getThreadPoolName());
         propertyValues.put(RUN_TIMEOUT, props.getRunTimeout());
         propertyValues.put(QUEUE_TIMEOUT, props.getQueueTimeout());
