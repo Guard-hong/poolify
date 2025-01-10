@@ -1,7 +1,7 @@
 package cn.poolify.core.refresher;
 
+import cn.poolify.core.executor.DtpRegistry;
 import cn.poolify.core.properties.DtpProperties;
-import cn.poolify.core.registry.DtpRegistry;
 import cn.poolify.core.utils.BinderUtils;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.context.ApplicationEvent;
