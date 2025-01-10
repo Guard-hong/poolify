@@ -1,4 +1,4 @@
-package cn.poolify.core.executor;
+package cn.poolify.core.executor.wrapper;
 
 import cn.poolify.core.aware.AwareManager;
 import cn.poolify.core.manager.ContextManagerHelper;

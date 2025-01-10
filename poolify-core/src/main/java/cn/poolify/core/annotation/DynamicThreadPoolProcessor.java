@@ -1,7 +1,7 @@
 package cn.poolify.core.annotation;
 
-import cn.poolify.core.executor.ExecutorProxy;
-import cn.poolify.core.registry.DtpRegistry;
+import cn.poolify.core.executor.wrapper.ExecutorProxy;
+import cn.poolify.core.executor.DtpRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;

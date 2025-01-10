@@ -1,7 +1,7 @@
 package cn.poolify.core.aware;
 
 import cn.poolify.core.aware.impl.TaskTimeoutAware;
-import cn.poolify.core.executor.ExecutorWrapper;
+import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 
 /**
  * @Author: HCJ

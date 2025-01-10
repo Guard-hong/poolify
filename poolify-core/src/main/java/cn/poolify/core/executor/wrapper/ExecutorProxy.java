@@ -1,6 +1,5 @@
-package cn.poolify.core.executor;
+package cn.poolify.core.executor.wrapper;
 
-import cn.poolify.core.aware.AwareManager;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ThreadPoolExecutor;

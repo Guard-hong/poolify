@@ -1,13 +1,11 @@
-package cn.poolify.core.registry;
+package cn.poolify.core.executor;
 
-import cn.poolify.core.executor.ExecutorConverter;
-import cn.poolify.core.executor.ExecutorWrapper;
+import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.properties.DtpProperties;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;

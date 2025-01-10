@@ -1,7 +1,7 @@
 package cn.poolify.core.test.starter.controller;
 
 import cn.poolify.core.executor.ExecutorConverter;
-import cn.poolify.core.executor.ExecutorWrapper;
+import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.test.starter.model.ThreadPoolEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

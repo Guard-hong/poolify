@@ -1,7 +1,7 @@
 package cn.poolify.core.aware.impl;
 
 import cn.poolify.core.aware.ExecutorAware;
-import cn.poolify.core.executor.ExecutorWrapper;
+import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 
 /**
  * @Author: HCJ

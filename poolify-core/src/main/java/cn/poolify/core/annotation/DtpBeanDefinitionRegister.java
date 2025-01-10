@@ -1,7 +1,7 @@
 package cn.poolify.core.annotation;
 
-import cn.poolify.core.executor.DefaultThreadFactory;
-import cn.poolify.core.executor.ExecutorType;
+import cn.poolify.core.executor.factory.DefaultThreadFactory;
+import cn.poolify.core.executor.wrapper.ExecutorType;
 import cn.poolify.core.properties.DtpProperties;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.utils.BeanRegistrationUtil;

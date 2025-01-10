@@ -1,5 +1,6 @@
 package cn.poolify.core.executor;
 
+import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
 
 import java.util.concurrent.TimeUnit;

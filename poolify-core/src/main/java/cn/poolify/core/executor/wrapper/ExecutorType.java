@@ -1,4 +1,4 @@
-package cn.poolify.core.executor;
+package cn.poolify.core.executor.wrapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
