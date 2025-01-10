@@ -1,6 +1,6 @@
 package cn.poolify.core.timer.task;
 
-import cn.poolify.core.executor.ExecutorWrapper;
+import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.timer.TimerTask;
 
 /**

@@ -1,4 +1,4 @@
-package cn.poolify.core.executor;
+package cn.poolify.core.executor.factory;
 
 import java.util.concurrent.ThreadFactory;
 

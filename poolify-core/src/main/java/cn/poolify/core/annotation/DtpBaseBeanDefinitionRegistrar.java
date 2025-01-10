@@ -1,6 +1,6 @@
 package cn.poolify.core.annotation;
 
-import cn.poolify.core.executor.DefaultThreadFactory;
+import cn.poolify.core.executor.factory.DefaultThreadFactory;
 import cn.poolify.core.manager.ContextManagerHelper;
 import cn.poolify.core.timer.HashedWheelTimer;
 import cn.poolify.core.utils.BeanRegistrationUtil;
