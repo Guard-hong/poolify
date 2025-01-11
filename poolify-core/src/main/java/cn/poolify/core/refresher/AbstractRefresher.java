@@ -32,11 +32,13 @@ public abstract class AbstractRefresher implements IRefresher, SmartApplicationL
     public void refresh() {
         doBind();
         doRefresh();
+        doNotify();
     }
+
+    protected abstract void doNotify();
 
     private void doRefresh() {
         DtpRegistry.refresh(dtpProperties);
-        // TODO: 通知
     }
 
     protected void doBind() {
