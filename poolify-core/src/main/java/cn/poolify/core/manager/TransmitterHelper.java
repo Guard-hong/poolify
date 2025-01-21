@@ -2,6 +2,7 @@ package cn.poolify.core.manager;
 
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.properties.DtpProperties;
+import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.transmitter.ITransmitter;
 import cn.poolify.core.transmitter.notifier.NotifyPlatform;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,10 @@ public final class TransmitterHelper {
     private TransmitterHelper() {
     }
 
+    /**
+     * TODO: 异步
+     * @param executor
+     */
     public static void sendAlarmMsg(ExecutorWrapper executor) {
         try {
             lock.readLock().lock();
@@ -40,13 +45,19 @@ public final class TransmitterHelper {
         }
     }
 
-    public static void sendNoticeMsg(ExecutorWrapper executor) {
+    /**
+     * TODO: 异步
+     * @param newProps
+     * @param oldProps
+     * @param diffs
+     */
+    public static void sendNoticeMsg(DtpExecutorProps newProps, DtpExecutorProps oldProps, Set<String> diffs) {
         try {
             lock.readLock().lock();
             NOTIFY_PLATFORM_LIST.forEach(p -> {
                 String platform = p.getPlatform();
                 Optional.ofNullable(TRANSMITTER_MAP.get(platform))
-                        .ifPresent(transmitter -> transmitter.sendNoticeMsg(p, executor));
+                        .ifPresent(transmitter -> transmitter.sendNoticeMsg(p, newProps,oldProps,diffs));
             });
         } finally {
             lock.readLock().unlock();

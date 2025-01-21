@@ -1,6 +1,7 @@
 package cn.poolify.core.executor;
 
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
+import cn.poolify.core.manager.TransmitterHelper;
 import cn.poolify.core.properties.DtpProperties;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.utils.CollectionUtils;
@@ -70,8 +71,7 @@ public class DtpRegistry {
         }
         List<FieldInfo> diffFields = EQUATOR.getDiffFields(oldProps, newProps);
         Set<String> diffKeys = fetchProperty(diffFields, FieldInfo::getFieldName);
-        // TODO: 通知
-
+        TransmitterHelper.sendNoticeMsg(newProps,oldProps,diffKeys);
         log.info("DynamicTp refresh, tpName: [{}], changed keys: {}, corePoolSize: [{}], maxPoolSize: [{}]," +
                         " keepAliveTime: [{}], allowsCoreThreadTimeOut: [{}]" , executorWrapper.getThreadPoolName(), diffKeys,
                 String.format(PROPERTIES_CHANGE_SHOW_STYLE, oldProps.getCorePoolSize(), newProps.getCorePoolSize()),
