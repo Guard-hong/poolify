@@ -1,6 +1,6 @@
-package cn.poolify.core.message;
+package cn.poolify.core.transmitter;
 
-import cn.poolify.core.message.notifier.DingNotifier;
+import cn.poolify.core.transmitter.notifier.DingNotifier;
 
 /**
  * @Author: HCJ

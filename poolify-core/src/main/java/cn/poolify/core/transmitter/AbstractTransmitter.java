@@ -1,11 +1,11 @@
-package cn.poolify.core.message;
+package cn.poolify.core.transmitter;
 
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
-import cn.poolify.core.message.assemble.AlarmAssembler;
-import cn.poolify.core.message.assemble.IAssembler;
-import cn.poolify.core.message.assemble.NoticeAssembler;
-import cn.poolify.core.message.notifier.INotifier;
-import cn.poolify.core.message.notifier.NotifyPlatform;
+import cn.poolify.core.transmitter.assemble.AlarmAssembler;
+import cn.poolify.core.transmitter.assemble.IAssembler;
+import cn.poolify.core.transmitter.assemble.NoticeAssembler;
+import cn.poolify.core.transmitter.notifier.INotifier;
+import cn.poolify.core.transmitter.notifier.NotifyPlatform;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

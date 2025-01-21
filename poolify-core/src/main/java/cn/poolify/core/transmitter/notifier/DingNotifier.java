@@ -1,4 +1,4 @@
-package cn.poolify.core.message.notifier;
+package cn.poolify.core.transmitter.notifier;
 
 /**
  * @Author: HCJ

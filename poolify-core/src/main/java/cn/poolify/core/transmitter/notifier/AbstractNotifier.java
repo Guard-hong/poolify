@@ -1,4 +1,4 @@
-package cn.poolify.core.message.notifier;
+package cn.poolify.core.transmitter.notifier;
 
 import lombok.extern.slf4j.Slf4j;
 

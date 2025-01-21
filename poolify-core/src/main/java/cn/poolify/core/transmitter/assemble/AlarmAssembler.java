@@ -1,4 +1,4 @@
-package cn.poolify.core.message.assemble;
+package cn.poolify.core.transmitter.assemble;
 
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 
