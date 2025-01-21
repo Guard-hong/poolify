@@ -13,9 +13,7 @@ public interface ITransmitter {
 
     void sendNoticeMsg(NotifyPlatform platform, ExecutorWrapper executor);
 
-    void sendNoticeMsg(NotifyPlatform platform, ExecutorWrapper executor, IAssembler assembler);
 
     void sendAlarmMsg(NotifyPlatform platform, ExecutorWrapper executor);
 
-    void sendAlarmMsg(NotifyPlatform platform, ExecutorWrapper executor, IAssembler assembler);
 }

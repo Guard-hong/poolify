@@ -6,6 +6,8 @@ import cn.poolify.core.message.assemble.IAssembler;
 import cn.poolify.core.message.assemble.NoticeAssembler;
 import cn.poolify.core.message.notifier.INotifier;
 import cn.poolify.core.message.notifier.NotifyPlatform;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -21,28 +23,31 @@ public abstract class AbstractTransmitter implements ITransmitter {
     private static final IAssembler DEFAULT_ALARM_ASSEMBLER = new AlarmAssembler();
     private static final IAssembler DEFAULT_NOTICE_ASSEMBLER = new NoticeAssembler();
 
+    @Getter
+    @Setter
+    private IAssembler alarmAssembler = DEFAULT_ALARM_ASSEMBLER;
+    @Setter
+    @Getter
+    private IAssembler noticeAssembler = DEFAULT_NOTICE_ASSEMBLER;
+
     protected AbstractTransmitter(INotifier notifier) {
         this.notifier = notifier;
     }
 
-    @Override
-    public void sendNoticeMsg(NotifyPlatform platform, ExecutorWrapper executor) {
-        sendNoticeMsg(platform, executor, DEFAULT_NOTICE_ASSEMBLER);
+    protected AbstractTransmitter(INotifier notifier, IAssembler alarmAssembler, IAssembler noticeAssembler) {
+        this.notifier = notifier;
+        this.alarmAssembler = alarmAssembler;
+        this.noticeAssembler = noticeAssembler;
     }
 
     @Override
-    public void sendNoticeMsg(NotifyPlatform platform, ExecutorWrapper executor, IAssembler assembler) {
-        doSendMsg(platform, executor, assembler);
+    public void sendNoticeMsg(NotifyPlatform platform, ExecutorWrapper executor) {
+        doSendMsg(platform, executor, noticeAssembler);
     }
 
     @Override
     public void sendAlarmMsg(NotifyPlatform platform, ExecutorWrapper executor) {
-        sendAlarmMsg(platform, executor, DEFAULT_ALARM_ASSEMBLER);
-    }
-
-    @Override
-    public void sendAlarmMsg(NotifyPlatform platform, ExecutorWrapper executor, IAssembler assembler) {
-        doSendMsg(platform, executor, assembler);
+        doSendMsg(platform, executor, alarmAssembler);
     }
 
     private void doSendMsg(NotifyPlatform platform, ExecutorWrapper executor, IAssembler assembler) {
