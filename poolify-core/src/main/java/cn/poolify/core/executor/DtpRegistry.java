@@ -3,12 +3,19 @@ package cn.poolify.core.executor;
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.properties.DtpProperties;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
+import cn.poolify.core.utils.CollectionUtils;
+import com.github.dadiyang.equator.Equator;
+import com.github.dadiyang.equator.FieldInfo;
+import com.github.dadiyang.equator.GetterBaseEquator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static cn.poolify.core.constants.DtpConstants.PROPERTIES_CHANGE_SHOW_STYLE;
 
 /**
  * @Author: HCJ
@@ -19,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DtpRegistry {
 
     private static final Map<String, ExecutorWrapper> DYNAMIC_EXECUTORS = new ConcurrentHashMap<>();
+    private static final Equator EQUATOR = new GetterBaseEquator();
 
     public static void register(String poolName,ExecutorWrapper executorWrapper){
         DYNAMIC_EXECUTORS.putIfAbsent(poolName,executorWrapper);
@@ -60,7 +68,24 @@ public class DtpRegistry {
                     executorWrapper.getThreadPoolName());
             return;
         }
-        // TODO: 更新差异日志
+        List<FieldInfo> diffFields = EQUATOR.getDiffFields(oldProps, newProps);
+        Set<String> diffKeys = fetchProperty(diffFields, FieldInfo::getFieldName);
+        // TODO: 通知
+
+        log.info("DynamicTp refresh, tpName: [{}], changed keys: {}, corePoolSize: [{}], maxPoolSize: [{}]," +
+                        " keepAliveTime: [{}], allowsCoreThreadTimeOut: [{}]" , executorWrapper.getThreadPoolName(), diffKeys,
+                String.format(PROPERTIES_CHANGE_SHOW_STYLE, oldProps.getCorePoolSize(), newProps.getCorePoolSize()),
+                String.format(PROPERTIES_CHANGE_SHOW_STYLE, oldProps.getMaximumPoolSize(), newProps.getMaximumPoolSize()),
+                String.format("%ss => %ss", oldProps.getKeepAliveTime(), newProps.getKeepAliveTime()),
+                String.format(PROPERTIES_CHANGE_SHOW_STYLE, oldProps.isAllowCoreThreadTimeOut(),
+                        newProps.isAllowCoreThreadTimeOut()));
+    }
+
+    private static <I, T> Set<I> fetchProperty(List<T> data, Function<T, I> mapping) {
+        if (CollectionUtils.isEmpty(data)) {
+            return Collections.emptySet();
+        }
+        return data.stream().map(mapping).collect(Collectors.toSet());
     }
 
     private static void doRefresh(ExecutorWrapper executor, DtpExecutorProps props) {

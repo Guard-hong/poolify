@@ -11,7 +11,7 @@ public interface DtpConstants {
 
     String DTP_EXECUTOR_PROP = MAIN_PROPERTIES_PREFIX +".executors";
 
-
+    String PROPERTIES_CHANGE_SHOW_STYLE = "%s => %s";
     // props
     String THREAD_POOL_NAME = "threadPoolName";
     String RUN_TIMEOUT = "runTimeout";
