@@ -1,6 +1,7 @@
 package cn.poolify.core.refresher;
 
 import cn.poolify.core.executor.DtpRegistry;
+import cn.poolify.core.manager.TransmitterHelper;
 import cn.poolify.core.properties.DtpProperties;
 import cn.poolify.core.utils.BinderUtils;
 import cn.poolify.core.utils.CollectionUtils;
@@ -29,14 +30,11 @@ public abstract class AbstractRefresher implements IRefresher, EnvironmentAware 
     public void refresh() {
         doBind();
         doRefresh();
-        doNotify();
     }
 
-    private void doNotify() {
-
-    }
 
     private void doRefresh() {
+        TransmitterHelper.refresh(dtpProperties);
         DtpRegistry.refresh(dtpProperties);
     }
 
