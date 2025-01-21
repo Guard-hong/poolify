@@ -1,14 +1,21 @@
 package cn.poolify.core.transmitter.notifier;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @Author: HCJ
  * @DateTime: 2025/1/11
- * @Description:
+ * @Description: 通知平台信息
+ * 重写 equals和hashCode 进行去重过滤
  **/
+@EqualsAndHashCode
 @Data
 public class NotifyPlatform {
+    /**
+     * platform
+     */
+    private String platform;
     /**
      * url
      */
