@@ -4,8 +4,8 @@ poolify:
     - thread-pool-name: dtp1
       queue-timeout: 100
       run-timeout: 100
-      core-pool-size: 10
-      maximum-pool-size: 20
+      core-pool-size: 200
+      maximum-pool-size: 200
       keep-alive-time: 100
   management:
     enabled: true
