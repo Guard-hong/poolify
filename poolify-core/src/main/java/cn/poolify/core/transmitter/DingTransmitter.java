@@ -8,7 +8,13 @@ import cn.poolify.core.transmitter.notifier.DingNotifier;
  * @Description:
  **/
 public class DingTransmitter extends AbstractTransmitter {
+    private static final String mark = "ding";
     public DingTransmitter() {
         super(new DingNotifier());
+    }
+
+    @Override
+    public String mark() {
+        return mark;
     }
 }

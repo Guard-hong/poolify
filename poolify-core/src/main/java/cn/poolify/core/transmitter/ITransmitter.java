@@ -10,6 +10,8 @@ import cn.poolify.core.transmitter.notifier.NotifyPlatform;
  **/
 public interface ITransmitter {
 
+    String mark();
+
     void sendNoticeMsg(NotifyPlatform platform, ExecutorWrapper executor);
 
 

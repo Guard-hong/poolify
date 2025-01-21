@@ -1,6 +1,7 @@
 package cn.poolify.core.properties;
 
 import cn.poolify.core.properties.entity.DtpExecutorProps;
+import cn.poolify.core.transmitter.notifier.NotifyPlatform;
 import lombok.Data;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 public class DtpProperties {
     private List<DtpExecutorProps> executors;
+    private List<NotifyPlatform> notifyPlatforms;
 
     public static DtpProperties getInstance() {
         return Holder.INSTANCE;
