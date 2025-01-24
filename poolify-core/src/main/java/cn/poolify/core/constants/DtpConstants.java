@@ -19,4 +19,8 @@ public interface DtpConstants {
 
     // default props
 
+
+
+
+    String APP_NAME_KEY = "APP.NAME";
 }

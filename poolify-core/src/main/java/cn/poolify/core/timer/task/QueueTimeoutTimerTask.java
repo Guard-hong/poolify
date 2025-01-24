@@ -1,12 +1,16 @@
 package cn.poolify.core.timer.task;
 
+import cn.poolify.core.enums.AlarmType;
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
+import cn.poolify.core.manager.TransmitterHelper;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Author: HCJ
  * @DateTime: 2024/12/21
  * @Description:
  **/
+@Slf4j
 public class QueueTimeoutTimerTask extends AbstractTimeoutTimerTask {
     public QueueTimeoutTimerTask(ExecutorWrapper executorWrapper, Runnable runnable) {
         super(executorWrapper, runnable);
@@ -14,6 +18,14 @@ public class QueueTimeoutTimerTask extends AbstractTimeoutTimerTask {
 
     @Override
     protected void doRun(ExecutorWrapper executor) {
-        // TODO: 报警
+        TransmitterHelper.sendAlarmMsg(executor, AlarmType.QUEUE_TIMEOUT);
+        log.warn("DynamicTp execute, queue timeout, " +
+                        "tpName: {}, queueTimeout: {}ms, " +
+                        "poolSize: {} (active: {}, core: {}, max: {}, largest: {}), " +
+                        "queue: (currSize: {}, remaining: {})",
+                executor.getThreadPoolName(),executor.getQueueTimeout(),
+                executor.getPoolSize(), executor.getActiveCount(),
+                executor.getCorePoolSize(), executor.getMaximumPoolSize(), executor.getLargestPoolSize(),
+                executor.getQueue().size(), executor.getQueue().remainingCapacity());
     }
 }

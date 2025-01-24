@@ -33,6 +33,11 @@ import java.util.Objects;
 @Slf4j
 public class ContextManagerHelper implements ApplicationContextAware {
     private static ApplicationContext context;
+
+    public static String getEnvironmentProperty(String key) {
+        return getInstance().getEnvironment().getProperty(key);
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         context = applicationContext;

@@ -1,5 +1,6 @@
 package cn.poolify.core.manager;
 
+import cn.poolify.core.enums.AlarmType;
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.properties.DtpProperties;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
@@ -17,6 +18,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @Author: HCJ
  * @DateTime: 2025/1/21
  * @Description:
+ * TODO: 指责拆分，增加注册中心
  **/
 @Slf4j
 public final class TransmitterHelper {
@@ -35,13 +37,13 @@ public final class TransmitterHelper {
     /**
      * @param executor
      */
-    public static void sendAlarmMsg(ExecutorWrapper executor) {
+    public static void sendAlarmMsg(ExecutorWrapper executor, AlarmType type) {
         try {
             LOCK.readLock().lock();
             EXECUTOR.execute(() -> NOTIFY_PLATFORM_LIST.forEach(p -> {
                 String platform = p.getPlatform();
                 Optional.ofNullable(TRANSMITTER_MAP.get(platform))
-                        .ifPresent(transmitter -> transmitter.sendAlarmMsg(p, executor));
+                        .ifPresent(transmitter -> transmitter.sendAlarmMsg(p, executor,type));
             }));
         } finally {
             LOCK.readLock().unlock();

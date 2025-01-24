@@ -1,5 +1,6 @@
 package cn.poolify.core.transmitter;
 
+import cn.poolify.core.enums.AlarmType;
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.transmitter.assemble.DefaultAssembler;
@@ -44,8 +45,8 @@ public abstract class AbstractTransmitter implements ITransmitter {
     }
 
     @Override
-    public void sendAlarmMsg(NotifyPlatform platform, ExecutorWrapper executor) {
-        String msg = assembler.assembleAlarm(executor);
+    public void sendAlarmMsg(NotifyPlatform platform, ExecutorWrapper executor, AlarmType type) {
+        String msg = assembler.assembleAlarm(executor,type);
         notifier.send(platform, msg);
     }
 
