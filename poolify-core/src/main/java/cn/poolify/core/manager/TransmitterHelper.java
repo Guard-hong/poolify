@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -23,44 +25,46 @@ public final class TransmitterHelper {
     private static final Map<String, ITransmitter> TRANSMITTER_MAP = new ConcurrentHashMap<>();
     // TODO: 配置加载
     private static final List<NotifyPlatform> NOTIFY_PLATFORM_LIST = new ArrayList<>();
-    private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
+    // 异步发送消息线程池 TODO:替换成自定义线程池
+    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(3);
 
     private TransmitterHelper() {
     }
 
     /**
-     * TODO: 异步
      * @param executor
      */
     public static void sendAlarmMsg(ExecutorWrapper executor) {
         try {
-            lock.readLock().lock();
-            NOTIFY_PLATFORM_LIST.forEach(p -> {
+            LOCK.readLock().lock();
+            EXECUTOR.execute(() -> NOTIFY_PLATFORM_LIST.forEach(p -> {
                 String platform = p.getPlatform();
                 Optional.ofNullable(TRANSMITTER_MAP.get(platform))
                         .ifPresent(transmitter -> transmitter.sendAlarmMsg(p, executor));
-            });
+            }));
         } finally {
-            lock.readLock().unlock();
+            LOCK.readLock().unlock();
         }
     }
 
     /**
      * TODO: 异步
+     *
      * @param newProps
      * @param oldProps
      * @param diffs
      */
     public static void sendNoticeMsg(DtpExecutorProps newProps, DtpExecutorProps oldProps, Set<String> diffs) {
         try {
-            lock.readLock().lock();
-            NOTIFY_PLATFORM_LIST.forEach(p -> {
+            LOCK.readLock().lock();
+            EXECUTOR.execute(() -> NOTIFY_PLATFORM_LIST.forEach(p -> {
                 String platform = p.getPlatform();
                 Optional.ofNullable(TRANSMITTER_MAP.get(platform))
-                        .ifPresent(transmitter -> transmitter.sendNoticeMsg(p, newProps,oldProps,diffs));
-            });
+                        .ifPresent(transmitter -> transmitter.sendNoticeMsg(p, newProps, oldProps, diffs));
+            }));
         } finally {
-            lock.readLock().unlock();
+            LOCK.readLock().unlock();
         }
     }
 
@@ -71,16 +75,18 @@ public final class TransmitterHelper {
         boolean compare = commonElements.retainAll(newNotifyPlatforms);
         // 没有变化
         if (!compare) {
-            log.info("notify unchanged");
+            log.info("notify not change");
             return;
         }
         log.info("notify change");
         try {
-            lock.writeLock().lock();
-            NOTIFY_PLATFORM_LIST.clear();
-            NOTIFY_PLATFORM_LIST.addAll(newNotifyPlatforms);
+            LOCK.writeLock().lock();
+            EXECUTOR.execute(()->{
+                NOTIFY_PLATFORM_LIST.clear();
+                NOTIFY_PLATFORM_LIST.addAll(newNotifyPlatforms);
+            });
         } finally {
-            lock.writeLock().unlock();
+            LOCK.writeLock().unlock();
         }
     }
 
