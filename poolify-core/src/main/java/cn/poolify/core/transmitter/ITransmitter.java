@@ -3,7 +3,7 @@ package cn.poolify.core.transmitter;
 import cn.poolify.core.enums.AlarmType;
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
-import cn.poolify.core.transmitter.notifier.NotifyPlatform;
+import cn.poolify.core.entity.NotifyPlatform;
 
 import java.util.Set;
 

@@ -1,7 +1,9 @@
 package cn.poolify.core.test.starter.controller;
 
+import cn.poolify.core.enums.AlarmType;
 import cn.poolify.core.executor.ExecutorConverter;
 import cn.poolify.core.executor.wrapper.ExecutorWrapper;
+import cn.poolify.core.manager.TransmitterHelper;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.test.starter.model.ThreadPoolEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +30,7 @@ public class ThreadPoolTestController {
     private Map<String, ThreadPoolExecutor> threadPoolExecutorMap;
 
     @Resource
-    private ThreadPoolExecutor dtp1;
+    private ExecutorWrapper dtp1;
 //    @Resource
 //    private ThreadPoolExecutor dtp3;
     @GetMapping("/getThreadPoolList")
@@ -54,9 +56,9 @@ public class ThreadPoolTestController {
         DtpExecutorProps dtpExecutorProps = ExecutorConverter.toDtpExecutorProps((ExecutorWrapper) dtp1);
         return "dtp1";
     }
-//    @GetMapping("dtp3")
-//    public String getDtp3(){
-//        DtpExecutorProps dtpExecutorProps = ExecutorConverter.toDtpExecutorProps((ExecutorWrapper) dtp3);
-//        return "dtp3";
-//    }
+    @GetMapping("sendMsg")
+    public String getDtp3(){
+        TransmitterHelper.sendAlarmMsg(dtp1, AlarmType.QUEUE_TIMEOUT);
+        return "dtp3";
+    }
 }

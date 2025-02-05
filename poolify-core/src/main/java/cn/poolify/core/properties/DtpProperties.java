@@ -1,7 +1,7 @@
 package cn.poolify.core.properties;
 
 import cn.poolify.core.properties.entity.DtpExecutorProps;
-import cn.poolify.core.transmitter.notifier.NotifyPlatform;
+import cn.poolify.core.entity.NotifyPlatform;
 import lombok.Data;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package cn.poolify.core.transmitter.notifier;
+package cn.poolify.core.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

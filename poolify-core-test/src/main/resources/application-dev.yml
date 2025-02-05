@@ -7,6 +7,12 @@ poolify:
       core-pool-size: 200
       maximum-pool-size: 200
       keep-alive-time: 100
+  notify-platforms:
+    - platform: ding
+      url: http://dingding.com
+      token: abc
+      receivers: ab,ac,bc
+
   management:
     enabled: true
     addr: http://localhost:8091

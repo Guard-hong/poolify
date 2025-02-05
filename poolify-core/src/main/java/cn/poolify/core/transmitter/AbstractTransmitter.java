@@ -6,7 +6,7 @@ import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.transmitter.assemble.DefaultAssembler;
 import cn.poolify.core.transmitter.assemble.IAssembler;
 import cn.poolify.core.transmitter.notifier.INotifier;
-import cn.poolify.core.transmitter.notifier.NotifyPlatform;
+import cn.poolify.core.entity.NotifyPlatform;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

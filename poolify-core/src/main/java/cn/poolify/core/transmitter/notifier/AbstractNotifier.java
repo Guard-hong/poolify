@@ -1,5 +1,6 @@
 package cn.poolify.core.transmitter.notifier;
 
+import cn.poolify.core.entity.NotifyPlatform;
 import lombok.extern.slf4j.Slf4j;
 
 /**

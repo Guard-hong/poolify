@@ -5,7 +5,7 @@ import cn.poolify.core.executor.wrapper.ExecutorWrapper;
 import cn.poolify.core.properties.DtpProperties;
 import cn.poolify.core.properties.entity.DtpExecutorProps;
 import cn.poolify.core.transmitter.ITransmitter;
-import cn.poolify.core.transmitter.notifier.NotifyPlatform;
+import cn.poolify.core.entity.NotifyPlatform;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -23,15 +23,24 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @Slf4j
 public final class TransmitterHelper {
 
-    // TODO: spi 加载
+    /**
+     * k->发送平台 v->发送实现
+     */
     private static final Map<String, ITransmitter> TRANSMITTER_MAP = new ConcurrentHashMap<>();
-    // TODO: 配置加载
-    private static final List<NotifyPlatform> NOTIFY_PLATFORM_LIST = new ArrayList<>();
+    private static final List<NotifyPlatform> NOTIFY_PLATFORM_LIST = DtpProperties.getInstance().getNotifyPlatforms();
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     // 异步发送消息线程池 TODO:替换成自定义线程池
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(3);
 
     private TransmitterHelper() {
+    }
+
+    static{
+        ServiceLoader<ITransmitter> loader  = ServiceLoader.load(ITransmitter.class);
+        for (ITransmitter service : loader) {
+            TRANSMITTER_MAP.put(service.mark(), service);
+        }
+
     }
 
     /**
@@ -51,7 +60,6 @@ public final class TransmitterHelper {
     }
 
     /**
-     * TODO: 异步
      *
      * @param newProps
      * @param oldProps
